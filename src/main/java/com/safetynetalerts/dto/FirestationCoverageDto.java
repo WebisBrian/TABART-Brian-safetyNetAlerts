@@ -47,4 +47,13 @@ public class FirestationCoverageDto {
     public void setNumberOfChildren(int numberOfChildren) {
         this.numberOfChildren = numberOfChildren;
     }
+
+    @Override
+    public String toString() {
+        return "FirestationCoverageDto{" +
+                "persons=" + persons +
+                ", numberOfAdults=" + numberOfAdults +
+                ", numberOfChildren=" + numberOfChildren +
+                '}';
+    }
 }
