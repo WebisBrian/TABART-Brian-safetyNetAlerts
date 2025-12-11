@@ -2,7 +2,12 @@ package com.safetynetalerts.model;
 
 import java.util.List;
 
-
+/**
+ *  Représente le dossier médical d'une personne, incluant la date de naissance,
+ *  les médicaments prescrits et les allergies connues.
+ *  Cette classe est utilisée pour calculer l'âge (enfant/adulte) et pour fournir
+ *  des informations médicales essentielles aux services de secours.
+ */
 public class MedicalRecord {
 
     // fields

@@ -1,5 +1,10 @@
 package com.safetynetalerts.model;
 
+/**
+ *  Représente une personne enregistrée dans le fichier de données SafetyNet.
+ *  Contient les informations d'identité et de contact nécessaires aux différents
+ *  endpoints de l'application (adresse, ville, téléphone, email...).
+ */
 public class Person {
 
     // fields

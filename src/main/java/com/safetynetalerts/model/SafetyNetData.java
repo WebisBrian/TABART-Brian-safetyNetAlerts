@@ -2,6 +2,13 @@ package com.safetynetalerts.model;
 
 import java.util.List;
 
+/**
+ * Représente la structure racine du fichier data.json.
+ * Elle regroupe l'ensemble des personnes, des casernes de pompiers et des
+ * dossiers médicaux chargés au démarrage de l'application.
+ * Cette classe sert de conteneur principal pour la désérialisation du fichier JSON
+ * et fournit les données brutes à la couche repository.
+ */
 public class SafetyNetData {
 
     // fields

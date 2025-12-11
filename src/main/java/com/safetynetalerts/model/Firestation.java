@@ -1,5 +1,10 @@
 package com.safetynetalerts.model;
 
+/**
+ *  Représente l'association entre une adresse et un numéro de caserne de pompiers.
+ *  Cette classe est utilisée par les endpoints liés aux interventions des casernes,
+ *  notamment pour déterminer les habitants desservis par une station donnée.
+ */
 public class Firestation {
 
     // fields
