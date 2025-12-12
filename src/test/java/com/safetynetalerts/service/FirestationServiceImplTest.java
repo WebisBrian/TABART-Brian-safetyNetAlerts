@@ -38,14 +38,16 @@ class FirestationServiceImplTest {
         Person tenleyBoyd = new Person("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "tenz@email.com");
         Person other = new Person("Other", "Person", "29 15th St", "Culver", "97451", "333-333-3333", "other@email.com");
 
-        when(dataRepository.getAllPersons()).thenReturn(List.of(johnBoyd, tenleyBoyd, other));
+        lenient().when(dataRepository.getAllPersons())
+                .thenReturn(List.of(johnBoyd, tenleyBoyd, other));
 
         MedicalRecord medicalRecordJohn = new MedicalRecord("John", "Boyd", "03/06/1984", List.of("aznol:350mg",
                 "hydrapermazol:100mg"), List.of("nillacilan"));
         MedicalRecord medicalRecordTenley = new MedicalRecord("Tenley", "Boyd", "02/18/2012", List.of(), List.of("peanut"));
         MedicalRecord medicalRecordOther = new MedicalRecord("Other", "Person", "01/01/1999", List.of("aznol:350mg"), List.of());
 
-        when(dataRepository.getAllMedicalRecords()).thenReturn(List.of(medicalRecordJohn, medicalRecordTenley, medicalRecordOther));
+        lenient().when(dataRepository.getAllMedicalRecords())
+                .thenReturn(List.of(medicalRecordJohn, medicalRecordTenley, medicalRecordOther));
     }
 
     @Test

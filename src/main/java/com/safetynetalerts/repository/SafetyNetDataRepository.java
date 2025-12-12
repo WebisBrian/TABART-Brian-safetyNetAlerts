@@ -14,7 +14,6 @@ import java.util.List;
  * Les implémentations concrètes (ex. JsonDataRepository) sont responsables
  * du chargement et du stockage de ces données en mémoire.
  */
-@Repository
 public interface SafetyNetDataRepository {
 
     List<Person> getAllPersons();
