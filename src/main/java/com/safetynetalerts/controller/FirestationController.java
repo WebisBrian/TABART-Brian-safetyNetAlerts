@@ -1,6 +1,6 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.FirestationCoverageDto;
+import com.safetynetalerts.dto.firestation.FirestationCoverageDto;
 import com.safetynetalerts.service.FirestationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

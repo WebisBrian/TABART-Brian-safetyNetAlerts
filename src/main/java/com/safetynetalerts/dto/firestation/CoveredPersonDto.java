@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto;
+package com.safetynetalerts.dto.firestation;
 
 /**
  * Représente une personne couverte par une caserne de pompiers pour l'endpoint /firestation.

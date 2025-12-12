@@ -1,7 +1,7 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.CoveredPersonDto;
-import com.safetynetalerts.dto.FirestationCoverageDto;
+import com.safetynetalerts.dto.firestation.CoveredPersonDto;
+import com.safetynetalerts.dto.firestation.FirestationCoverageDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
