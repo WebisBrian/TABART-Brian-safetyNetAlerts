@@ -6,6 +6,7 @@ import com.safetynetalerts.dto.childalert.ChildAlertResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.repository.SafetyNetDataRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -19,6 +20,7 @@ import java.util.Optional;
  * Utilise SafetyNetDataRepository pour récupérer les données brutes, puis
  * construit la réponse avec la liste des enfants et des autres membres du foyer.
  */
+@Service
 public class ChildAlertServiceImpl implements ChildAlertService {
 
     private final SafetyNetDataRepository dataRepository;
