@@ -51,11 +51,11 @@ class FirestationServiceImplTest {
     }
 
     @Test
-    void getCoverageByStation_should_return_correct_persons_and_counts_for_given_station() {
-        // Act
+    void getCoverageByStation_shouldReturnCorrectPersonsAndCountsForGivenStation() {
+        // ACT
         FirestationCoverageDto coverage = firestationService.getCoverageByStation(1);
 
-        // Assert
+        // ASSERT
         assertThat(coverage.getPersons()).hasSize(2);
         assertThat(coverage.getNumberOfAdults()).isEqualTo(1);
         assertThat(coverage.getNumberOfChildren()).isEqualTo(1);
@@ -64,8 +64,8 @@ class FirestationServiceImplTest {
     }
 
     @Test
-    void getCoverageByStation_should_return_empty_result_for_unknown_station() {
-        // Act + Assert
+    void getCoverageByStation_shouldReturnEmptyResultForUnknownStation() {
+        // ACT + ASSERT
         FirestationCoverageDto coverage = firestationService.getCoverageByStation(3);
 
         assertThat(coverage.getPersons()).isEmpty();

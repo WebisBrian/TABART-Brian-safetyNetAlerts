@@ -1,7 +1,7 @@
 package com.safetynetalerts.controller;
 
 import com.safetynetalerts.dto.FirestationCoverageDto;
-import com.safetynetalerts.service.FirestationServiceImpl;
+import com.safetynetalerts.service.FirestationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +19,9 @@ public class FirestationController {
 
     private static final Logger logger = LoggerFactory.getLogger(FirestationController.class);
 
-    private FirestationServiceImpl firestationService;
+    private final FirestationService firestationService;
 
-    public FirestationController(FirestationServiceImpl firestationService) {
+    public FirestationController(FirestationService firestationService) {
         this.firestationService = firestationService;
     }
 
