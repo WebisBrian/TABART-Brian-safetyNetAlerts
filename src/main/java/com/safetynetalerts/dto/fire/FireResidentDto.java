@@ -1,7 +1,5 @@
 package com.safetynetalerts.dto.fire;
 
-import com.safetynetalerts.model.MedicalRecord;
-
 import java.util.List;
 
 /**
@@ -47,7 +45,7 @@ public class FireResidentDto {
         this.lastName = lastName;
     }
 
-    public String getPhone) {
+    public String getPhone() {
         return phone;
     }
 
