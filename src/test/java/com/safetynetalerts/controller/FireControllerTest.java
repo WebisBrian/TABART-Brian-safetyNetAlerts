@@ -1,37 +1,77 @@
 package com.safetynetalerts.controller;
 
+import com.safetynetalerts.dto.fire.FireResidentDto;
 import com.safetynetalerts.dto.fire.FireResponseDto;
 import com.safetynetalerts.service.FireService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-@RestController
-@RequestMapping("/fire")
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(FireController.class)
 class FireControllerTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(FireController.class);
+    @Autowired
+    MockMvc mockMvc;
 
-    private final FireService fireService;
+    @MockitoBean
+    FireService fireService;
 
-    public FireControllerTest(FireService fireService) {
-        this.fireService = fireService;
+    @Test
+    void getFireInfoByAddress_shouldReturnFireInfoForKnownAddress() throws Exception {
+        // Arrange
+        FireResidentDto john = new FireResidentDto(
+                "John",
+                "Boyd",
+                "841-874-6512", // si ton champ DTO s'appelle phoneNumber c'est OK (constructeur String)
+                41,
+                List.of("aznol:350mg"),
+                List.of("nillacilan")
+        );
+
+        FireResponseDto response = new FireResponseDto(3, List.of(john));
+
+        when(fireService.getFireInfoByAddress("1509 Culver St"))
+                .thenReturn(response);
+
+        // Act + Assert
+        mockMvc.perform(get("/fire").param("address", "1509 Culver St"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.stationNumber").value(3))
+                .andExpect(jsonPath("$.residents").isArray())
+                .andExpect(jsonPath("$.residents[0].firstName").value("John"))
+                .andExpect(jsonPath("$.residents[0].lastName").value("Boyd"))
+                .andExpect(jsonPath("$.residents[0].age").value(41))
+                .andExpect(jsonPath("$.residents[0].medications[0]").value("aznol:350mg"))
+                .andExpect(jsonPath("$.residents[0].allergies[0]").value("nillacilan"));
     }
 
-    @GetMapping
-    public FireResponseDto getFireInfoByAddress(String address) {
-        logger.info("Requête reçue GET /fire avec address={}", address);
+    @Test
+    void getFireInfoByAddress_shouldReturnEmptyObjectForUnknownAddress() throws Exception {
+        // Arrange
+        FireResponseDto empty = new FireResponseDto(0, List.of());
 
-        FireResponseDto response = fireService.getFireInfoByAddress(address);
+        when(fireService.getFireInfoByAddress("UNKNOWN"))
+                .thenReturn(empty);
 
-        logger.info("Réponse envoyée pour address={} : {}", address, response);
-
-        return response;
-
+        // Act + Assert
+        mockMvc.perform(get("/fire").param("address", "UNKNOWN"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.stationNumber").value(0))
+                .andExpect(jsonPath("$.residents").isEmpty());
     }
-
 }
