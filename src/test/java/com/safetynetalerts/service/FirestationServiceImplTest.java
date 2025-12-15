@@ -5,6 +5,7 @@ import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.service.util.AgeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +23,9 @@ class FirestationServiceImplTest {
 
     @Mock
     private SafetyNetDataRepository dataRepository;
+
+    @Mock
+    private AgeService ageService;
 
     @InjectMocks
     private FirestationServiceImpl firestationService;
@@ -48,6 +52,9 @@ class FirestationServiceImplTest {
 
         lenient().when(dataRepository.getAllMedicalRecords())
                 .thenReturn(List.of(medicalRecordJohn, medicalRecordTenley, medicalRecordOther));
+
+        lenient().when(ageService.isChild(any(Person.class), anyList())).thenReturn(false);
+        lenient().when(ageService.isChild(argThat(p -> p.getFirstName().equals("Tenley")), anyList())).thenReturn(true);
     }
 
     @Test

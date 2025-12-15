@@ -6,6 +6,7 @@ import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.service.util.AgeService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,9 +24,11 @@ import java.util.Optional;
 public class FirestationServiceImpl implements FirestationService {
 
     private final SafetyNetDataRepository dataRepository;
+    private final AgeService ageService;
 
-    public FirestationServiceImpl(SafetyNetDataRepository dataRepository) {
+    public FirestationServiceImpl(SafetyNetDataRepository dataRepository, AgeService ageService) {
         this.dataRepository = dataRepository;
+        this.ageService = ageService;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class FirestationServiceImpl implements FirestationService {
         List<MedicalRecord> allMedicalRecords = dataRepository.getAllMedicalRecords();
 
         int numberOfChildren = (int) coveredPersons.stream()
-                .filter(p -> isChild(p, allMedicalRecords))
+                .filter(p -> ageService.isChild(p, allMedicalRecords))
                 .count();
 
         int numberOfAdults = coveredPersons.size() - numberOfChildren;
@@ -66,29 +69,5 @@ public class FirestationServiceImpl implements FirestationService {
                 .toList();
 
         return new FirestationCoverageDto(dtoPersons, numberOfAdults, numberOfChildren);
-    }
-
-    /**
-     * Détermine si une personne est un enfant (< 18 ans) en fonction des dossiers médicaux.
-     */
-    private boolean isChild(Person person, List<MedicalRecord> medicalRecords) {
-        Optional<MedicalRecord> recordOptional = medicalRecords.stream()
-                .filter(mr -> mr.getFirstName().equals(person.getFirstName())
-                        && mr.getLastName().equals(person.getLastName()))
-                .findFirst();
-        if (recordOptional.isEmpty()) {
-            return false;
-        }
-        int age = calculateAge(recordOptional.get().getBirthdate());
-        return age < 18;
-    }
-
-    /**
-     * Calcule l'âge à partir d'une date de naissance au format MM/dd/yyyy (ex : "03/06/1984").
-     */
-    private int calculateAge(String stringBirthdate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        LocalDate birthDate = LocalDate.parse(stringBirthdate, formatter);
-        return Period.between(birthDate, LocalDate.now()).getYears();
     }
 }
