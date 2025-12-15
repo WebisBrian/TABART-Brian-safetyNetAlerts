@@ -6,14 +6,12 @@ import com.safetynetalerts.dto.childalert.ChildAlertResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.service.util.AgeService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.OptionalInt;
 
 /**
  * Implémentation du service métier pour l'endpoint /childAlert.
@@ -24,9 +22,11 @@ import java.util.Optional;
 public class ChildAlertServiceImpl implements ChildAlertService {
 
     private final SafetyNetDataRepository dataRepository;
+    private final AgeService ageService;
 
-    public ChildAlertServiceImpl(SafetyNetDataRepository dataRepository) {
+    public ChildAlertServiceImpl(SafetyNetDataRepository dataRepository, AgeService ageService) {
         this.dataRepository = dataRepository;
+        this.ageService = ageService;
     }
 
     @Override
@@ -47,7 +47,10 @@ public class ChildAlertServiceImpl implements ChildAlertService {
         List<ChildAlertHouseholdMemberDto> otherHouseholdMembers = new ArrayList<>();
 
         for (Person person : personsAtAddress) {
-            int age = getAgeForPerson(person, allMedicalRecords);
+            OptionalInt ageOpt = ageService.getAge(person, allMedicalRecords);
+
+            // Stratégie : Si pas de dossier médical, on considère comme adulte
+            int age = ageOpt.orElse(999);
 
             if (age < 18) {
                 children.add(new ChildAlertChildDto(
@@ -69,34 +72,6 @@ public class ChildAlertServiceImpl implements ChildAlertService {
             return new ChildAlertResponseDto(List.of(), List.of());
         }
         return new ChildAlertResponseDto(children, otherHouseholdMembers);
-    }
-
-    /**
-     * Calcule l'âge d'une personne en utilisant son dossier médical.
-     * Si aucun dossier trouvé, la personne est considérée comme adulte (âge 0 par défaut).
-     */
-    private int getAgeForPerson(Person person, List<MedicalRecord> medicalRecords) {
-        Optional<MedicalRecord> recordOpt = medicalRecords.stream()
-                .filter(mr -> mr.getFirstName().equals(person.getFirstName())
-                        && mr.getLastName().equals(person.getLastName()))
-                .findFirst();
-
-        if (recordOpt.isEmpty()) {
-            // Si aucune date de naissance, choix simple : considérer comme adulte
-            return 0;
-        }
-
-        String birthdate = recordOpt.get().getBirthdate();
-        return calculateAge(birthdate);
-    }
-
-    /**
-     * Calcule l'âge à partir d'une date de naissance au format MM/dd/yyyy (ex : "03/06/1984").
-     */
-    private int calculateAge(String birthdate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        LocalDate birthDate = LocalDate.parse(birthdate, formatter);
-        return Period.between(birthDate, LocalDate.now()).getYears();
     }
 }
 

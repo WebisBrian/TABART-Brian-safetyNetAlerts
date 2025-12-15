@@ -9,11 +9,7 @@ import com.safetynetalerts.repository.SafetyNetDataRepository;
 import com.safetynetalerts.service.util.AgeService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Implémentation du service métier pour l'endpoint /firestation.

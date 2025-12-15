@@ -4,6 +4,7 @@ import com.safetynetalerts.dto.childalert.ChildAlertResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.service.util.AgeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.OptionalInt;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,6 +25,9 @@ class ChildAlertServiceImplTest {
 
     @Mock
     private SafetyNetDataRepository dataRepository;
+
+    @Mock
+    private AgeService ageService;
 
     @InjectMocks
     private ChildAlertServiceImpl childAlertService;
@@ -42,12 +47,18 @@ class ChildAlertServiceImplTest {
         MedicalRecord medicalRecordTenley = new MedicalRecord("Tenley", "Boyd", "02/18/2012", List.of(), List.of("peanut"));
         MedicalRecord medicalRecordOther = new MedicalRecord("Other", "Person", "01/01/1999", List.of("aznol:350mg"), List.of());
 
-        when(dataRepository.getAllMedicalRecords())
-                .thenReturn(List.of(medicalRecordJohn, medicalRecordTenley, medicalRecordOther));
+        when(dataRepository.getAllMedicalRecords()).thenReturn(List.of(medicalRecordJohn, medicalRecordTenley, medicalRecordOther));
     }
 
     @Test
     void getChildrenByAddress_shouldReturnChildrenAndHouseholdMembersForAddressWithChildren() {
+        // ARRANGE
+        when(ageService.getAge(argThat(p -> p != null && "Tenley".equals(p.getFirstName())), anyList()))
+                .thenReturn(OptionalInt.of(12));
+
+        when(ageService.getAge(argThat(p -> p != null && "John".equals(p.getFirstName())), anyList()))
+                .thenReturn(OptionalInt.of(41));
+
         // ACT
         ChildAlertResponseDto response = childAlertService.getChildrenByAddress("1509 Culver St");
 
