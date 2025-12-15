@@ -7,7 +7,6 @@ import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.repository.SafetyNetDataRepository;
 import com.safetynetalerts.service.util.AgeService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,9 +31,9 @@ class FireServiceImplTest {
     @InjectMocks
     private FireServiceImpl fireService;
 
-    @BeforeEach
-    void setUp() {
-        // Initialize data for test
+    @Test
+    void getFireInfoByAddress_shouldReturnStationAndResidentsForKnownAddress() {
+        // Arrange
         when(dataRepository.getAllFirestations()).thenReturn(List.of(
                 new Firestation("1509 Culver St", 3),
                 new Firestation("29 15th St", 2)
@@ -58,11 +57,6 @@ class FireServiceImplTest {
                         List.of())
         ));
 
-    }
-
-    @Test
-    void getFireInfoByAddress_shouldReturnStationAndResidentsForKnownAddress() {
-        // Arrange
         when(ageService.getAge(argThat(p -> p != null && "John".equals(p.getFirstName())), anyList()))
                 .thenReturn(OptionalInt.of(41));
         when(ageService.getAge(argThat(p -> p != null && "Tenley".equals(p.getFirstName())), anyList()))
