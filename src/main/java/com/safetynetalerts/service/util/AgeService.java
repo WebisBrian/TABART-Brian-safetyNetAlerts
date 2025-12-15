@@ -35,21 +35,29 @@ public class AgeService {
 
     /**
      * Calcule l'âge à partir d'une date de naissance au format MM/dd/yyyy.
+     *
+     * @param birthdate date de naissance (ex: "03/06/1984")
+     * @return âge en années
      */
     public int calculateAge(String birthdate) {
-        LocalDate dateOfBirth = LocalDate.parse(birthdate, BIRTHDATE_FORMAT);
+        LocalDate birthDate = LocalDate.parse(birthdate, BIRTHDATE_FORMAT);
         LocalDate today = LocalDate.now(clock);
-        return Period.between(dateOfBirth, today).getYears();
+        return Period.between(birthDate, today).getYears();
     }
 
     /**
      * Renvoie l'âge d'une personne si son dossier médical existe, sinon OptionalInt.empty().
+     *
+     * @param person personne dont on veut l'âge
+     * @param medicalRecords liste complète des dossiers médicaux
+     * @return OptionalInt contenant l'âge ou vide si aucun dossier trouvé
      */
     public OptionalInt getAge(Person person, List<MedicalRecord> medicalRecords) {
         Optional<MedicalRecord> recordOpt = medicalRecords.stream()
-                .filter(medicalRecord -> medicalRecord.getFirstName().equals(person.getFirstName())
-                        && medicalRecord.getLastName().equals(person.getLastName()))
+                .filter(mr -> mr.getFirstName().equals(person.getFirstName())
+                        && mr.getLastName().equals(person.getLastName()))
                 .findFirst();
+
         if (recordOpt.isEmpty()) {
             return OptionalInt.empty();
         }
@@ -58,9 +66,14 @@ public class AgeService {
     }
 
     /**
-     * Détermine si une personne est un enfant selon une règle (par défaut: < 18).
+     * Détermine si une personne est un enfant selon la règle métier (ici: < 18 ans).
+     *
+     * @param person personne à vérifier
+     * @param medicalRecords liste complète des dossiers médicaux
+     * @return true si l'âge est < 18, sinon false
      */
     public boolean isChild(Person person, List<MedicalRecord> medicalRecords) {
+        // Si pas de dossier médical, on considère "pas enfant" (évite faux positifs)
         return getAge(person, medicalRecords).orElse(Integer.MAX_VALUE) < 18;
     }
 }
