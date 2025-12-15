@@ -3,7 +3,6 @@ package com.safetynetalerts.repository;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
