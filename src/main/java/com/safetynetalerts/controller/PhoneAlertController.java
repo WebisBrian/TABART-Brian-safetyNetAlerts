@@ -31,12 +31,12 @@ public class PhoneAlertController {
      * Renvoie la liste de téléphones des personnes couvertes par la station.
      */
     @GetMapping
-    public List<String> getPhonesByStation(@RequestParam int stationNumber) {
-        logger.info("Requête reçue GET /phoneAlert avec stationNumber={}", stationNumber);
+    public List<String> getPhonesByStation(@RequestParam int firestation) {
+        logger.info("Requête reçue GET /phoneAlert avec firestation={}", firestation);
 
-        List<String> phones = phoneAlertService.getPhonesByStation(stationNumber);
+        List<String> phones = phoneAlertService.getPhonesByStation(firestation);
 
-        logger.info("Réponse envoyée pour stationNumber={} : {}", stationNumber, phones);
+        logger.info("Réponse envoyée pour firestation={} : {}", firestation, phones);
 
         return phones;
     }
