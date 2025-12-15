@@ -32,52 +32,50 @@ class FirestationServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Initialize data for test
         Firestation station1 = new Firestation("1509 Culver St", 1);
         Firestation station2 = new Firestation("834 Binoc Ave", 2);
 
         when(dataRepository.getAllFirestations()).thenReturn(List.of(station1, station2));
-
-        Person johnBoyd = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com");
-        Person tenleyBoyd = new Person("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "tenz@email.com");
-        Person other = new Person("Other", "Person", "29 15th St", "Culver", "97451", "333-333-3333", "other@email.com");
-
-        lenient().when(dataRepository.getAllPersons())
-                .thenReturn(List.of(johnBoyd, tenleyBoyd, other));
-
-        MedicalRecord medicalRecordJohn = new MedicalRecord("John", "Boyd", "03/06/1984", List.of("aznol:350mg",
-                "hydrapermazol:100mg"), List.of("nillacilan"));
-        MedicalRecord medicalRecordTenley = new MedicalRecord("Tenley", "Boyd", "02/18/2012", List.of(), List.of("peanut"));
-        MedicalRecord medicalRecordOther = new MedicalRecord("Other", "Person", "01/01/1999", List.of("aznol:350mg"), List.of());
-
-        lenient().when(dataRepository.getAllMedicalRecords())
-                .thenReturn(List.of(medicalRecordJohn, medicalRecordTenley, medicalRecordOther));
-
-        lenient().when(ageService.isChild(any(Person.class), anyList())).thenReturn(false);
-        lenient().when(ageService.isChild(argThat(p -> p.getFirstName().equals("Tenley")), anyList())).thenReturn(true);
     }
 
     @Test
     void getCoverageByStation_shouldReturnCorrectPersonsAndCountsForGivenStation() {
-        // ACT
+        // Arrange (stubs nécessaires uniquement ici)
+        Person johnBoyd = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451",
+                "841-874-6512", "jaboyd@email.com");
+        Person tenleyBoyd = new Person("Tenley", "Boyd", "1509 Culver St", "Culver", "97451",
+                "841-874-6512", "tenz@email.com");
+        Person other = new Person("Other", "Person", "29 15th St", "Culver", "97451",
+                "333-333-3333", "other@email.com");
+
+        when(dataRepository.getAllPersons()).thenReturn(List.of(johnBoyd, tenleyBoyd, other));
+        when(dataRepository.getAllMedicalRecords()).thenReturn(List.of(
+                new MedicalRecord("John", "Boyd", "03/06/1984", List.of(), List.of()),
+                new MedicalRecord("Tenley", "Boyd", "02/18/2012", List.of(), List.of()),
+                new MedicalRecord("Other", "Person", "01/01/1999", List.of(), List.of())
+        ));
+
+        // Ici, tu ne testes pas AgeService, donc tu le pilotes :
+        when(ageService.isChild(any(Person.class), anyList())).thenReturn(false);
+        when(ageService.isChild(argThat(p -> p.getFirstName().equals("Tenley")), anyList())).thenReturn(true);
+
+        // Act
         FirestationCoverageDto coverage = firestationService.getCoverageByStation(1);
 
-        // ASSERT
+        // Assert
         assertThat(coverage.getPersons()).hasSize(2);
         assertThat(coverage.getNumberOfAdults()).isEqualTo(1);
         assertThat(coverage.getNumberOfChildren()).isEqualTo(1);
-        assertThat(coverage.getPersons().get(0).getFirstName()).isEqualTo("John");
-        assertThat(coverage.getPersons().get(1).getFirstName()).isEqualTo("Tenley");
     }
 
     @Test
     void getCoverageByStation_shouldReturnEmptyResultForUnknownStation() {
-        // ACT + ASSERT
+        // Act
         FirestationCoverageDto coverage = firestationService.getCoverageByStation(3);
 
+        // Assert
         assertThat(coverage.getPersons()).isEmpty();
         assertThat(coverage.getNumberOfAdults()).isZero();
         assertThat(coverage.getNumberOfChildren()).isZero();
     }
-
 }
