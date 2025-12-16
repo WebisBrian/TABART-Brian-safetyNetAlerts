@@ -41,14 +41,16 @@ class PersonInfoServiceImplTest {
                 new MedicalRecord("John", "Boyd", "03/06/1984", List.of("aznol:350mg"), List.of("nillacilan")),
                 new MedicalRecord("Jane", "Doe", "01/01/1990", List.of(), List.of())
         ));
-
-        when(ageService.getAge(argThat(p -> p != null && "John".equals(p.getFirstName()) && "Boyd".equals(p.getLastName())), anyList()))
-                .thenReturn(OptionalInt.of(41));
     }
 
     @Test
     void getPersonInfo_shouldReturnAllMatchingPersons() {
-        var res = service.getPersonInfo("Boyd");
+        // Arrange
+        when(ageService.getAge(argThat(p -> p != null && "John".equals(p.getFirstName()) && "Boyd".equals(p.getLastName())), anyList()))
+                .thenReturn(OptionalInt.of(41));
+
+        // Act + Assert
+        var res = service.getPersonInfo("John", "Boyd");
         assertThat(res.getPersons()).hasSize(2);
         assertThat(res.getPersons().getFirst().getAge()).isEqualTo(41);
         assertThat(res.getPersons().getFirst().getMedications()).contains("aznol:350mg");
@@ -56,7 +58,7 @@ class PersonInfoServiceImplTest {
 
     @Test
     void getPersonInfo_shouldReturnEmptyWhenNoMatch() {
-        var res = service.getPersonInfo("X");
+        var res = service.getPersonInfo("X", "Y");
         assertThat(res.getPersons()).isEmpty();
     }
 
