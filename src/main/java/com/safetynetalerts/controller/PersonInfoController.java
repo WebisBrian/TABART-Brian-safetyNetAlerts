@@ -19,7 +19,7 @@ public class PersonInfoController {
     }
 
     @GetMapping
-    public PersonInfoResponseDto getPersonInfo(@RequestParam String lastName) {
+    public PersonInfoResponseDto getPersonInfoLastName(@RequestParam String lastName) {
 
         logger.info("Requête reçue GET /personInfo lastName={}",lastName);
 
