@@ -1,3 +1,5 @@
+package com.safetynetalerts.dto.personinfo;
+
 import java.util.List;
 
 public class PersonInfoDto {
