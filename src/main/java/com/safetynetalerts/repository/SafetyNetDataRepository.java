@@ -34,7 +34,7 @@ public interface SafetyNetDataRepository {
     boolean deleteFirestation(String address);
 
     // MEDICAL RECORD CRUD
-    Optional<MedicalRecord> findMedicalRecordByPerson(String firstName, String lastName);
+    Optional<MedicalRecord> findMedicalRecord(String firstName, String lastName);
     MedicalRecord addMedicalRecord(MedicalRecord medicalRecord);
     boolean updateMedicalRecord(MedicalRecord medicalRecord);
     boolean deleteMedicalRecord(String firstName, String lastName);

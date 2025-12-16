@@ -4,13 +4,18 @@ import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.model.SafetyNetData;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.*;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Implémentation de {@link SafetyNetDataRepository} qui charge les données
@@ -23,34 +28,285 @@ import java.util.List;
 @Repository
 public class JsonDataRepository implements SafetyNetDataRepository {
 
-    private SafetyNetData safetyNetData;
+    private final ObjectMapper objectMapper;
+    private final Path dataPath;
 
-    public JsonDataRepository() {
-        loadData();
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
+
+    private SafetyNetData data;
+
+    public JsonDataRepository(
+            ObjectMapper objectMapper,
+            @Value("${safetynet.data.path:./data/data.json}") String dataPath
+    ) {
+        this.objectMapper = objectMapper;
+        this.dataPath = Paths.get(dataPath);
     }
 
-    private void loadData() {
+    @PostConstruct
+    void init() {
+        lock.writeLock().lock();
         try {
-            ClassPathResource resource = new ClassPathResource("data.json");
-            InputStream inputStream = resource.getInputStream();
+            ensureWritableFileExists();
+            this.data = readFromDisk();
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
 
-            ObjectMapper mapper = new ObjectMapper();
-            this.safetyNetData = mapper.readValue(inputStream, SafetyNetData.class);
-        } catch (IOException e) {
-            throw new RuntimeException("Erreur lors du chargement du fichier data.json", e);
+    // -------------------- READ --------------------
+
+    @Override
+    public List<Person> getAllPersons() {
+        lock.readLock().lock();
+        try {
+            return data.getPersons();
+        } finally {
+            lock.readLock().unlock();
         }
     }
 
     @Override
-    public List<Person> getAllPersons() {
-        return safetyNetData.getPersons();
-    }
-
     public List<Firestation> getAllFirestations() {
-        return safetyNetData.getFirestations();
+        lock.readLock().lock();
+        try {
+            return data.getFirestations();
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
+    @Override
     public List<MedicalRecord> getAllMedicalRecords() {
-        return safetyNetData.getMedicalrecords();
+        lock.readLock().lock();
+        try {
+            return data.getMedicalrecords();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    // -------------------- PERSON CRUD --------------------
+
+    @Override
+    public Optional<Person> findPerson(String firstName, String lastName) {
+        lock.readLock().lock();
+        try {
+            return data.getPersons().stream()
+                    .filter(p -> p.getFirstName().equalsIgnoreCase(firstName)
+                            && p.getLastName().equalsIgnoreCase(lastName))
+                    .findFirst();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public Person addPerson(Person person) {
+        lock.writeLock().lock();
+        try {
+            data.getPersons().add(person);
+            saveToDisk();
+            return person;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public boolean updatePerson(Person person) {
+        lock.writeLock().lock();
+        try {
+            Optional<Person> opt = data.getPersons().stream()
+                    .filter(p -> p.getFirstName().equalsIgnoreCase(person.getFirstName())
+                            && p.getLastName().equalsIgnoreCase(person.getLastName()))
+                    .findFirst();
+
+            if (opt.isEmpty()) return false;
+
+            Person existing = opt.get();
+            existing.setAddress(person.getAddress());
+            existing.setCity(person.getCity());
+            existing.setZip(person.getZip());
+            existing.setPhone(person.getPhone());
+            existing.setEmail(person.getEmail());
+
+            saveToDisk();
+            return true;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public boolean deletePerson(String firstName, String lastName) {
+        lock.writeLock().lock();
+        try {
+            boolean removed = data.getPersons().removeIf(p ->
+                    p.getFirstName().equalsIgnoreCase(firstName)
+                            && p.getLastName().equalsIgnoreCase(lastName));
+            if (removed) saveToDisk();
+            return removed;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    // -------------------- FIRESTATION CRUD --------------------
+
+    @Override
+    public Optional<Firestation> findFirestationByAddress(String address) {
+        lock.readLock().lock();
+        try {
+            return data.getFirestations().stream()
+                    .filter(fs -> fs.getAddress().equalsIgnoreCase(address))
+                    .findFirst();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public Firestation addFirestation(Firestation firestation) {
+        lock.writeLock().lock();
+        try {
+            data.getFirestations().add(firestation);
+            saveToDisk();
+            return firestation;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public boolean updateFirestation(Firestation firestation) {
+        lock.writeLock().lock();
+        try {
+            Optional<Firestation> opt = data.getFirestations().stream()
+                    .filter(fs -> fs.getAddress().equalsIgnoreCase(firestation.getAddress()))
+                    .findFirst();
+
+            if (opt.isEmpty()) return false;
+
+            opt.get().setStation(firestation.getStation());
+            saveToDisk();
+            return true;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public boolean deleteFirestation(String address) {
+        lock.writeLock().lock();
+        try {
+            boolean removed = data.getFirestations().removeIf(fs ->
+                    fs.getAddress().equalsIgnoreCase(address));
+            if (removed) saveToDisk();
+            return removed;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    // -------------------- MEDICALRECORD CRUD --------------------
+
+    @Override
+    public Optional<MedicalRecord> findMedicalRecord(String firstName, String lastName) {
+        lock.readLock().lock();
+        try {
+            return data.getMedicalrecords().stream()
+                    .filter(mr -> mr.getFirstName().equalsIgnoreCase(firstName)
+                            && mr.getLastName().equalsIgnoreCase(lastName))
+                    .findFirst();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public MedicalRecord addMedicalRecord(MedicalRecord record) {
+        lock.writeLock().lock();
+        try {
+            data.getMedicalrecords().add(record);
+            saveToDisk();
+            return record;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public boolean updateMedicalRecord(MedicalRecord record) {
+        lock.writeLock().lock();
+        try {
+            Optional<MedicalRecord> opt = data.getMedicalrecords().stream()
+                    .filter(mr -> mr.getFirstName().equalsIgnoreCase(record.getFirstName())
+                            && mr.getLastName().equalsIgnoreCase(record.getLastName()))
+                    .findFirst();
+
+            if (opt.isEmpty()) return false;
+
+            MedicalRecord existing = opt.get();
+            existing.setBirthdate(record.getBirthdate());
+            existing.setMedications(record.getMedications());
+            existing.setAllergies(record.getAllergies());
+
+            saveToDisk();
+            return true;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public boolean deleteMedicalRecord(String firstName, String lastName) {
+        lock.writeLock().lock();
+        try {
+            boolean removed = data.getMedicalrecords().removeIf(mr ->
+                    mr.getFirstName().equalsIgnoreCase(firstName)
+                            && mr.getLastName().equalsIgnoreCase(lastName));
+            if (removed) saveToDisk();
+            return removed;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    // -------------------- Persistence helpers --------------------
+
+    private void ensureWritableFileExists() {
+        try {
+            if (Files.exists(dataPath)) return;
+
+            Files.createDirectories(dataPath.getParent());
+
+            // Copy initial data.json from resources into writable location
+            ClassPathResource resource = new ClassPathResource("data.json");
+            try (InputStream in = resource.getInputStream()) {
+                Files.copy(in, dataPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot initialize writable data file at " + dataPath, e);
+        }
+    }
+
+    private SafetyNetData readFromDisk() {
+        return objectMapper.readValue(dataPath.toFile(), SafetyNetData.class);
+    }
+
+    private void saveToDisk() {
+        // atomic write: write to temp, then move
+        Path tmp = dataPath.resolveSibling(dataPath.getFileName() + ".tmp");
+        try {
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(tmp.toFile(), data);
+            try {
+                Files.move(tmp, dataPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            } catch (AtomicMoveNotSupportedException ex) {
+                Files.move(tmp, dataPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot write data to " + dataPath, e);
+        }
     }
 }
