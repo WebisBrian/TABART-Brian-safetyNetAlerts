@@ -2,7 +2,9 @@ package com.safetynetalerts.service.crud;
 
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.repository.SafetyNetDataRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MedicalRecordCrudServiceImpl implements MedicalRecordCrudService {
 
     private final SafetyNetDataRepository dataRepository;

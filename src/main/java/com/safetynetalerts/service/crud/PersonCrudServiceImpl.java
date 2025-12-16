@@ -2,7 +2,9 @@ package com.safetynetalerts.service.crud;
 
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.repository.SafetyNetDataRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PersonCrudServiceImpl implements PersonCrudService {
 
     private final SafetyNetDataRepository dataRepository;
