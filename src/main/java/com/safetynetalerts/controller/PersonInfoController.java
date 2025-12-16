@@ -19,12 +19,11 @@ public class PersonInfoController {
     }
 
     @GetMapping
-    public PersonInfoResponseDto getPersonInfo(@RequestParam String firstName,
-                                               @RequestParam String lastName) {
+    public PersonInfoResponseDto getPersonInfo(@RequestParam String lastName) {
 
-        logger.info("Requête reçue GET /personInfo firstName={} lastName={}", firstName, lastName);
+        logger.info("Requête reçue GET /personInfo lastName={}",lastName);
 
-        PersonInfoResponseDto response = personInfoService.getPersonInfo(firstName, lastName);
+        PersonInfoResponseDto response = personInfoService.getPersonInfoByLastName(lastName);
 
         logger.info("Réponse envoyée /personInfo persons={}", response.getPersons().size());
 

@@ -50,7 +50,7 @@ class PersonInfoServiceImplTest {
                 .thenReturn(OptionalInt.of(41));
 
         // Act + Assert
-        var res = service.getPersonInfo("John", "Boyd");
+        var res = service.getPersonInfoByLastName("Boyd");
         assertThat(res.getPersons()).hasSize(2);
         assertThat(res.getPersons().getFirst().getAge()).isEqualTo(41);
         assertThat(res.getPersons().getFirst().getMedications()).contains("aznol:350mg");
@@ -58,7 +58,7 @@ class PersonInfoServiceImplTest {
 
     @Test
     void getPersonInfo_shouldReturnEmptyWhenNoMatch() {
-        var res = service.getPersonInfo("X", "Y");
+        var res = service.getPersonInfoByLastName("X");
         assertThat(res.getPersons()).isEmpty();
     }
 

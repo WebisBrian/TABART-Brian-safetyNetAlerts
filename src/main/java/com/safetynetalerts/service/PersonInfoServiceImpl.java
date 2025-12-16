@@ -22,8 +22,8 @@ public class PersonInfoServiceImpl implements PersonInfoService {
     }
 
     @Override
-    public PersonInfoResponseDto getPersonInfo(String firstName, String lastName) {
-        if (firstName == null || lastName == null || firstName.isBlank() || lastName.isBlank()) {
+    public PersonInfoResponseDto getPersonInfoByLastName(String lastName) {
+        if (lastName == null || lastName.isBlank()) {
             return new PersonInfoResponseDto(List.of());
         }
 
@@ -31,8 +31,7 @@ public class PersonInfoServiceImpl implements PersonInfoService {
 
         List<PersonInfoDto> persons = dataRepository.getAllPersons().stream()
                 .filter(p -> p.getFirstName() != null && p.getLastName() != null)
-                .filter(p -> p.getFirstName().equalsIgnoreCase(firstName)
-                        && p.getLastName().equalsIgnoreCase(lastName))
+                .filter(p -> p.getLastName().equalsIgnoreCase(lastName))
                 .map(p -> {
                     Optional<MedicalRecord> recordOpt = medicalRecords.stream()
                             .filter(mr -> mr.getFirstName().equalsIgnoreCase(p.getFirstName())
