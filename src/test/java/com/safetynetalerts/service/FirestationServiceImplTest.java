@@ -4,7 +4,9 @@ import com.safetynetalerts.dto.firestation.FirestationCoverageDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.firestation.FirestationRepository;
+import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import com.safetynetalerts.service.util.AgeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,13 @@ import static org.mockito.Mockito.*;
 class FirestationServiceImplTest {
 
     @Mock
-    private SafetyNetDataRepository dataRepository;
+    private PersonRepository personRepository;
+
+    @Mock
+    private FirestationRepository firestationRepository;
+
+    @Mock
+    private MedicalRecordRepository medicalRecordRepository;
 
     @Mock
     private AgeService ageService;
@@ -35,7 +43,7 @@ class FirestationServiceImplTest {
         Firestation station1 = new Firestation("1509 Culver St", 1);
         Firestation station2 = new Firestation("834 Binoc Ave", 2);
 
-        when(dataRepository.getAllFirestations()).thenReturn(List.of(station1, station2));
+        when(firestationRepository.findAll()).thenReturn(List.of(station1, station2));
     }
 
     @Test
@@ -48,8 +56,8 @@ class FirestationServiceImplTest {
         Person other = new Person("Other", "Person", "29 15th St", "Culver", "97451",
                 "333-333-3333", "other@email.com");
 
-        when(dataRepository.getAllPersons()).thenReturn(List.of(johnBoyd, tenleyBoyd, other));
-        when(dataRepository.getAllMedicalRecords()).thenReturn(List.of(
+        when(personRepository.findAll()).thenReturn(List.of(johnBoyd, tenleyBoyd, other));
+        when(medicalRecordRepository.findAll()).thenReturn(List.of(
                 new MedicalRecord("John", "Boyd", "03/06/1984", List.of(), List.of()),
                 new MedicalRecord("Tenley", "Boyd", "02/18/2012", List.of(), List.of()),
                 new MedicalRecord("Other", "Person", "01/01/1999", List.of(), List.of())

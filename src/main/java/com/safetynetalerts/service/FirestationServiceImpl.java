@@ -5,7 +5,9 @@ import com.safetynetalerts.dto.firestation.FirestationCoverageDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.firestation.FirestationRepository;
+import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import com.safetynetalerts.service.util.AgeService;
 import org.springframework.stereotype.Service;
 
@@ -19,18 +21,22 @@ import java.util.List;
 @Service
 public class FirestationServiceImpl implements FirestationService {
 
-    private final SafetyNetDataRepository dataRepository;
+    private final PersonRepository personRepository;
+    private final FirestationRepository firestationRepository;
+    private final MedicalRecordRepository medicalRecordRepository;
     private final AgeService ageService;
 
-    public FirestationServiceImpl(SafetyNetDataRepository dataRepository, AgeService ageService) {
-        this.dataRepository = dataRepository;
+    public FirestationServiceImpl(PersonRepository personRepository, FirestationRepository firestationRepository, MedicalRecordRepository medicalRecordRepository, AgeService ageService) {
+        this.personRepository = personRepository;
+        this.firestationRepository = firestationRepository;
+        this.medicalRecordRepository = medicalRecordRepository;
         this.ageService = ageService;
     }
 
     @Override
     public FirestationCoverageDto getCoverageByStation(int stationNumber) {
 
-        List<Firestation> firestations = dataRepository.getAllFirestations();
+        List<Firestation> firestations = firestationRepository.findAll();
 
         List<String> coveredAddresses = firestations.stream()
                 .filter(f -> f.getStation() == stationNumber)
@@ -41,13 +47,13 @@ public class FirestationServiceImpl implements FirestationService {
             return new FirestationCoverageDto(List.of(), 0, 0);
         }
 
-        List<Person> allPersons = dataRepository.getAllPersons();
+        List<Person> allPersons = personRepository.findAll();
 
         List<Person> coveredPersons = allPersons.stream()
                 .filter(p -> coveredAddresses.contains(p.getAddress()))
                 .toList();
 
-        List<MedicalRecord> allMedicalRecords = dataRepository.getAllMedicalRecords();
+        List<MedicalRecord> allMedicalRecords = medicalRecordRepository.findAll();
 
         int numberOfChildren = (int) coveredPersons.stream()
                 .filter(p -> ageService.isChild(p, allMedicalRecords))
