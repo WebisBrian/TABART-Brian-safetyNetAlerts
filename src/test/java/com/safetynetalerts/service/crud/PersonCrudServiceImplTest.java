@@ -1,7 +1,7 @@
 package com.safetynetalerts.service.crud;
 
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 class PersonCrudServiceImplTest {
 
     @Mock
-    private SafetyNetDataRepository repo;
+    private PersonRepository personRepository;
 
     @InjectMocks
     private PersonCrudServiceImpl service;
@@ -24,72 +24,72 @@ class PersonCrudServiceImplTest {
     void create_shouldDelegateToRepository() {
         // Arrange
         Person input = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "john@email.com");
-        when(repo.addPerson(input)).thenReturn(input);
+        when(personRepository.add(input)).thenReturn(input);
 
         // Act
         Person result = service.create(input);
 
         // Assert
         assertThat(result).isSameAs(input);
-        verify(repo, times(1)).addPerson(input);
-        verifyNoMoreInteractions(repo);
+        verify(personRepository, times(1)).add(input);
+        verifyNoMoreInteractions(personRepository);
     }
 
     @Test
     void update_shouldReturnTrueWhenRepositoryUpdates() {
         // Arrange
         Person updated = new Person("John", "Boyd", "NEW", "Culver", "97451", "999", "new@email.com");
-        when(repo.updatePerson(updated)).thenReturn(true);
+        when(personRepository.update(updated)).thenReturn(true);
 
         // Act
         boolean result = service.update(updated);
 
         // Assert
         assertThat(result).isTrue();
-        verify(repo).updatePerson(updated);
-        verifyNoMoreInteractions(repo);
+        verify(personRepository).update(updated);
+        verifyNoMoreInteractions(personRepository);
     }
 
     @Test
     void update_shouldReturnFalseWhenPersonNotFound() {
         // Arrange
         Person updated = new Person("X", "Y", "NEW", "Culver", "97451", "999", "new@email.com");
-        when(repo.updatePerson(updated)).thenReturn(false);
+        when(personRepository.update(updated)).thenReturn(false);
 
         // Act
         boolean result = service.update(updated);
 
         // Assert
         assertThat(result).isFalse();
-        verify(repo).updatePerson(updated);
-        verifyNoMoreInteractions(repo);
+        verify(personRepository).update(updated);
+        verifyNoMoreInteractions(personRepository);
     }
 
     @Test
     void delete_shouldReturnTrueWhenRepositoryDeletes() {
         // Arrange
-        when(repo.deletePerson("John", "Boyd")).thenReturn(true);
+        when(personRepository.delete("John", "Boyd")).thenReturn(true);
 
         // Act
         boolean result = service.delete("John", "Boyd");
 
         // Assert
         assertThat(result).isTrue();
-        verify(repo).deletePerson("John", "Boyd");
-        verifyNoMoreInteractions(repo);
+        verify(personRepository).delete("John", "Boyd");
+        verifyNoMoreInteractions(personRepository);
     }
 
     @Test
     void delete_shouldReturnFalseWhenPersonNotFound() {
         // Arrange
-        when(repo.deletePerson("X", "Y")).thenReturn(false);
+        when(personRepository.delete("X", "Y")).thenReturn(false);
 
         // Act
         boolean result = service.delete("X", "Y");
 
         // Assert
         assertThat(result).isFalse();
-        verify(repo).deletePerson("X", "Y");
-        verifyNoMoreInteractions(repo);
+        verify(personRepository).delete("X", "Y");
+        verifyNoMoreInteractions(personRepository);
     }
 }
