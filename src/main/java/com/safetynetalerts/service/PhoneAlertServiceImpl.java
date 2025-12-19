@@ -3,6 +3,8 @@ package com.safetynetalerts.service;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.firestation.FirestationRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,16 +12,18 @@ import java.util.List;
 @Service
 public class PhoneAlertServiceImpl implements PhoneAlertService {
 
-    private final SafetyNetDataRepository dataRepository;
+    private final PersonRepository personRepository;
+    private final FirestationRepository firestationRepository;
 
-    public PhoneAlertServiceImpl(final SafetyNetDataRepository dataRepository) {
-        this.dataRepository = dataRepository;
+    public PhoneAlertServiceImpl(final PersonRepository personRepository, final FirestationRepository firestationRepository) {
+        this.personRepository = personRepository;
+        this.firestationRepository = firestationRepository;
     }
 
     @Override
     public List<String> getPhonesByStation(int stationNumber) {
 
-        List<String> coveredAddresses = dataRepository.getAllFirestations().stream()
+        List<String> coveredAddresses = firestationRepository.findAll().stream()
                 .filter(fs -> fs.getStation() == stationNumber)
                 .map(Firestation::getAddress)
                 .distinct()
@@ -29,7 +33,7 @@ public class PhoneAlertServiceImpl implements PhoneAlertService {
             return List.of();
         }
 
-        return dataRepository.getAllPersons().stream()
+        return personRepository.findAll().stream()
                 .filter(p -> coveredAddresses.contains(p.getAddress()))
                 .map(Person::getPhone)
                 .distinct()

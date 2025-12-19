@@ -2,7 +2,8 @@ package com.safetynetalerts.service;
 
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.firestation.FirestationRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,10 @@ import static org.mockito.Mockito.*;
 class PhoneAlertServiceImplTest {
 
     @Mock
-    private SafetyNetDataRepository dataRepository;
+    private PersonRepository personRepository;
+
+    @Mock
+    private FirestationRepository firestationRepository;
 
     @InjectMocks
     private PhoneAlertServiceImpl phoneAlertService;
@@ -30,7 +34,7 @@ class PhoneAlertServiceImplTest {
         Firestation station1 = new Firestation("1509 Culver St", 1);
         Firestation station2 = new Firestation("29 15th St", 2);
 
-        when(dataRepository.getAllFirestations())
+        when(firestationRepository.findAll())
                 .thenReturn(List.of(station1, station2));
     }
 
@@ -44,7 +48,7 @@ class PhoneAlertServiceImplTest {
         Person other = new Person("Other", "Person", "29 15th St", "Culver",
                 "97451", "333-333-3333", "other@email.com");
 
-        when(dataRepository.getAllPersons())
+        when(personRepository.findAll())
                 .thenReturn(List.of(john, tenley, other));
 
         // Act
