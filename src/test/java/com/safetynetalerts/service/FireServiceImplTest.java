@@ -5,7 +5,9 @@ import com.safetynetalerts.dto.fire.FireResponseDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.firestation.FirestationRepository;
+import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import com.safetynetalerts.service.util.AgeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +25,13 @@ import static org.mockito.Mockito.*;
 class FireServiceImplTest {
 
     @Mock
-    private SafetyNetDataRepository dataRepository;
+    private PersonRepository personRepository;
+
+    @Mock
+    private FirestationRepository firestationRepository;
+
+    @Mock
+    private MedicalRecordRepository medicalRecordRepository;
 
     @Mock
     AgeService ageService;
@@ -34,18 +42,18 @@ class FireServiceImplTest {
     @Test
     void getFireInfoByAddress_shouldReturnStationAndResidentsForKnownAddress() {
         // Arrange
-        when(dataRepository.getAllFirestations()).thenReturn(List.of(
+        when(firestationRepository.findAll()).thenReturn(List.of(
                 new Firestation("1509 Culver St", 3),
                 new Firestation("29 15th St", 2)
         ));
 
-        when(dataRepository.getAllPersons()).thenReturn(List.of(
+        when(personRepository.findAll()).thenReturn(List.of(
                 new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "john@email.com"),
                 new Person("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6513", "tenley@email.com"),
                 new Person("Other", "Person", "29 15th St", "Culver", "97451", "333-333-3333", "other@email.com")
         ));
 
-        when(dataRepository.getAllMedicalRecords()).thenReturn(List.of(
+        when(medicalRecordRepository.findAll()).thenReturn(List.of(
                 new MedicalRecord("John", "Boyd", "03/06/1984",
                         List.of("aznol:350mg", "hydrapermazol:100mg"),
                         List.of("nillacilan")),

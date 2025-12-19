@@ -5,37 +5,41 @@ import com.safetynetalerts.dto.fire.FireResponseDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.firestation.FirestationRepository;
+import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import com.safetynetalerts.service.util.AgeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-
-
 @Service
 public class FireServiceImpl implements FireService {
 
-    private final SafetyNetDataRepository dataRepository;
+    private final PersonRepository personRepository;
+    private final FirestationRepository firestationRepository;
+    private final MedicalRecordRepository medicalRecordRepository;
     private final AgeService ageService;
 
 
-    public FireServiceImpl(SafetyNetDataRepository dataRepository, AgeService ageService) {
-        this.dataRepository = dataRepository;
+    public FireServiceImpl(PersonRepository personRepository, FirestationRepository firestationRepository, MedicalRecordRepository medicalRecordRepository , AgeService ageService) {
+        this.personRepository = personRepository;
+        this.firestationRepository = firestationRepository;
+        this.medicalRecordRepository = medicalRecordRepository;
         this.ageService = ageService;
     }
 
     @Override
     public FireResponseDto getFireInfoByAddress(String address) {
 
-        int stationNumber = dataRepository.getAllFirestations().stream()
+        int stationNumber = firestationRepository.findAll().stream()
                 .filter(fs -> fs.getAddress().equalsIgnoreCase(address))
                 .mapToInt(Firestation::getStation)
                 .findFirst()
                 .orElse(0);
 
-        List<Person> residentsAtAddress = dataRepository.getAllPersons().stream()
+        List<Person> residentsAtAddress = personRepository.findAll().stream()
                 .filter(p -> p.getAddress().equalsIgnoreCase(address))
                 .toList();
 
@@ -44,7 +48,7 @@ public class FireServiceImpl implements FireService {
             return new FireResponseDto(0, List.of());
         }
 
-        List<MedicalRecord> allMedicalRecords = dataRepository.getAllMedicalRecords();
+        List<MedicalRecord> allMedicalRecords = medicalRecordRepository.findAll();
 
         List<FireResidentDto> residents = residentsAtAddress.stream()
                 .map(p -> {
