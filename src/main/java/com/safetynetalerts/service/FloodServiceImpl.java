@@ -5,7 +5,9 @@ import com.safetynetalerts.dto.flood.FloodResidentDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.firestation.FirestationRepository;
+import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import com.safetynetalerts.service.util.AgeService;
 import org.springframework.stereotype.Service;
 
@@ -14,20 +16,24 @@ import java.util.List;
 @Service
 public class FloodServiceImpl implements FloodService {
 
-    private final SafetyNetDataRepository dataRepository;
+    private final PersonRepository personRepository;
+    private final FirestationRepository firestationRepository;
+    private final MedicalRecordRepository medicalRecordRepository;
     private final AgeService ageService;
 
-    public FloodServiceImpl(SafetyNetDataRepository dataRepository, AgeService ageService) {
-        this.dataRepository = dataRepository;
+    public FloodServiceImpl(PersonRepository personRepository, FirestationRepository firestationRepository, MedicalRecordRepository medicalRecordRepository, AgeService ageService) {
+        this.personRepository = personRepository;
+        this.firestationRepository = firestationRepository;
+        this.medicalRecordRepository = medicalRecordRepository;
         this.ageService = ageService;
     }
 
     @Override
     public List<FloodAddressDto> getFloodInfoByStations(List<Integer> stations) {
 
-        List<Firestation> firestations = dataRepository.getAllFirestations();
-        List<Person> persons = dataRepository.getAllPersons();
-        List<MedicalRecord> medicalRecords = dataRepository.getAllMedicalRecords();
+        List<Firestation> firestations = firestationRepository.findAll();
+        List<Person> persons = personRepository.findAll();
+        List<MedicalRecord> medicalRecords = medicalRecordRepository.findAll();
 
         // addresses covered by stations
         List<String> addresses = firestations.stream()
