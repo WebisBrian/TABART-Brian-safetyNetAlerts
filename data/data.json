@@ -199,6 +199,14 @@
     "zip" : "97451",
     "phone" : "841-874-6512",
     "email" : "Clare@email.com"
+  }, {
+    "firstName" : "José",
+    "lastName" : "Boyd",
+    "address" : "1509 Culver St",
+    "city" : "Culver",
+    "zip" : "97451",
+    "phone" : "841-874-6512",
+    "email" : "José@email.com"
   } ],
   "firestations" : [ {
     "address" : "1509 Culver St",
