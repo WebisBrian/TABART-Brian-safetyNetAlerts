@@ -4,6 +4,7 @@ import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.model.SafetyNetData;
+import com.safetynetalerts.repository.storage.SafetyNetStorage;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -28,27 +29,20 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 @Repository
 public class JsonDataRepository implements SafetyNetDataRepository {
 
-    private final ObjectMapper objectMapper;
-    private final Path dataPath;
-
+    private final SafetyNetStorage storage;
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
 
     private SafetyNetData data;
 
-    public JsonDataRepository(
-            ObjectMapper objectMapper,
-            @Value("${safetynet.data.path:./data/data.json}") String dataPath
-    ) {
-        this.objectMapper = objectMapper;
-        this.dataPath = Paths.get(dataPath);
+    public JsonDataRepository(SafetyNetStorage storage) {
+        this.storage = storage;
     }
 
     @PostConstruct
     void init() {
         lock.writeLock().lock();
         try {
-            ensureWritableFileExists();
-            this.data = readFromDisk();
+            this.data = storage.load();
         } finally {
             lock.writeLock().unlock();
         }
@@ -106,7 +100,7 @@ public class JsonDataRepository implements SafetyNetDataRepository {
         lock.writeLock().lock();
         try {
             data.getPersons().add(person);
-            saveToDisk();
+            storage.save(data);
             return person;
         } finally {
             lock.writeLock().unlock();
@@ -131,7 +125,7 @@ public class JsonDataRepository implements SafetyNetDataRepository {
             existing.setPhone(person.getPhone());
             existing.setEmail(person.getEmail());
 
-            saveToDisk();
+            storage.save(data);
             return true;
         } finally {
             lock.writeLock().unlock();
@@ -145,7 +139,7 @@ public class JsonDataRepository implements SafetyNetDataRepository {
             boolean removed = data.getPersons().removeIf(p ->
                     p.getFirstName().equalsIgnoreCase(firstName)
                             && p.getLastName().equalsIgnoreCase(lastName));
-            if (removed) saveToDisk();
+            if (removed) storage.save(data);
             return removed;
         } finally {
             lock.writeLock().unlock();
@@ -171,7 +165,7 @@ public class JsonDataRepository implements SafetyNetDataRepository {
         lock.writeLock().lock();
         try {
             data.getFirestations().add(firestation);
-            saveToDisk();
+            storage.save(data);
             return firestation;
         } finally {
             lock.writeLock().unlock();
@@ -189,7 +183,7 @@ public class JsonDataRepository implements SafetyNetDataRepository {
             if (opt.isEmpty()) return false;
 
             opt.get().setStation(firestation.getStation());
-            saveToDisk();
+            storage.save(data);
             return true;
         } finally {
             lock.writeLock().unlock();
@@ -202,7 +196,7 @@ public class JsonDataRepository implements SafetyNetDataRepository {
         try {
             boolean removed = data.getFirestations().removeIf(fs ->
                     fs.getAddress().equalsIgnoreCase(address));
-            if (removed) saveToDisk();
+            if (removed) storage.save(data);
             return removed;
         } finally {
             lock.writeLock().unlock();
@@ -229,7 +223,7 @@ public class JsonDataRepository implements SafetyNetDataRepository {
         lock.writeLock().lock();
         try {
             data.getMedicalrecords().add(record);
-            saveToDisk();
+            storage.save(data);
             return record;
         } finally {
             lock.writeLock().unlock();
@@ -252,7 +246,7 @@ public class JsonDataRepository implements SafetyNetDataRepository {
             existing.setMedications(record.getMedications());
             existing.setAllergies(record.getAllergies());
 
-            saveToDisk();
+            storage.save(data);
             return true;
         } finally {
             lock.writeLock().unlock();
@@ -266,47 +260,10 @@ public class JsonDataRepository implements SafetyNetDataRepository {
             boolean removed = data.getMedicalrecords().removeIf(mr ->
                     mr.getFirstName().equalsIgnoreCase(firstName)
                             && mr.getLastName().equalsIgnoreCase(lastName));
-            if (removed) saveToDisk();
+            if (removed) storage.save(data);
             return removed;
         } finally {
             lock.writeLock().unlock();
-        }
-    }
-
-    // -------------------- Persistence helpers --------------------
-
-    private void ensureWritableFileExists() {
-        try {
-            if (Files.exists(dataPath)) return;
-
-            Files.createDirectories(dataPath.getParent());
-
-            // Copy initial data.json from resources into writable location
-            ClassPathResource resource = new ClassPathResource("data.json");
-            try (InputStream in = resource.getInputStream()) {
-                Files.copy(in, dataPath, StandardCopyOption.REPLACE_EXISTING);
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("Cannot initialize writable data file at " + dataPath, e);
-        }
-    }
-
-    private SafetyNetData readFromDisk() {
-        return objectMapper.readValue(dataPath.toFile(), SafetyNetData.class);
-    }
-
-    private void saveToDisk() {
-        // atomic write: write to temp, then move
-        Path tmp = dataPath.resolveSibling(dataPath.getFileName() + ".tmp");
-        try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(tmp.toFile(), data);
-            try {
-                Files.move(tmp, dataPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
-            } catch (AtomicMoveNotSupportedException ex) {
-                Files.move(tmp, dataPath, StandardCopyOption.REPLACE_EXISTING);
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("Cannot write data to " + dataPath, e);
         }
     }
 }
