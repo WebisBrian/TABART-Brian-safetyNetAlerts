@@ -2,7 +2,6 @@ package com.safetynetalerts.service;
 
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
 import com.safetynetalerts.repository.firestation.FirestationRepository;
 import com.safetynetalerts.repository.person.PersonRepository;
 import org.springframework.stereotype.Service;

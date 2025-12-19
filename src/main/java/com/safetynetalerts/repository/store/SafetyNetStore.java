@@ -33,7 +33,7 @@ public class SafetyNetStore {
     }
 
     @PostConstruct
-    void init() {
+    public void init() {
         lock.writeLock().lock();
         try {
             // Chargement initial depuis le stockage (fichier JSON)

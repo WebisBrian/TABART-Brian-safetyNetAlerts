@@ -1,7 +1,6 @@
 package com.safetynetalerts.service.crud;
 
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
 import com.safetynetalerts.repository.person.PersonRepository;
 import org.springframework.stereotype.Service;
 
