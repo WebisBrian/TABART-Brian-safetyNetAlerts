@@ -2,7 +2,7 @@ package com.safetynetalerts.service.crud;
 
 import com.safetynetalerts.model.Firestation;
 
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.firestation.FirestationRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 class FirestationCrudServiceImplTest {
 
     @Mock
-    private SafetyNetDataRepository repo;
+    private FirestationRepository firestationRepository;
 
     @InjectMocks
     private FirestationCrudServiceImpl service;
@@ -25,72 +25,72 @@ class FirestationCrudServiceImplTest {
     void create_shouldDelegateToRepository() {
         // Arrange
         Firestation input = new Firestation("1509 Culver St", 3);
-        when(repo.addFirestation(input)).thenReturn(input);
+        when(firestationRepository.add(input)).thenReturn(input);
 
         // Act
         Firestation result = service.create(input);
 
         // Assert
         assertThat(result).isSameAs(input);
-        verify(repo).addFirestation(input);
-        verifyNoMoreInteractions(repo);
+        verify(firestationRepository).add(input);
+        verifyNoMoreInteractions(firestationRepository);
     }
 
     @Test
     void update_shouldReturnTrueWhenRepositoryUpdates() {
         // Arrange
         Firestation updated = new Firestation("1509 Culver St", 2);
-        when(repo.updateFirestation(updated)).thenReturn(true);
+        when(firestationRepository.update(updated)).thenReturn(true);
 
         // Act
         boolean result = service.update(updated);
 
         // Assert
         assertThat(result).isTrue();
-        verify(repo).updateFirestation(updated);
-        verifyNoMoreInteractions(repo);
+        verify(firestationRepository).update(updated);
+        verifyNoMoreInteractions(firestationRepository);
     }
 
     @Test
     void update_shouldReturnFalseWhenAddressNotFound() {
         // Arrange
         Firestation updated = new Firestation("Unknown", 1);
-        when(repo.updateFirestation(updated)).thenReturn(false);
+        when(firestationRepository.update(updated)).thenReturn(false);
 
         // Act
         boolean result = service.update(updated);
 
         // Assert
         assertThat(result).isFalse();
-        verify(repo).updateFirestation(updated);
-        verifyNoMoreInteractions(repo);
+        verify(firestationRepository).update(updated);
+        verifyNoMoreInteractions(firestationRepository);
     }
 
     @Test
     void delete_shouldReturnTrueWhenRepositoryDeletes() {
         // Arrange
-        when(repo.deleteFirestation("1509 Culver St")).thenReturn(true);
+        when(firestationRepository.deleteByAddress("1509 Culver St")).thenReturn(true);
 
         // Act
         boolean result = service.delete("1509 Culver St");
 
         // Assert
         assertThat(result).isTrue();
-        verify(repo).deleteFirestation("1509 Culver St");
-        verifyNoMoreInteractions(repo);
+        verify(firestationRepository).deleteByAddress("1509 Culver St");
+        verifyNoMoreInteractions(firestationRepository);
     }
 
     @Test
     void delete_shouldReturnFalseWhenAddressNotFound() {
         // Arrange
-        when(repo.deleteFirestation("Unknown")).thenReturn(false);
+        when(firestationRepository.deleteByAddress("Unknown")).thenReturn(false);
 
         // Act
         boolean result = service.delete("Unknown");
 
         // Assert
         assertThat(result).isFalse();
-        verify(repo).deleteFirestation("Unknown");
-        verifyNoMoreInteractions(repo);
+        verify(firestationRepository).deleteByAddress("Unknown");
+        verifyNoMoreInteractions(firestationRepository);
     }
 }

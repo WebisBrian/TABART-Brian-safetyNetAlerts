@@ -1,30 +1,30 @@
 package com.safetynetalerts.service.crud;
 
 import com.safetynetalerts.model.Firestation;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.firestation.FirestationRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FirestationCrudServiceImpl implements FirestationCrudService {
 
-    private final SafetyNetDataRepository dataRepository;
+    private final FirestationRepository firestationRepository;
 
-    public FirestationCrudServiceImpl(SafetyNetDataRepository dataRepository) {
-        this.dataRepository = dataRepository;
+    public FirestationCrudServiceImpl(FirestationRepository firestationRepository) {
+        this.firestationRepository = firestationRepository;
     }
 
     @Override
     public Firestation create(Firestation firestation) {
-        return dataRepository.addFirestation(firestation);
+        return firestationRepository.add(firestation);
     }
 
     @Override
     public boolean update(Firestation firestation) {
-        return dataRepository.updateFirestation(firestation);
+        return firestationRepository.update(firestation);
     }
 
     @Override
     public boolean delete(String address) {
-        return dataRepository.deleteFirestation(address);
+        return firestationRepository.deleteByAddress(address);
     }
 }
