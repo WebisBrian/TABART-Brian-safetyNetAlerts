@@ -9,7 +9,7 @@ public class FirestationCrudServiceImpl implements FirestationCrudService {
 
     private final FirestationRepository firestationRepository;
 
-    public FirestationCrudServiceImpl(FirestationRepository firestationRepository) {
+    public FirestationCrudServiceImpl(final FirestationRepository firestationRepository) {
         this.firestationRepository = firestationRepository;
     }
 

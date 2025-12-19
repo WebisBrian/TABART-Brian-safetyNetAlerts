@@ -1,7 +1,7 @@
 package com.safetynetalerts.service.crud;
 
 import com.safetynetalerts.model.MedicalRecord;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 class MedicalRecordCrudServiceImplTest {
 
     @Mock
-    private SafetyNetDataRepository repo;
+    private MedicalRecordRepository medicalRecordRepository;
 
     @InjectMocks
     private MedicalRecordCrudServiceImpl service;
@@ -28,15 +28,15 @@ class MedicalRecordCrudServiceImplTest {
         MedicalRecord input = new MedicalRecord("John", "Boyd", "03/06/1984",
                 List.of("aznol:350mg"), List.of("nillacilan"));
 
-        when(repo.addMedicalRecord(input)).thenReturn(input);
+        when(medicalRecordRepository.add(input)).thenReturn(input);
 
         // Act
         MedicalRecord result = service.create(input);
 
         // Assert
         assertThat(result).isSameAs(input);
-        verify(repo).addMedicalRecord(input);
-        verifyNoMoreInteractions(repo);
+        verify(medicalRecordRepository).add(input);
+        verifyNoMoreInteractions(medicalRecordRepository);
     }
 
     @Test
@@ -45,15 +45,15 @@ class MedicalRecordCrudServiceImplTest {
         MedicalRecord updated = new MedicalRecord("John", "Boyd", "03/06/1984",
                 List.of("new:10mg"), List.of());
 
-        when(repo.updateMedicalRecord(updated)).thenReturn(true);
+        when(medicalRecordRepository.update(updated)).thenReturn(true);
 
         // Act
         boolean result = service.update(updated);
 
         // Assert
         assertThat(result).isTrue();
-        verify(repo).updateMedicalRecord(updated);
-        verifyNoMoreInteractions(repo);
+        verify(medicalRecordRepository).update(updated);
+        verifyNoMoreInteractions(medicalRecordRepository);
     }
 
     @Test
@@ -62,42 +62,42 @@ class MedicalRecordCrudServiceImplTest {
         MedicalRecord updated = new MedicalRecord("X", "Y", "01/01/2000",
                 List.of(), List.of());
 
-        when(repo.updateMedicalRecord(updated)).thenReturn(false);
+        when(medicalRecordRepository.update(updated)).thenReturn(false);
 
         // Act
         boolean result = service.update(updated);
 
         // Assert
         assertThat(result).isFalse();
-        verify(repo).updateMedicalRecord(updated);
-        verifyNoMoreInteractions(repo);
+        verify(medicalRecordRepository).update(updated);
+        verifyNoMoreInteractions(medicalRecordRepository);
     }
 
     @Test
     void delete_shouldReturnTrueWhenRepositoryDeletes() {
         // Arrange
-        when(repo.deleteMedicalRecord("John", "Boyd")).thenReturn(true);
+        when(medicalRecordRepository.delete("John", "Boyd")).thenReturn(true);
 
         // Act
         boolean result = service.delete("John", "Boyd");
 
         // Assert
         assertThat(result).isTrue();
-        verify(repo).deleteMedicalRecord("John", "Boyd");
-        verifyNoMoreInteractions(repo);
+        verify(medicalRecordRepository).delete("John", "Boyd");
+        verifyNoMoreInteractions(medicalRecordRepository);
     }
 
     @Test
     void delete_shouldReturnFalseWhenRecordNotFound() {
         // Arrange
-        when(repo.deleteMedicalRecord("X", "Y")).thenReturn(false);
+        when(medicalRecordRepository.delete("X", "Y")).thenReturn(false);
 
         // Act
         boolean result = service.delete("X", "Y");
 
         // Assert
         assertThat(result).isFalse();
-        verify(repo).deleteMedicalRecord("X", "Y");
-        verifyNoMoreInteractions(repo);
+        verify(medicalRecordRepository).delete("X", "Y");
+        verifyNoMoreInteractions(medicalRecordRepository);
     }
 }
