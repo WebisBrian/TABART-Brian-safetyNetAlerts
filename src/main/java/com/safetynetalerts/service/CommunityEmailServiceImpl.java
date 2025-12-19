@@ -12,7 +12,7 @@ public class CommunityEmailServiceImpl implements CommunityEmailService {
 
     private final PersonRepository personRepository;
 
-    public CommunityEmailServiceImpl(PersonRepository personRepository) {
+    public CommunityEmailServiceImpl(final PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 

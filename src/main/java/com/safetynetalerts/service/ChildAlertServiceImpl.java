@@ -26,7 +26,7 @@ public class ChildAlertServiceImpl implements ChildAlertService {
     private final MedicalRecordRepository medicalRecordRepository;
     private final AgeService ageService;
 
-    public ChildAlertServiceImpl(PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository, AgeService ageService) {
+    public ChildAlertServiceImpl(final PersonRepository personRepository, final MedicalRecordRepository medicalRecordRepository, final AgeService ageService) {
         this.personRepository = personRepository;
         this.medicalRecordRepository = medicalRecordRepository;
         this.ageService = ageService;

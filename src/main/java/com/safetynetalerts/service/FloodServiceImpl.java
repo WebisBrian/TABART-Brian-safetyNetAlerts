@@ -21,7 +21,7 @@ public class FloodServiceImpl implements FloodService {
     private final MedicalRecordRepository medicalRecordRepository;
     private final AgeService ageService;
 
-    public FloodServiceImpl(PersonRepository personRepository, FirestationRepository firestationRepository, MedicalRecordRepository medicalRecordRepository, AgeService ageService) {
+    public FloodServiceImpl(final PersonRepository personRepository, final FirestationRepository firestationRepository, final MedicalRecordRepository medicalRecordRepository, final AgeService ageService) {
         this.personRepository = personRepository;
         this.firestationRepository = firestationRepository;
         this.medicalRecordRepository = medicalRecordRepository;

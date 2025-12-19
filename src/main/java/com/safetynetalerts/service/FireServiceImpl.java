@@ -23,7 +23,7 @@ public class FireServiceImpl implements FireService {
     private final AgeService ageService;
 
 
-    public FireServiceImpl(PersonRepository personRepository, FirestationRepository firestationRepository, MedicalRecordRepository medicalRecordRepository , AgeService ageService) {
+    public FireServiceImpl(final PersonRepository personRepository, final FirestationRepository firestationRepository, final MedicalRecordRepository medicalRecordRepository , final AgeService ageService) {
         this.personRepository = personRepository;
         this.firestationRepository = firestationRepository;
         this.medicalRecordRepository = medicalRecordRepository;
