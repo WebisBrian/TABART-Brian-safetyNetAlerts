@@ -5,7 +5,8 @@ import com.safetynetalerts.dto.childalert.ChildAlertHouseholdMemberDto;
 import com.safetynetalerts.dto.childalert.ChildAlertResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import com.safetynetalerts.service.util.AgeService;
 import org.springframework.stereotype.Service;
 
@@ -21,19 +22,21 @@ import java.util.OptionalInt;
 @Service
 public class ChildAlertServiceImpl implements ChildAlertService {
 
-    private final SafetyNetDataRepository dataRepository;
+    private final PersonRepository personRepository;
+    private final MedicalRecordRepository medicalRecordRepository;
     private final AgeService ageService;
 
-    public ChildAlertServiceImpl(SafetyNetDataRepository dataRepository, AgeService ageService) {
-        this.dataRepository = dataRepository;
+    public ChildAlertServiceImpl(PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository, AgeService ageService) {
+        this.personRepository = personRepository;
+        this.medicalRecordRepository = medicalRecordRepository;
         this.ageService = ageService;
     }
 
     @Override
     public ChildAlertResponseDto getChildrenByAddress(String address) {
 
-        List<Person> allPersons = dataRepository.getAllPersons();
-        List<MedicalRecord> allMedicalRecords = dataRepository.getAllMedicalRecords();
+        List<Person> allPersons = personRepository.findAll();
+        List<MedicalRecord> allMedicalRecords = medicalRecordRepository.findAll();
 
         List<Person> personsAtAddress = allPersons.stream()
                 .filter(p -> p.getAddress().equals(address))

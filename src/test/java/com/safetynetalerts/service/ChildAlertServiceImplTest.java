@@ -3,7 +3,8 @@ package com.safetynetalerts.service;
 import com.safetynetalerts.dto.childalert.ChildAlertResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import com.safetynetalerts.service.util.AgeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,10 @@ import static org.mockito.Mockito.*;
 class ChildAlertServiceImplTest {
 
     @Mock
-    private SafetyNetDataRepository dataRepository;
+    private PersonRepository personRepository;
+
+    @Mock
+    private MedicalRecordRepository medicalRecordRepository;
 
     @Mock
     private AgeService ageService;
@@ -39,7 +43,7 @@ class ChildAlertServiceImplTest {
         Person tenleyBoyd = new Person("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "tenz@email.com");
         Person other = new Person("Other", "Person", "29 15th St", "Culver", "97451", "333-333-3333", "other@email.com");
 
-        when(dataRepository.getAllPersons())
+        when(personRepository.findAll())
                 .thenReturn(List.of(johnBoyd, tenleyBoyd, other));
 
         MedicalRecord medicalRecordJohn = new MedicalRecord("John", "Boyd", "03/06/1984", List.of("aznol:350mg",
@@ -47,7 +51,7 @@ class ChildAlertServiceImplTest {
         MedicalRecord medicalRecordTenley = new MedicalRecord("Tenley", "Boyd", "02/18/2012", List.of(), List.of("peanut"));
         MedicalRecord medicalRecordOther = new MedicalRecord("Other", "Person", "01/01/1999", List.of("aznol:350mg"), List.of());
 
-        when(dataRepository.getAllMedicalRecords()).thenReturn(List.of(medicalRecordJohn, medicalRecordTenley, medicalRecordOther));
+        when(medicalRecordRepository.findAll()).thenReturn(List.of(medicalRecordJohn, medicalRecordTenley, medicalRecordOther));
     }
 
     @Test
@@ -72,7 +76,7 @@ class ChildAlertServiceImplTest {
         assertThat(response.getChildren().get(0).getLastName()).isEqualTo("Boyd");
         assertThat(response.getOtherHouseholdMembers().get(0).getFirstName()).isEqualTo("John");
         assertThat(response.getOtherHouseholdMembers().get(0).getLastName()).isEqualTo("Boyd");
-        verify(dataRepository, times(1)).getAllPersons();
+        verify(personRepository, times(1)).findAll();
     }
 
     @Test
@@ -84,6 +88,6 @@ class ChildAlertServiceImplTest {
         assertNotNull(response);
         assertTrue(response.getChildren().isEmpty());
         assertTrue(response.getOtherHouseholdMembers().isEmpty());
-        verify(dataRepository, times(1)).getAllPersons();
+        verify(personRepository, times(1)).findAll();
     }
 }
