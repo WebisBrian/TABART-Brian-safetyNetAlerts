@@ -3,7 +3,8 @@ package com.safetynetalerts.service;
 import com.safetynetalerts.dto.personinfo.PersonInfoDto;
 import com.safetynetalerts.dto.personinfo.PersonInfoResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import com.safetynetalerts.service.util.AgeService;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,13 @@ import java.util.Optional;
 @Service
 public class PersonInfoServiceImpl implements PersonInfoService {
 
-    private final SafetyNetDataRepository dataRepository;
+    private final PersonRepository personRepository;
+    private final MedicalRecordRepository medicalRecordRepository;
     private final AgeService ageService;
 
-    public PersonInfoServiceImpl(SafetyNetDataRepository dataRepository, AgeService ageService) {
-        this.dataRepository = dataRepository;
+    public PersonInfoServiceImpl(PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository, AgeService ageService) {
+        this.personRepository = personRepository;
+        this.medicalRecordRepository = medicalRecordRepository;
         this.ageService = ageService;
     }
 
@@ -27,9 +30,9 @@ public class PersonInfoServiceImpl implements PersonInfoService {
             return new PersonInfoResponseDto(List.of());
         }
 
-        List<MedicalRecord> medicalRecords = dataRepository.getAllMedicalRecords();
+        List<MedicalRecord> medicalRecords = medicalRecordRepository.findAll();
 
-        List<PersonInfoDto> persons = dataRepository.getAllPersons().stream()
+        List<PersonInfoDto> persons = personRepository.findAll().stream()
                 .filter(p -> p.getFirstName() != null && p.getLastName() != null)
                 .filter(p -> p.getLastName().equalsIgnoreCase(lastName))
                 .map(p -> {
