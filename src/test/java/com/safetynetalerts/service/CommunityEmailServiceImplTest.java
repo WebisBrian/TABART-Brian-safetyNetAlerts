@@ -1,7 +1,7 @@
 package com.safetynetalerts.service;
 
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,14 +18,14 @@ import static org.mockito.Mockito.when;
 class CommunityEmailServiceImplTest {
 
     @Mock
-    private SafetyNetDataRepository dataRepository;
+    private PersonRepository personRepository;
 
     @InjectMocks
     private CommunityEmailServiceImpl service;
 
     @BeforeEach
     void setUp() {
-        when(dataRepository.getAllPersons()).thenReturn(List.of(
+        when(personRepository.findAll()).thenReturn(List.of(
                 new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "a@email.com"),
                 new Person("Jane", "Doe", "X", "Culver", "97451", "842", "b@email.com"),
                 new Person("Bob", "Foo", "Y", "OtherCity", "97451", "843", "c@email.com"),

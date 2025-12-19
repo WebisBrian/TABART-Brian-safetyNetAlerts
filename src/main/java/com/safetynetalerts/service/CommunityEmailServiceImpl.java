@@ -2,7 +2,7 @@ package com.safetynetalerts.service;
 
 import com.safetynetalerts.dto.communityemail.CommunityEmailResponseDto;
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.repository.SafetyNetDataRepository;
+import com.safetynetalerts.repository.person.PersonRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,10 +10,10 @@ import java.util.List;
 @Service
 public class CommunityEmailServiceImpl implements CommunityEmailService {
 
-    private final SafetyNetDataRepository dataRepository;
+    private final PersonRepository personRepository;
 
-    public CommunityEmailServiceImpl(SafetyNetDataRepository dataRepository) {
-        this.dataRepository = dataRepository;
+    public CommunityEmailServiceImpl(PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class CommunityEmailServiceImpl implements CommunityEmailService {
             return new CommunityEmailResponseDto(List.of());
         }
 
-        List<String> emails = dataRepository.getAllPersons().stream()
+        List<String> emails = personRepository.findAll().stream()
                 .filter(p -> p.getCity() != null && p.getCity().equalsIgnoreCase(city))
                 .map(Person::getEmail)
                 .filter(e -> e != null && !e.isBlank())
