@@ -53,13 +53,14 @@ public class Firestation {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (!(o instanceof Firestation)) return false;
         Firestation that = (Firestation) o;
-        return station == that.station && Objects.equals(address, that.address);
+        return Objects.equals(address, that.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(address, station);
+        return Objects.hash(address);
     }
 }

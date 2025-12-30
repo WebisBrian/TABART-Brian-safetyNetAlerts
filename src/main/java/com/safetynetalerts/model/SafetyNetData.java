@@ -51,7 +51,8 @@ public class SafetyNetData {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (!(o instanceof SafetyNetData)) return false;
         SafetyNetData that = (SafetyNetData) o;
         return Objects.equals(persons, that.persons) && Objects.equals(firestations, that.firestations) && Objects.equals(medicalRecords, that.medicalRecords);
     }
