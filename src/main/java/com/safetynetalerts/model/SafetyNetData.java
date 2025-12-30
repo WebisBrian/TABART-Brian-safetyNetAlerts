@@ -35,24 +35,12 @@ public class SafetyNetData {
         return persons;
     }
 
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
-    }
-
     public List<Firestation> getFirestations() {
         return firestations;
     }
 
-    public void setFirestations(List<Firestation> firestations) {
-        this.firestations = firestations;
-    }
-
     public List<MedicalRecord> getMedicalRecords() {
         return medicalRecords;
-    }
-
-    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
-        this.medicalRecords = medicalRecords;
     }
 
     // overrides
