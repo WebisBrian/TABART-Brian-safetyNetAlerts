@@ -3,6 +3,8 @@ package com.safetynetalerts.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 /**
  *  Représente l'association entre une adresse et un numéro de caserne de pompiers.
  *  Cette classe est utilisée par les endpoints liés aux interventions des casernes,
@@ -47,5 +49,17 @@ public class Firestation {
                 "address='" + address + '\'' +
                 ", station=" + station +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Firestation that = (Firestation) o;
+        return station == that.station && Objects.equals(address, that.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(address, station);
     }
 }

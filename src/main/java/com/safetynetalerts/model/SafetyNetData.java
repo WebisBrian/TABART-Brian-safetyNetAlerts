@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Représente la structure racine du fichier data.json.
@@ -16,8 +17,8 @@ import java.util.List;
 public class SafetyNetData {
 
     // fields
-    @JsonProperty("persons")private List<Person> persons;
-    @JsonProperty("firestations")private List<Firestation> firestations;
+    @JsonProperty("persons") private List<Person> persons;
+    @JsonProperty("firestations") private List<Firestation> firestations;
     @JsonProperty("medicalrecords") private List<MedicalRecord> medicalRecords;
 
     // constructors
@@ -58,5 +59,17 @@ public class SafetyNetData {
     @Override
     public String toString() {
         return "SafetyNetData [persons=" + persons + ", firestations=" + firestations + ", medicalrecords=" + medicalRecords + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        SafetyNetData that = (SafetyNetData) o;
+        return Objects.equals(persons, that.persons) && Objects.equals(firestations, that.firestations) && Objects.equals(medicalRecords, that.medicalRecords);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(persons, firestations, medicalRecords);
     }
 }
