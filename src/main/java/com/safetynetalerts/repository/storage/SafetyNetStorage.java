@@ -3,19 +3,19 @@ package com.safetynetalerts.repository.storage;
 import com.safetynetalerts.model.SafetyNetData;
 
 /**
- * Storage layer (persistence) responsible only for loading/saving SafetyNetData.
- * Logic only for file I/O.
+ * Couche de stockage (persistance) responsable uniquement du chargement/enregistrement de l'entité SafetyNetData.
+ * Logique réservée aux opérations I/O de fichiers.
  */
 public interface SafetyNetStorage {
 
     /**
-     * Loads SafetyNetData from the configured writable JSON file.
-     * If the writable file is missing (or empty), it must be initialized from classpath data.json.
+     * Charge SafetyNetData depuis le fichier JSON configuré.
+     * Si le fichier est manquant (ou vide), il doit être initialisé depuis data.json présent dans le classpath.
      */
     SafetyNetData load();
 
     /**
-     * Saves SafetyNetData to the configured writable JSON file (atomic write if possible).
+     * Enregistre SafetyNetData dans le fichier JSON configuré (écriture atomique si possible).
      */
     void save(SafetyNetData data);
 }

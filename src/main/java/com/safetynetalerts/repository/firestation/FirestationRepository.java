@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Repository dédié aux Firestation (mapping adresse -> station).
+ * Repository dédié aux Firestation (mapping adresse → station).
  */
 public interface FirestationRepository {
 

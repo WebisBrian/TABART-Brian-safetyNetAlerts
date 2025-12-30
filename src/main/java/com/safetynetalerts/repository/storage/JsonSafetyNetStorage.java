@@ -14,16 +14,14 @@ import java.nio.file.*;
 
 /**
  * Stockage basé sur un fichier JSON.
- *
  * Responsabilités :
  * 1) S'assurer qu'un fichier "modifiable" existe sur le disque (ex: ./data/data.json)
- * 2) Charger les données (JSON -> SafetyNetData)
- * 3) Sauvegarder les données (SafetyNetData -> JSON) de façon sûre
- *
+ * 2) Charger les données (JSON → SafetyNetData)
+ * 3) Sauvegarder les données (SafetyNetData → JSON) de façon sûre
  * Notes :
  * - Le dossier resources est en lecture seule une fois packagé en JAR.
- * - Si le fichier existe mais est vide, on recopie depuis resources pour éviter
- *   l'erreur Jackson "end-of-input".
+ * - Si le fichier existe, mais est vide, on recopie depuis resources pour éviter
+ *   l'erreur Jackson "end of-input".
  * - La sauvegarde utilise une écriture atomique (atomique = tout ou rien) :
  *   on écrit dans un fichier temporaire puis on remplace le fichier final.
  */
@@ -56,7 +54,7 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
             // Vérifie / initialise le fichier modifiable
             ensureWritableFileExists();
 
-            // Lecture du JSON du disque -> conversion en SafetyNetData
+            // Lecture du JSON du disque → conversion en SafetyNetData
             SafetyNetData data = objectMapper.readValue(dataPath.toFile(), SafetyNetData.class);
 
             long duration = System.currentTimeMillis() - start;
@@ -103,7 +101,7 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
             } catch (AtomicMoveNotSupportedException ex) {
                 logger.debug("ATOMIC_MOVE not supported, using non-atomic move instead for {}", dataPath);
                 // Certains systèmes de fichiers ne supportent pas ATOMIC_MOVE
-                // -> fallback : move classique (moins "robuste" mais fonctionnel)
+                // → fallback : move classique (moins "robuste" mais fonctionnel).
                 Files.move(tmp, dataPath, StandardCopyOption.REPLACE_EXISTING);
             }
             long duration = System.currentTimeMillis() - start;
@@ -124,14 +122,25 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
         }
     }
 
+    /**
+     * Garantit qu'un fichier modifiable existe à l'emplacement configuré (dataPath).
+     * Comportement :
+     * - Crée le dossier parent si nécessaire.
+     * - Si le fichier est manquant ou vide (taille 0), copie le fichier par défaut "data.json"
+     *   depuis les resources du classpath vers l'emplacement modifiable.
+     * Ce comportement évite les erreurs de lecture Jackson lorsque le fichier cible est absent
+     * ou vide après le packaging.
+     *
+     * @throws IOException en cas d'échec d'opérations I/O (création de dossier, copie, lecture de taille…).
+     */
     private void ensureWritableFileExists() throws IOException {
         // Crée le dossier parent si nécessaire
         Files.createDirectories(dataPath.getParent());
 
-        // missing : le fichier n'existe pas
+        // manquant : le fichier n'existe pas
         boolean missing = Files.notExists(dataPath);
 
-        // empty : le fichier existe mais est vide (taille 0)
+        // vide : le fichier existe, mais sa taille est 0 octet
         boolean empty = !missing && Files.size(dataPath) == 0;
 
         // Si le fichier existe ET n'est pas vide, rien à faire
@@ -140,7 +149,7 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
             return;
         }
 
-        // Sinon : on copie le data.json présent dans resources vers l'emplacement modifiable
+        // Sinon : on copie le fichier data.json présent dans resources vers l'emplacement modifiable
         logger.info("Data file {} is {}. Copying default data.json from classpath", dataPath, missing ? "missing" : "empty");
         ClassPathResource resource = new ClassPathResource("data.json");
         try (InputStream in = resource.getInputStream()) {
