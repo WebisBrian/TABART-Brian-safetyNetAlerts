@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 /**
  * Store en mémoire (in-memory) :
- * - contient le SafetyNetData chargé au démarrage
+ * - contient SafetyNetData chargé au démarrage
  * - centralise la synchronisation (Read/Write lock)
  * - centralise la persistance : toute écriture déclenche un save(...)
  * <p>
@@ -27,12 +27,25 @@ public class SafetyNetStore {
     private final SafetyNetStorage storage;
 
     /**
-     * Lock unique pour protéger l'accès au dataset en mémoire.
+     * Verrou unique utilisé pour sécuriser l’accès aux données en mémoire.
+     * Rôle :
+     * - Empêcher les accès concurrents dangereux lorsque plusieurs threads
+     * lisent ou modifient les données en même temps.
+     * Fonctionnement :
+     * - Plusieurs lectures peuvent s’exécuter en parallèle.
+     * - Une écriture est exclusive : pendant une modification, aucune lecture
+     * ni autre écriture n’est autorisée.
+     * Détail d’implémentation :
+     * - Le verrou est configuré en mode équitable (fairness = true) afin d’éviter
+     * qu’une écriture attende indéfiniment à cause d’un afflux continu de lectures.
+     * Ce choix privilégie la prévisibilité au détriment d’un léger coût
+     * en performance.
      */
+
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
 
     /**
-     * Données en mémoire, chargées 1 fois au démarrage.
+     * Données en mémoire, chargées une fois au démarrage.
      */
     private SafetyNetData data;
 
@@ -40,6 +53,20 @@ public class SafetyNetStore {
         this.storage = storage;
     }
 
+    /**
+     * Initialise le store au démarrage de l’application.
+     * Cette méthode est appelée automatiquement par Spring après la création
+     * du bean ({@code @PostConstruct}). Elle charge l’ensemble des données depuis
+     * le stockage persistant (fichier JSON) et les conserve en mémoire pour
+     * un accès rapide pendant l’exécution de l’application.
+     * Le chargement est protégé par un verrou d’écriture afin de garantir
+     * un accès exclusif aux données durant l’initialisation :
+     * aucune lecture ni écriture concurrente n’est possible tant que
+     * l’initialisation n’est pas terminée.
+     * En cas d’erreur lors du chargement, une exception non vérifiée est levée
+     * pour provoquer l’échec du démarrage de l’application. Celle-ci ne peut
+     * pas fonctionner correctement sans des données valides.
+     */
     @PostConstruct
     public void init() {
         long start = System.currentTimeMillis();
@@ -62,10 +89,16 @@ public class SafetyNetStore {
     }
 
     /**
-     * Accès en lecture : exécute une fonction sur les données protégées par le read lock.
+     * Exécute une opération de lecture sur les données en mémoire de manière thread safe.
+     * Cette méthode permet d’accéder aux données sans les modifier. L’opération de lecture
+     * fournie est exécutée sous un verrou de lecture, ce qui autorise plusieurs lectures
+     * concurrentes tant qu’aucune écriture n’est en cours.
+     * Le code appelant fournit une fonction qui reçoit l’instance {@link SafetyNetData}
+     * et retourne un résultat calculé à partir des données.
      *
-     * @param reader fonction de lecture (ne doit pas modifier data)
-     * @return résultat de la fonction
+     * @param reader fonction de lecture appliquée aux données (ne doit provoquer aucune modification)
+     * @param <T>    type du résultat retourné par la fonction de lecture
+     * @return résultat de l’opération de lecture
      */
     public <T> T read(Function<SafetyNetData, T> reader) {
         long start = System.currentTimeMillis();
@@ -81,16 +114,22 @@ public class SafetyNetStore {
     }
 
     /**
-     * Accès en écriture : exécute une action qui modifie les données, puis sauvegarde sur disque.
+     * Exécute une opération d’écriture sur les données en mémoire de manière thread safe.
+     * Cette méthode permet de modifier les données protégées. L’action d’écriture fournie
+     * est exécutée sous un verrou d’écriture, garantissant un accès exclusif aux données :
+     * aucune lecture ni autre écriture concurrente n’est autorisée pendant la modification.
+     * Une fois la modification effectuée, les données sont immédiatement sauvegardées
+     * sur le stockage persistant afin de garantir la pérennité des changements
+     * (les opérations CRUD survivent à un redémarrage de l’application).
      *
-     * @param writer action d'écriture (modifie data)
+     * @param writer action d’écriture appliquée aux données (doit modifier {@link SafetyNetData})
      */
     public void write(Consumer<SafetyNetData> writer) {
         long start = System.currentTimeMillis();
         lock.writeLock().lock();
         try {
             writer.accept(data);
-            // Après toute modification, on persiste (CRUD survive restart)
+            // Après toute modification, on persiste (CRUD survit au restart).
             storage.save(data);
             long duration = System.currentTimeMillis() - start;
             logger.debug("Write operation completed ({} ms)", duration);
