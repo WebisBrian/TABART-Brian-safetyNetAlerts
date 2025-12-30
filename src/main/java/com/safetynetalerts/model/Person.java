@@ -6,24 +6,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 /**
- *  Représente une personne enregistrée dans le fichier de données SafetyNet.
- *  Contient les informations d'identité et de contact nécessaires aux différents
- *  endpoints de l'application (adresse, ville, téléphone, email...).
+ * Représente une personne enregistrée dans le fichier de données SafetyNet.
+ * Contient les informations d'identité et de contact nécessaires aux différents
+ * endpoints de l'application (adresse, ville, téléphone, email...).
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Person {
 
     // fields
-    @JsonProperty("firstName") private String firstName;
-    @JsonProperty("lastName") private String lastName;
-    @JsonProperty("address") private String address;
-    @JsonProperty("city") private String city;
-    @JsonProperty("zip") private String zip;
-    @JsonProperty("phone") private String phone;
-    @JsonProperty("email") private String email;
+    @JsonProperty("firstName")
+    private String firstName;
+    @JsonProperty("lastName")
+    private String lastName;
+    @JsonProperty("address")
+    private String address;
+    @JsonProperty("city")
+    private String city;
+    @JsonProperty("zip")
+    private String zip;
+    @JsonProperty("phone")
+    private String phone;
+    @JsonProperty("email")
+    private String email;
 
     // constructors
-    public Person() {}
+    public Person() {
+    }
 
     public Person(String firstName, String lastName, String address, String city, String zip, String phone, String email) {
         this.firstName = firstName;
@@ -96,22 +104,13 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
-                ", city='" + city + '\'' +
-                ", zip='" + zip + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "Person{" + "firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", address='" + address + '\'' + ", city='" + city + '\'' + ", zip='" + zip + '\'' + ", phone='" + phone + '\'' + ", email='" + email + '\'' + '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Person)) return false;
-        Person person = (Person) o;
+        if (!(o instanceof Person person)) return false;
         return Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName);
     }
 

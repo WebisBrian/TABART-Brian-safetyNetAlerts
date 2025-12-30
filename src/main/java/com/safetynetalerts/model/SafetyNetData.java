@@ -17,12 +17,16 @@ import java.util.Objects;
 public class SafetyNetData {
 
     // fields
-    @JsonProperty("persons") private List<Person> persons;
-    @JsonProperty("firestations") private List<Firestation> firestations;
-    @JsonProperty("medicalrecords") private List<MedicalRecord> medicalRecords;
+    @JsonProperty("persons")
+    private List<Person> persons;
+    @JsonProperty("firestations")
+    private List<Firestation> firestations;
+    @JsonProperty("medicalrecords")
+    private List<MedicalRecord> medicalRecords;
 
     // constructors
-    public SafetyNetData() {}
+    public SafetyNetData() {
+    }
 
     public SafetyNetData(List<Person> persons, List<Firestation> firestations, List<MedicalRecord> medicalRecords) {
         this.persons = persons;
@@ -52,8 +56,7 @@ public class SafetyNetData {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SafetyNetData)) return false;
-        SafetyNetData that = (SafetyNetData) o;
+        if (!(o instanceof SafetyNetData that)) return false;
         return Objects.equals(persons, that.persons) && Objects.equals(firestations, that.firestations) && Objects.equals(medicalRecords, that.medicalRecords);
     }
 

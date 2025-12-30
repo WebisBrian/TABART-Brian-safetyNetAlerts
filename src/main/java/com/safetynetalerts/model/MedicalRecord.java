@@ -7,23 +7,29 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *  Représente le dossier médical d'une personne, incluant la date de naissance,
- *  les médicaments prescrits et les allergies connues.
- *  Cette classe est utilisée pour calculer l'âge (enfant/adulte) et pour fournir
- *  des informations médicales essentielles aux services de secours.
+ * Représente le dossier médical d'une personne, incluant la date de naissance,
+ * les médicaments prescrits et les allergies connues.
+ * Cette classe est utilisée pour calculer l'âge (enfant/adulte) et pour fournir
+ * des informations médicales essentielles aux services de secours.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MedicalRecord {
 
     // fields
-    @JsonProperty("firstName") private String firstName;
-    @JsonProperty("lastName") private String lastName;
-    @JsonProperty("birthdate") private String birthdate;
-    @JsonProperty("medications") private List<String> medications;
-    @JsonProperty("allergies") private List<String> allergies;
+    @JsonProperty("firstName")
+    private String firstName;
+    @JsonProperty("lastName")
+    private String lastName;
+    @JsonProperty("birthdate")
+    private String birthdate;
+    @JsonProperty("medications")
+    private List<String> medications;
+    @JsonProperty("allergies")
+    private List<String> allergies;
 
     // constructors
-    public MedicalRecord() {}
+    public MedicalRecord() {
+    }
 
     public MedicalRecord(String firstName, String lastName, String birthdate, List<String> medications, List<String> allergies) {
         this.firstName = firstName;
@@ -77,20 +83,13 @@ public class MedicalRecord {
     // overrides
     @Override
     public String toString() {
-        return "MedicalRecord{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthdate='" + birthdate + '\'' +
-                ", medications=" + medications +
-                ", allergies=" + allergies +
-                '}';
+        return "MedicalRecord{" + "firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", birthdate='" + birthdate + '\'' + ", medications=" + medications + ", allergies=" + allergies + '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MedicalRecord)) return false;
-        MedicalRecord that = (MedicalRecord) o;
+        if (!(o instanceof MedicalRecord that)) return false;
         return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
     }
 
