@@ -1,15 +1,19 @@
 package com.safetynetalerts.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *  Représente l'association entre une adresse et un numéro de caserne de pompiers.
  *  Cette classe est utilisée par les endpoints liés aux interventions des casernes,
  *  notamment pour déterminer les habitants desservis par une station donnée.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Firestation {
 
     // fields
-    private String address;
-    private int station;
+    @JsonProperty("address") private String address;
+    @JsonProperty("station") private int station;
 
     // constructors
     public Firestation() {}

@@ -1,5 +1,6 @@
 package com.safetynetalerts.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -11,11 +12,12 @@ import java.util.List;
  * Cette classe sert de conteneur principal pour la désérialisation du fichier JSON
  * et fournit les données brutes à la couche repository.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SafetyNetData {
 
     // fields
-    private List<Person> persons;
-    private List<Firestation> firestations;
+    @JsonProperty("persons")private List<Person> persons;
+    @JsonProperty("firestations")private List<Firestation> firestations;
     @JsonProperty("medicalrecords") private List<MedicalRecord> medicalRecords;
 
     // constructors

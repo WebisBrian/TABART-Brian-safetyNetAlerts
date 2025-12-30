@@ -1,5 +1,8 @@
 package com.safetynetalerts.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -8,14 +11,15 @@ import java.util.List;
  *  Cette classe est utilisée pour calculer l'âge (enfant/adulte) et pour fournir
  *  des informations médicales essentielles aux services de secours.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MedicalRecord {
 
     // fields
-    private String firstName;
-    private String lastName;
-    private String birthdate;
-    private List<String> medications;
-    private List<String> allergies;
+    @JsonProperty("firstName") private String firstName;
+    @JsonProperty("lastName") private String lastName;
+    @JsonProperty("birthdate") private String birthdate;
+    @JsonProperty("medications") private List<String> medications;
+    @JsonProperty("allergies") private List<String> allergies;
 
     // constructors
     public MedicalRecord() {}

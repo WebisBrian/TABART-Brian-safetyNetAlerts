@@ -1,20 +1,24 @@
 package com.safetynetalerts.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *  Représente une personne enregistrée dans le fichier de données SafetyNet.
  *  Contient les informations d'identité et de contact nécessaires aux différents
  *  endpoints de l'application (adresse, ville, téléphone, email...).
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Person {
 
     // fields
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String city;
-    private String zip;
-    private String phone;
-    private String email;
+    @JsonProperty("firstName") private String firstName;
+    @JsonProperty("lastName") private String lastName;
+    @JsonProperty("address") private String address;
+    @JsonProperty("city") private String city;
+    @JsonProperty("zip") private String zip;
+    @JsonProperty("phone") private String phone;
+    @JsonProperty("email") private String email;
 
     // constructors
     public Person() {}
