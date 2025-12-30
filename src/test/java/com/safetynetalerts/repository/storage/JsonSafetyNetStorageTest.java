@@ -34,7 +34,7 @@ class JsonSafetyNetStorageTest {
         assertThat(data).isNotNull();
         assertThat(data.getPersons()).isNotNull();
         assertThat(data.getFirestations()).isNotNull();
-        assertThat(data.getMedicalrecords()).isNotNull();
+        assertThat(data.getMedicalRecords()).isNotNull();
     }
 
     @Test
@@ -53,6 +53,6 @@ class JsonSafetyNetStorageTest {
         assertThat(data).isNotNull();
         assertThat(data.getPersons()).isNotNull();
         assertThat(data.getFirestations()).isNotNull();
-        assertThat(data.getMedicalrecords()).isNotNull();
+        assertThat(data.getMedicalRecords()).isNotNull();
     }
 }

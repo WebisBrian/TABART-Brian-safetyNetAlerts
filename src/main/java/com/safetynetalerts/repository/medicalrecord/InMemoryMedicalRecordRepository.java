@@ -21,12 +21,12 @@ public class InMemoryMedicalRecordRepository implements MedicalRecordRepository 
 
     @Override
     public List<MedicalRecord> findAll() {
-        return store.read(data -> data.getMedicalrecords());
+        return store.read(data -> data.getMedicalRecords());
     }
 
     @Override
     public Optional<MedicalRecord> findByName(String firstName, String lastName) {
-        return store.read(data -> data.getMedicalrecords().stream()
+        return store.read(data -> data.getMedicalRecords().stream()
                 .filter(mr -> mr.getFirstName().equalsIgnoreCase(firstName)
                         && mr.getLastName().equalsIgnoreCase(lastName))
                 .findFirst());
@@ -34,7 +34,7 @@ public class InMemoryMedicalRecordRepository implements MedicalRecordRepository 
 
     @Override
     public MedicalRecord add(MedicalRecord record) {
-        store.write(data -> data.getMedicalrecords().add(record));
+        store.write(data -> data.getMedicalRecords().add(record));
         return record;
     }
 
@@ -43,7 +43,7 @@ public class InMemoryMedicalRecordRepository implements MedicalRecordRepository 
         final boolean[] updated = {false};
 
         store.write(data -> {
-            Optional<MedicalRecord> opt = data.getMedicalrecords().stream()
+            Optional<MedicalRecord> opt = data.getMedicalRecords().stream()
                     .filter(mr -> mr.getFirstName().equalsIgnoreCase(record.getFirstName())
                             && mr.getLastName().equalsIgnoreCase(record.getLastName()))
                     .findFirst();
@@ -68,7 +68,7 @@ public class InMemoryMedicalRecordRepository implements MedicalRecordRepository 
     public boolean delete(String firstName, String lastName) {
         final boolean[] removed = {false};
 
-        store.write(data -> removed[0] = data.getMedicalrecords().removeIf(mr ->
+        store.write(data -> removed[0] = data.getMedicalRecords().removeIf(mr ->
                 mr.getFirstName().equalsIgnoreCase(firstName)
                         && mr.getLastName().equalsIgnoreCase(lastName)));
 

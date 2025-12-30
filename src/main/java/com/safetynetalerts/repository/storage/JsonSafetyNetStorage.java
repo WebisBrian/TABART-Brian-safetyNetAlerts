@@ -63,7 +63,7 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
             if (data != null) {
                 int persons = data.getPersons() != null ? data.getPersons().size() : 0;
                 int firestations = data.getFirestations() != null ? data.getFirestations().size() : 0;
-                int medicalrecords = data.getMedicalrecords() != null ? data.getMedicalrecords().size() : 0;
+                int medicalrecords = data.getMedicalRecords() != null ? data.getMedicalRecords().size() : 0;
                 logger.info("Loaded data: persons={}, firestations={}, medicalrecords={} ({} ms)", persons, firestations, medicalrecords, duration);
             } else {
                 logger.warn("Loaded data is null ({} ms)", duration);

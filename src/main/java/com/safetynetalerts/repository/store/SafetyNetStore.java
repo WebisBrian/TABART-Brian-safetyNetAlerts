@@ -51,7 +51,7 @@ public class SafetyNetStore {
             long duration = System.currentTimeMillis() - start;
             int persons = data != null && data.getPersons() != null ? data.getPersons().size() : 0;
             int firestations = data.getFirestations() != null ? data.getFirestations().size() : 0;
-            int medicalrecords = data.getMedicalrecords() != null ? data.getMedicalrecords().size() : 0;
+            int medicalrecords = data.getMedicalRecords() != null ? data.getMedicalRecords().size() : 0;
             logger.info("Initialized store with persons={}, firestations={}, medicalrecords={} ({} ms)", persons, firestations, medicalrecords, duration);
         } catch (RuntimeException e) {
             logger.error("Failed to initialize store: {}", e.getMessage(), e);

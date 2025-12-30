@@ -1,5 +1,7 @@
 package com.safetynetalerts.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -14,15 +16,15 @@ public class SafetyNetData {
     // fields
     private List<Person> persons;
     private List<Firestation> firestations;
-    private List<MedicalRecord> medicalrecords;
+    @JsonProperty("medicalrecords") private List<MedicalRecord> medicalRecords;
 
     // constructors
     public SafetyNetData() {}
 
-    public SafetyNetData(List<Person> persons, List<Firestation> firestations, List<MedicalRecord> medicalrecords) {
+    public SafetyNetData(List<Person> persons, List<Firestation> firestations, List<MedicalRecord> medicalRecords) {
         this.persons = persons;
         this.firestations = firestations;
-        this.medicalrecords = medicalrecords;
+        this.medicalRecords = medicalRecords;
     }
 
     // getters and setters
@@ -42,17 +44,17 @@ public class SafetyNetData {
         this.firestations = firestations;
     }
 
-    public List<MedicalRecord> getMedicalrecords() {
-        return medicalrecords;
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
     }
 
-    public void setMedicalrecords(List<MedicalRecord> medicalrecords) {
-        this.medicalrecords = medicalrecords;
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalRecords = medicalRecords;
     }
 
     // overrides
     @Override
     public String toString() {
-        return "SafetyNetData [persons=" + persons + ", firestations=" + firestations + ", medicalrecords=" + medicalrecords + "]";
+        return "SafetyNetData [persons=" + persons + ", firestations=" + firestations + ", medicalrecords=" + medicalRecords + "]";
     }
 }
