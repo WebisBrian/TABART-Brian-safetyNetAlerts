@@ -7,6 +7,7 @@ import java.util.Optional;
 
 /**
  * Repository dédié aux MedicalRecord.
+ * Ici : lecture + CRUD MedicalRecord uniquement.
  */
 public interface MedicalRecordRepository {
 

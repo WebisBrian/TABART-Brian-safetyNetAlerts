@@ -1,6 +1,7 @@
 package com.safetynetalerts.repository.medicalrecord;
 
 import com.safetynetalerts.model.MedicalRecord;
+import com.safetynetalerts.model.SafetyNetData;
 import com.safetynetalerts.repository.store.SafetyNetStore;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +22,7 @@ public class InMemoryMedicalRecordRepository implements MedicalRecordRepository 
 
     @Override
     public List<MedicalRecord> findAll() {
-        return store.read(data -> data.getMedicalRecords());
+        return store.read(SafetyNetData::getMedicalRecords);
     }
 
     @Override
@@ -32,6 +33,7 @@ public class InMemoryMedicalRecordRepository implements MedicalRecordRepository 
                 .findFirst());
     }
 
+    // CRUD
     @Override
     public MedicalRecord add(MedicalRecord record) {
         store.write(data -> data.getMedicalRecords().add(record));

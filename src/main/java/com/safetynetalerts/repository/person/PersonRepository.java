@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Repository dédié aux Person (principe ISP : interface petite et ciblée).
+ * Repository dédié aux Person.
  * Ici : lecture + CRUD Person uniquement.
  */
 public interface PersonRepository {

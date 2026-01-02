@@ -1,6 +1,7 @@
 package com.safetynetalerts.repository.person;
 
 import com.safetynetalerts.model.Person;
+import com.safetynetalerts.model.SafetyNetData;
 import com.safetynetalerts.repository.store.SafetyNetStore;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +23,7 @@ public class InMemoryPersonRepository implements PersonRepository {
 
     @Override
     public List<Person> findAll() {
-        return store.read(data -> data.getPersons());
+        return store.read(SafetyNetData::getPersons);
     }
 
     @Override
@@ -33,6 +34,7 @@ public class InMemoryPersonRepository implements PersonRepository {
                 .findFirst());
     }
 
+    //    CRUD
     @Override
     public Person add(Person person) {
         store.write(data -> data.getPersons().add(person));

@@ -1,6 +1,7 @@
 package com.safetynetalerts.repository.firestation;
 
 import com.safetynetalerts.model.Firestation;
+import com.safetynetalerts.model.SafetyNetData;
 import com.safetynetalerts.repository.store.SafetyNetStore;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +22,7 @@ public class InMemoryFirestationRepository implements FirestationRepository {
 
     @Override
     public List<Firestation> findAll() {
-        return store.read(data -> data.getFirestations());
+        return store.read(SafetyNetData::getFirestations);
     }
 
     @Override
@@ -31,6 +32,7 @@ public class InMemoryFirestationRepository implements FirestationRepository {
                 .findFirst());
     }
 
+    //    CRUD
     @Override
     public Firestation add(Firestation firestation) {
         store.write(data -> data.getFirestations().add(firestation));

@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Repository dédié aux Firestation (mapping adresse → station).
+ * Repository dédié aux Firestation.
+ * Ici : lecture + CRUD Firestation uniquement.
  */
 public interface FirestationRepository {
 
