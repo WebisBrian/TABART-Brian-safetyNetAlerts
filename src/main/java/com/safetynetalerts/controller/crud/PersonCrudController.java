@@ -28,18 +28,18 @@ public class PersonCrudController {
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> update(@RequestBody Person person) {
         logger.info("PUT /person body={} {}", person.getFirstName(), person.getLastName());
         boolean updated = service.update(person);
-        return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+        return updated ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(@RequestParam String firstName, @RequestParam String lastName) {
         logger.info("DELETE /person firstName={} lastName={}", firstName, lastName);
         boolean deleted = service.delete(firstName, lastName);
-        return deleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }
