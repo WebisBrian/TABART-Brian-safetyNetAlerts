@@ -78,8 +78,8 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
     public void save(SafetyNetData data) {
         long start = System.currentTimeMillis();
         // Écriture atomique :
-        // 1) écrire dans un fichier temporaire
-        // 2) déplacer le fichier temporaire vers le fichier final (remplacement)
+        // - écrire dans un fichier temporaire
+        // - déplacer le fichier temporaire vers le fichier final (remplacement)
         Path tmp = dataPath.resolveSibling(dataPath.getFileName() + ".tmp");
 
         try {
