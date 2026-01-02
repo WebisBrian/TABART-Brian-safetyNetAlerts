@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -24,6 +26,8 @@ class PersonCrudServiceImplTest {
     void create_shouldDelegateToRepository() {
         // Arrange
         Person input = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "john@email.com");
+
+        when(personRepository.findByName("John", "Boyd")).thenReturn(Optional.empty());
         when(personRepository.add(input)).thenReturn(input);
 
         // Act
@@ -31,6 +35,7 @@ class PersonCrudServiceImplTest {
 
         // Assert
         assertThat(result).isSameAs(input);
+        verify(personRepository).findByName("John", "Boyd");
         verify(personRepository, times(1)).add(input);
         verifyNoMoreInteractions(personRepository);
     }
