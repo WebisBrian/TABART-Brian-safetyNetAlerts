@@ -32,6 +32,13 @@ public class InMemoryFirestationRepository implements FirestationRepository {
                 .findFirst());
     }
 
+    @Override
+    public Optional<Firestation> findByAddressAndByStation(String address, int station) {
+        return store.read(data -> data.getFirestations().stream())
+                .filter(fs -> fs.getAddress().equalsIgnoreCase(address) && fs.getStation() == station)
+                .findFirst();
+    }
+
     //    CRUD
     @Override
     public Firestation add(Firestation firestation) {

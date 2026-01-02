@@ -17,13 +17,13 @@ public class Firestation {
     @JsonProperty("address")
     private String address;
     @JsonProperty("station")
-    private int station;
+    private Integer station;
 
     // constructors
     public Firestation() {
     }
 
-    public Firestation(String address, int station) {
+    public Firestation(String address, Integer station) {
         this.address = address;
         this.station = station;
     }
@@ -37,11 +37,11 @@ public class Firestation {
         this.address = address;
     }
 
-    public int getStation() {
+    public Integer getStation() {
         return station;
     }
 
-    public void setStation(int station) {
+    public void setStation(Integer station) {
         this.station = station;
     }
 
