@@ -51,7 +51,7 @@ class PersonCrudControllerTest {
         mockMvc.perform(put("/person")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(person)))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(personService).update(any(Person.class));
     }
@@ -63,7 +63,7 @@ class PersonCrudControllerTest {
         mockMvc.perform(delete("/person")
                         .param("firstName", "John")
                         .param("lastName", "Boyd"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(personService).delete("John", "Boyd");
     }

@@ -51,7 +51,7 @@ class FirestationCrudControllerTest {
         mockMvc.perform(put("/firestation")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(fs)))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(firestationService).update(any(Firestation.class));
     }
@@ -62,7 +62,7 @@ class FirestationCrudControllerTest {
 
         mockMvc.perform(delete("/firestation")
                         .param("address", "1509 Culver St"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(firestationService).delete("1509 Culver St");
     }
