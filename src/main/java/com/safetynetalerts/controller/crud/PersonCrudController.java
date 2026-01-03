@@ -1,5 +1,8 @@
 package com.safetynetalerts.controller.crud;
 
+import com.safetynetalerts.dto.crud.person.PersonMapper;
+import com.safetynetalerts.dto.crud.person.PersonResponseDto;
+import com.safetynetalerts.dto.crud.person.PersonUpsertRequestDto;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.service.crud.PersonCrudService;
 import org.slf4j.Logger;
@@ -21,25 +24,30 @@ public class PersonCrudController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Person> create(@RequestBody Person person) {
-        logger.info("POST /person body={} {}", person.getFirstName(), person.getLastName());
-        return ResponseEntity.ok(service.create(person));
+    public ResponseEntity<PersonResponseDto> create(@RequestBody PersonUpsertRequestDto body) {
+        logger.info("POST /person body={} {}", body.getFirstName(), body.getLastName());
+        Person toCreate = PersonMapper.toModel(body);
+        Person created = service.create(toCreate);
+
+        PersonResponseDto response = PersonMapper.toDto(created);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@RequestBody Person person) {
-        logger.info("PUT /person body={} {}", person.getFirstName(), person.getLastName());
-        boolean updated = service.update(person);
+    public ResponseEntity<Void> update(@RequestBody PersonUpsertRequestDto body) {
+        logger.info("PUT /person body={} {}", body.getFirstName(), body.getLastName());
+        Person toUpdate = PersonMapper.toModel(body);
+        boolean updated = service.update(toUpdate);
+
         return updated ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(@RequestParam String firstName, @RequestParam String lastName) {
         logger.info("DELETE /person firstName={} lastName={}", firstName, lastName);
         boolean deleted = service.delete(firstName, lastName);
+
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }

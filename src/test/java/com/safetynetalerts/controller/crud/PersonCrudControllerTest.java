@@ -36,7 +36,7 @@ class PersonCrudControllerTest {
         mockMvc.perform(post("/person")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(person)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         verify(personService).create(any(Person.class));
     }
