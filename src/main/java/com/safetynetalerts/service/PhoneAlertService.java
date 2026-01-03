@@ -14,5 +14,5 @@ public interface PhoneAlertService {
      * @param stationNumber numéro de la caserne
      * @return liste de numéros de téléphone (possiblement vide)
      */
-    List<String> getPhonesByStation(int stationNumber);
+    List<String> getPhonesByStation(Integer stationNumber);
 }
