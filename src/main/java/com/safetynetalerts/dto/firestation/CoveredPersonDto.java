@@ -13,7 +13,8 @@ public class CoveredPersonDto {
     private String phone;
 
     // constructors
-    public CoveredPersonDto() {}
+    public CoveredPersonDto() {
+    }
 
     public CoveredPersonDto(String firstName, String lastName, String address, String phone) {
         this.firstName = firstName;

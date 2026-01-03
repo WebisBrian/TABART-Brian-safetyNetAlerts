@@ -41,7 +41,7 @@ class MedicalRecordCrudControllerTest {
         mockMvc.perform(post("/medicalRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(record)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         verify(medicalRecordService).create(any(MedicalRecord.class));
     }

@@ -1,5 +1,8 @@
 package com.safetynetalerts.controller.crud;
 
+import com.safetynetalerts.dto.crud.medicalrecord.MedicalRecordMapper;
+import com.safetynetalerts.dto.crud.medicalrecord.MedicalRecordResponseDto;
+import com.safetynetalerts.dto.crud.medicalrecord.MedicalRecordUpsertRequestDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.service.crud.MedicalRecordCrudService;
 import org.slf4j.Logger;
@@ -21,18 +24,25 @@ public class MedicalRecordCrudController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<MedicalRecord> create(@RequestBody MedicalRecord record) {
-        logger.info("POST /medicalRecord {} {}", record.getFirstName(), record.getLastName());
-        return ResponseEntity.ok(service.create(record));
+    public ResponseEntity<MedicalRecordResponseDto> create(@RequestBody MedicalRecordUpsertRequestDto body) {
+        logger.info("POST /medicalRecord {} {}", body.getFirstName(), body.getLastName());
+        MedicalRecord toCreate = MedicalRecordMapper.toModel(body);
+        MedicalRecord created = service.create(toCreate);
+
+        MedicalRecordResponseDto response = MedicalRecordMapper.toDto(created);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@RequestBody MedicalRecord record) {
-        logger.info("PUT /medicalRecord {} {}", record.getFirstName(), record.getLastName());
-        boolean updated = service.update(record);
-        return updated ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    public ResponseEntity<Void> update(@RequestBody MedicalRecordUpsertRequestDto body) {
+        logger.info("PUT /medicalRecord {} {}", body.getFirstName(), body.getLastName());
+        MedicalRecord toUpdate = MedicalRecordMapper.toModel(body);
+
+        boolean updated = service.update(toUpdate);
+
+        return updated ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping
@@ -40,6 +50,7 @@ public class MedicalRecordCrudController {
     public ResponseEntity<Void> delete(@RequestParam String firstName, @RequestParam String lastName) {
         logger.info("DELETE /medicalRecord {} {}", firstName, lastName);
         boolean deleted = service.delete(firstName, lastName);
+
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }
