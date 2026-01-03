@@ -3,6 +3,7 @@ package com.safetynetalerts.service;
 import com.safetynetalerts.dto.personinfo.PersonInfoDto;
 import com.safetynetalerts.dto.personinfo.PersonInfoResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
+import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
 import com.safetynetalerts.repository.person.PersonRepository;
 import com.safetynetalerts.service.util.AgeService;
@@ -27,7 +28,7 @@ public class PersonInfoServiceImpl implements PersonInfoService {
     @Override
     public PersonInfoResponseDto getPersonInfoByLastName(String lastName) {
         if (lastName == null || lastName.isBlank()) {
-            return new PersonInfoResponseDto(List.of());
+            throw new BadRequestException("Le nom de famille doit être renseigné.");
         }
 
         List<MedicalRecord> medicalRecords = medicalRecordRepository.findAll();

@@ -2,6 +2,7 @@ package com.safetynetalerts.service;
 
 import com.safetynetalerts.dto.communityemail.CommunityEmailResponseDto;
 import com.safetynetalerts.model.Person;
+import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.repository.person.PersonRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,9 @@ public class CommunityEmailServiceImpl implements CommunityEmailService {
 
     @Override
     public CommunityEmailResponseDto getEmailsByCity(String city) {
+
         if (city == null || city.isBlank()) {
-            return new CommunityEmailResponseDto(List.of());
+            throw new BadRequestException("Le nom de la ville doit être renseigné.");
         }
 
         List<String> emails = personRepository.findAll().stream()
