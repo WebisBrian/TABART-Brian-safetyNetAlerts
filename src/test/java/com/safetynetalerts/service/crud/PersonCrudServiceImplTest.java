@@ -1,6 +1,8 @@
 package com.safetynetalerts.service.crud;
 
 import com.safetynetalerts.model.Person;
+import com.safetynetalerts.model.exception.BadRequestException;
+import com.safetynetalerts.model.exception.ConflictException;
 import com.safetynetalerts.repository.person.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,16 +26,13 @@ class PersonCrudServiceImplTest {
 
     @Test
     void create_shouldDelegateToRepository() {
-        // Arrange
         Person input = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "john@email.com");
 
         when(personRepository.findByName("John", "Boyd")).thenReturn(Optional.empty());
         when(personRepository.add(input)).thenReturn(input);
 
-        // Act
         Person result = service.create(input);
 
-        // Assert
         assertThat(result).isSameAs(input);
         verify(personRepository).findByName("John", "Boyd");
         verify(personRepository, times(1)).add(input);
@@ -41,44 +40,155 @@ class PersonCrudServiceImplTest {
     }
 
     @Test
+    void create_shouldThrowConflictWhenPersonExists() {
+        Person input = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "john@email.com");
+        when(personRepository.findByName("John", "Boyd")).thenReturn(Optional.of(new Person()));
+
+        assertThatThrownBy(() -> service.create(input))
+                .isInstanceOf(ConflictException.class)
+                .hasMessage("Une personne avec le même nom et prénom a déjà été ajoutée.");
+
+        verify(personRepository).findByName("John", "Boyd");
+        verify(personRepository, never()).add(any());
+        verifyNoMoreInteractions(personRepository);
+    }
+
+    @Test
+    void create_shouldThrowBadRequestWhenNameMissing() {
+        Person input = new Person(null, "", "1509 Culver St", "Culver", "97451", "841", "a@b.com");
+        when(personRepository.findByName(any(), any())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.create(input))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("Le prénom et le nom doivent être renseignés");
+
+        verify(personRepository).findByName(null, "");
+        verify(personRepository, never()).add(any());
+        verifyNoMoreInteractions(personRepository);
+    }
+
+    @Test
+    void create_shouldThrowBadRequestWhenAddressMissing() {
+        Person input = new Person("A", "B", null, "Culver", "97451", "841", "a@b.com");
+        when(personRepository.findByName(any(), any())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.create(input))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("L'adresse doit être renseignée.");
+
+        verify(personRepository).findByName("A", "B");
+        verify(personRepository, never()).add(any());
+        verifyNoMoreInteractions(personRepository);
+    }
+
+    @Test
+    void create_shouldThrowBadRequestWhenCityOrZipMissing() {
+        Person input = new Person("A", "B", "addr", null, "", "841", "a@b.com");
+        when(personRepository.findByName(any(), any())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.create(input))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("La ville et le code postal doivent être renseignés.");
+
+        verify(personRepository).findByName("A", "B");
+        verify(personRepository, never()).add(any());
+        verifyNoMoreInteractions(personRepository);
+    }
+
+    @Test
+    void create_shouldThrowBadRequestWhenPhoneMissing() {
+        Person input = new Person("A", "B", "addr", "Culver", "97451", "", "a@b.com");
+        when(personRepository.findByName(any(), any())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.create(input))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("Le numéro de téléphone doit être renseigné.");
+
+        verify(personRepository).findByName("A", "B");
+        verify(personRepository, never()).add(any());
+        verifyNoMoreInteractions(personRepository);
+    }
+
+    @Test
+    void create_shouldThrowBadRequestWhenEmailMissing() {
+        Person input = new Person("A", "B", "addr", "Culver", "97451", "841", " ");
+        when(personRepository.findByName(any(), any())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.create(input))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("L'email doit être renseigné");
+
+        verify(personRepository).findByName("A", "B");
+        verify(personRepository, never()).add(any());
+        verifyNoMoreInteractions(personRepository);
+    }
+
+    @Test
     void update_shouldReturnTrueWhenRepositoryUpdates() {
-        // Arrange
         Person updated = new Person("John", "Boyd", "NEW", "Culver", "97451", "999", "new@email.com");
         when(personRepository.update(updated)).thenReturn(true);
 
-        // Act
         boolean result = service.update(updated);
 
-        // Assert
         assertThat(result).isTrue();
         verify(personRepository).update(updated);
         verifyNoMoreInteractions(personRepository);
     }
 
     @Test
-    void update_shouldReturnFalseWhenPersonNotFound() {
-        // Arrange
-        Person updated = new Person("X", "Y", "NEW", "Culver", "97451", "999", "new@email.com");
-        when(personRepository.update(updated)).thenReturn(false);
+    void update_shouldThrowBadRequestWhenAddressMissing() {
+        Person updated = new Person("A", "B", "", "Culver", "97451", "999", "a@b.com");
 
-        // Act
-        boolean result = service.update(updated);
+        assertThatThrownBy(() -> service.update(updated))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("L'adresse doit être renseignée.");
 
-        // Assert
-        assertThat(result).isFalse();
-        verify(personRepository).update(updated);
+        verify(personRepository, never()).update(any());
+        verifyNoMoreInteractions(personRepository);
+    }
+
+    @Test
+    void update_shouldThrowBadRequestWhenCityOrZipMissing() {
+        Person updated = new Person("A", "B", "addr", null, "", "999", "a@b.com");
+
+        assertThatThrownBy(() -> service.update(updated))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("La ville et le code postal doivent être renseignés.");
+
+        verify(personRepository, never()).update(any());
+        verifyNoMoreInteractions(personRepository);
+    }
+
+    @Test
+    void update_shouldThrowBadRequestWhenPhoneMissing() {
+        Person updated = new Person("A", "B", "addr", "Culver", "97451", " ", "a@b.com");
+
+        assertThatThrownBy(() -> service.update(updated))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("Le numéro de téléphone doit être renseigné.");
+
+        verify(personRepository, never()).update(any());
+        verifyNoMoreInteractions(personRepository);
+    }
+
+    @Test
+    void update_shouldThrowBadRequestWhenEmailMissing() {
+        Person updated = new Person("A", "B", "addr", "Culver", "97451", "999", null);
+
+        assertThatThrownBy(() -> service.update(updated))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("L'email doit être renseigné");
+
+        verify(personRepository, never()).update(any());
         verifyNoMoreInteractions(personRepository);
     }
 
     @Test
     void delete_shouldReturnTrueWhenRepositoryDeletes() {
-        // Arrange
         when(personRepository.delete("John", "Boyd")).thenReturn(true);
 
-        // Act
         boolean result = service.delete("John", "Boyd");
 
-        // Assert
         assertThat(result).isTrue();
         verify(personRepository).delete("John", "Boyd");
         verifyNoMoreInteractions(personRepository);
@@ -86,13 +196,10 @@ class PersonCrudServiceImplTest {
 
     @Test
     void delete_shouldReturnFalseWhenPersonNotFound() {
-        // Arrange
         when(personRepository.delete("X", "Y")).thenReturn(false);
 
-        // Act
         boolean result = service.delete("X", "Y");
 
-        // Assert
         assertThat(result).isFalse();
         verify(personRepository).delete("X", "Y");
         verifyNoMoreInteractions(personRepository);

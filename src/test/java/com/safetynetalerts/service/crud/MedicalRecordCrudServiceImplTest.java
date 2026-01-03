@@ -1,6 +1,8 @@
 package com.safetynetalerts.service.crud;
 
 import com.safetynetalerts.model.MedicalRecord;
+import com.safetynetalerts.model.exception.BadRequestException;
+import com.safetynetalerts.model.exception.ConflictException;
 import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,17 +27,14 @@ class MedicalRecordCrudServiceImplTest {
 
     @Test
     void create_shouldDelegateToRepository() {
-        // Arrange
         MedicalRecord input = new MedicalRecord("John", "Boyd", "03/06/1984",
                 List.of("aznol:350mg"), List.of("nillacilan"));
 
         when(medicalRecordRepository.findByName("John", "Boyd")).thenReturn(Optional.empty());
         when(medicalRecordRepository.add(input)).thenReturn(input);
 
-        // Act
         MedicalRecord result = service.create(input);
 
-        // Assert
         assertThat(result).isSameAs(input);
         verify(medicalRecordRepository).findByName("John", "Boyd");
         verify(medicalRecordRepository, times(1)).add(input);
@@ -43,17 +42,62 @@ class MedicalRecordCrudServiceImplTest {
     }
 
     @Test
+    void create_shouldThrowConflictWhenRecordExists() {
+        MedicalRecord input = new MedicalRecord("John", "Boyd", "03/06/1984",
+                List.of(), List.of());
+
+        when(medicalRecordRepository.findByName("John", "Boyd")).thenReturn(Optional.of(input));
+
+        assertThatThrownBy(() -> service.create(input))
+                .isInstanceOf(ConflictException.class)
+                .hasMessage("Un dossier médical a déjà été créé pour cette personne");
+
+        verify(medicalRecordRepository).findByName("John", "Boyd");
+        verify(medicalRecordRepository, never()).add(any());
+        verifyNoMoreInteractions(medicalRecordRepository);
+    }
+
+    @Test
+    void create_shouldThrowBadRequestWhenNameMissing() {
+        MedicalRecord input = new MedicalRecord(null, " ", "03/06/1984",
+                List.of(), List.of());
+
+        when(medicalRecordRepository.findByName(any(), any())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.create(input))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("Le prénom et le nom doivent être renseignés");
+
+        verify(medicalRecordRepository).findByName(null, " ");
+        verify(medicalRecordRepository, never()).add(any());
+        verifyNoMoreInteractions(medicalRecordRepository);
+    }
+
+    @Test
+    void create_shouldThrowBadRequestWhenBirthdateMissing() {
+        MedicalRecord input = new MedicalRecord("A", "B", " ",
+                List.of(), List.of());
+
+        when(medicalRecordRepository.findByName(any(), any())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.create(input))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("La date de naissance doit être renseignée");
+
+        verify(medicalRecordRepository).findByName("A", "B");
+        verify(medicalRecordRepository, never()).add(any());
+        verifyNoMoreInteractions(medicalRecordRepository);
+    }
+
+    @Test
     void update_shouldReturnTrueWhenRepositoryUpdates() {
-        // Arrange
         MedicalRecord updated = new MedicalRecord("John", "Boyd", "03/06/1984",
                 List.of("new:10mg"), List.of());
 
         when(medicalRecordRepository.update(updated)).thenReturn(true);
 
-        // Act
         boolean result = service.update(updated);
 
-        // Assert
         assertThat(result).isTrue();
         verify(medicalRecordRepository).update(updated);
         verifyNoMoreInteractions(medicalRecordRepository);
@@ -61,30 +105,37 @@ class MedicalRecordCrudServiceImplTest {
 
     @Test
     void update_shouldReturnFalseWhenRecordNotFound() {
-        // Arrange
         MedicalRecord updated = new MedicalRecord("X", "Y", "01/01/2000",
                 List.of(), List.of());
 
         when(medicalRecordRepository.update(updated)).thenReturn(false);
 
-        // Act
         boolean result = service.update(updated);
 
-        // Assert
         assertThat(result).isFalse();
         verify(medicalRecordRepository).update(updated);
         verifyNoMoreInteractions(medicalRecordRepository);
     }
 
     @Test
+    void update_shouldThrowBadRequestWhenBirthdateMissing() {
+        MedicalRecord updated = new MedicalRecord("A", "B", null,
+                List.of(), List.of());
+
+        assertThatThrownBy(() -> service.update(updated))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("La date de naissance doit être renseignée");
+
+        verify(medicalRecordRepository, never()).update(any());
+        verifyNoMoreInteractions(medicalRecordRepository);
+    }
+
+    @Test
     void delete_shouldReturnTrueWhenRepositoryDeletes() {
-        // Arrange
         when(medicalRecordRepository.delete("John", "Boyd")).thenReturn(true);
 
-        // Act
         boolean result = service.delete("John", "Boyd");
 
-        // Assert
         assertThat(result).isTrue();
         verify(medicalRecordRepository).delete("John", "Boyd");
         verifyNoMoreInteractions(medicalRecordRepository);
@@ -92,13 +143,10 @@ class MedicalRecordCrudServiceImplTest {
 
     @Test
     void delete_shouldReturnFalseWhenRecordNotFound() {
-        // Arrange
         when(medicalRecordRepository.delete("X", "Y")).thenReturn(false);
 
-        // Act
         boolean result = service.delete("X", "Y");
 
-        // Assert
         assertThat(result).isFalse();
         verify(medicalRecordRepository).delete("X", "Y");
         verifyNoMoreInteractions(medicalRecordRepository);
