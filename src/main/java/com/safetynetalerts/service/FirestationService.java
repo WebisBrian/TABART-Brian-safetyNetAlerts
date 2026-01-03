@@ -15,5 +15,5 @@ public interface FirestationService {
      * @return un objet contenant la liste des personnes couvertes et les statistiques
      *         (nombre d'adultes et d'enfants)
      */
-    FirestationCoverageDto getCoverageByStation(int stationNumber);
+    FirestationCoverageDto getCoverageByStation(Integer stationNumber);
 }

@@ -5,6 +5,7 @@ import com.safetynetalerts.dto.childalert.ChildAlertHouseholdMemberDto;
 import com.safetynetalerts.dto.childalert.ChildAlertResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
+import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
 import com.safetynetalerts.repository.person.PersonRepository;
 import com.safetynetalerts.service.util.AgeService;
@@ -34,6 +35,10 @@ public class ChildAlertServiceImpl implements ChildAlertService {
 
     @Override
     public ChildAlertResponseDto getChildrenByAddress(String address) {
+
+        if (address == null || address.isBlank()) {
+            throw new BadRequestException("L'adresse doit être renseignée.");
+        }
 
         List<Person> allPersons = personRepository.findAll();
         List<MedicalRecord> allMedicalRecords = medicalRecordRepository.findAll();

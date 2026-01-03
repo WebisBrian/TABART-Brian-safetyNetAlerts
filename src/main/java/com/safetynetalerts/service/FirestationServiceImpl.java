@@ -5,6 +5,7 @@ import com.safetynetalerts.dto.firestation.FirestationCoverageDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
+import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.repository.firestation.FirestationRepository;
 import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
 import com.safetynetalerts.repository.person.PersonRepository;
@@ -34,7 +35,11 @@ public class FirestationServiceImpl implements FirestationService {
     }
 
     @Override
-    public FirestationCoverageDto getCoverageByStation(int stationNumber) {
+    public FirestationCoverageDto getCoverageByStation(Integer stationNumber) {
+
+        if (stationNumber == null || stationNumber < 0) {
+            throw new BadRequestException("Le numéro de caserne doit être un entier positif.");
+        }
 
         List<Firestation> firestations = firestationRepository.findAll();
 
