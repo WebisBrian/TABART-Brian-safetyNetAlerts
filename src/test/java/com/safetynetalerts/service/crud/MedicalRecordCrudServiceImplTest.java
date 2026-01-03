@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -28,6 +29,7 @@ class MedicalRecordCrudServiceImplTest {
         MedicalRecord input = new MedicalRecord("John", "Boyd", "03/06/1984",
                 List.of("aznol:350mg"), List.of("nillacilan"));
 
+        when(medicalRecordRepository.findByName("John", "Boyd")).thenReturn(Optional.empty());
         when(medicalRecordRepository.add(input)).thenReturn(input);
 
         // Act
@@ -35,7 +37,8 @@ class MedicalRecordCrudServiceImplTest {
 
         // Assert
         assertThat(result).isSameAs(input);
-        verify(medicalRecordRepository).add(input);
+        verify(medicalRecordRepository).findByName("John", "Boyd");
+        verify(medicalRecordRepository, times(1)).add(input);
         verifyNoMoreInteractions(medicalRecordRepository);
     }
 

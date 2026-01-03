@@ -59,7 +59,7 @@ class MedicalRecordCrudControllerTest {
         mockMvc.perform(put("/medicalRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(record)))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(medicalRecordService).update(any(MedicalRecord.class));
     }
@@ -72,7 +72,7 @@ class MedicalRecordCrudControllerTest {
         mockMvc.perform(delete("/medicalRecord")
                         .param("firstName", "John")
                         .param("lastName", "Boyd"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(medicalRecordService).delete("John", "Boyd");
     }
