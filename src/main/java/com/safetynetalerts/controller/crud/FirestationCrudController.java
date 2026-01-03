@@ -1,5 +1,8 @@
 package com.safetynetalerts.controller.crud;
 
+import com.safetynetalerts.dto.crud.firestation.FirestationMapper;
+import com.safetynetalerts.dto.crud.firestation.FirestationResponseDto;
+import com.safetynetalerts.dto.crud.firestation.FirestationUpsertRequestDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.service.crud.FirestationCrudService;
 import org.slf4j.Logger;
@@ -21,22 +24,28 @@ public class FirestationCrudController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Firestation> create(@RequestBody Firestation firestation) {
-        logger.info("POST /firestation address={} station={}", firestation.getAddress(), firestation.getStation());
-        return ResponseEntity.ok(service.create(firestation));
+    public ResponseEntity<FirestationResponseDto> create(@RequestBody FirestationUpsertRequestDto body) {
+        logger.info("POST /firestation address={} station={}", body.getAddress(), body.getStation());
+        Firestation toCreate = FirestationMapper.toModel(body);
+        Firestation created = service.create(toCreate);
+
+        FirestationResponseDto response = FirestationMapper.toDto(created);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@RequestBody Firestation firestation) {
-        logger.info("PUT /firestation address={} station={}", firestation.getAddress(), firestation.getStation());
-        boolean updated = service.update(firestation);
-        return updated ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    public ResponseEntity<Void> update(@RequestBody FirestationUpsertRequestDto body) {
+        logger.info("PUT /firestation address={} station={}", body.getAddress(), body.getStation());
+        Firestation toUpdate = FirestationMapper.toModel(body);
+
+        boolean updated = service.update(toUpdate);
+
+        return updated ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(@RequestParam String address) {
         logger.info("DELETE /firestation address={}", address);
         boolean deleted = service.delete(address);

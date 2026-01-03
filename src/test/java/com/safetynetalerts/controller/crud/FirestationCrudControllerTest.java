@@ -15,7 +15,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-
 @WebMvcTest(FirestationCrudController.class)
 class FirestationCrudControllerTest {
 
@@ -37,7 +36,7 @@ class FirestationCrudControllerTest {
         mockMvc.perform(post("/firestation")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(fs)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         verify(firestationService).create(any(Firestation.class));
     }
