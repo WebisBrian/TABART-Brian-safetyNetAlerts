@@ -50,7 +50,7 @@ class MedicalRecordCrudServiceImplTest {
 
         assertThatThrownBy(() -> service.create(input))
                 .isInstanceOf(ConflictException.class)
-                .hasMessage("Un dossier médical a déjà été créé pour cette personne");
+                .hasMessage("Un dossier médical a déjà été créé pour cette personne.");
 
         verify(medicalRecordRepository).findByName("John", "Boyd");
         verify(medicalRecordRepository, never()).add(any());
@@ -66,7 +66,7 @@ class MedicalRecordCrudServiceImplTest {
 
         assertThatThrownBy(() -> service.create(input))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessage("Le prénom et le nom doivent être renseignés");
+                .hasMessage("Le prénom et le nom doivent être renseignés.");
 
         verify(medicalRecordRepository).findByName(null, " ");
         verify(medicalRecordRepository, never()).add(any());
@@ -82,7 +82,7 @@ class MedicalRecordCrudServiceImplTest {
 
         assertThatThrownBy(() -> service.create(input))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessage("La date de naissance doit être renseignée");
+                .hasMessage("La date de naissance doit être renseignée.");
 
         verify(medicalRecordRepository).findByName("A", "B");
         verify(medicalRecordRepository, never()).add(any());
@@ -124,7 +124,7 @@ class MedicalRecordCrudServiceImplTest {
 
         assertThatThrownBy(() -> service.update(updated))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessage("La date de naissance doit être renseignée");
+                .hasMessage("La date de naissance doit être renseignée.");
 
         verify(medicalRecordRepository, never()).update(any());
         verifyNoMoreInteractions(medicalRecordRepository);

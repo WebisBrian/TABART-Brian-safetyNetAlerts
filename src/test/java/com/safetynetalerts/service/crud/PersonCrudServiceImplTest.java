@@ -60,7 +60,7 @@ class PersonCrudServiceImplTest {
 
         assertThatThrownBy(() -> service.create(input))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessage("Le prénom et le nom doivent être renseignés");
+                .hasMessage("Le prénom et le nom doivent être renseignés.");
 
         verify(personRepository).findByName(null, "");
         verify(personRepository, never()).add(any());
@@ -116,7 +116,7 @@ class PersonCrudServiceImplTest {
 
         assertThatThrownBy(() -> service.create(input))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessage("L'email doit être renseigné");
+                .hasMessage("L'email doit être renseigné.");
 
         verify(personRepository).findByName("A", "B");
         verify(personRepository, never()).add(any());
@@ -177,7 +177,7 @@ class PersonCrudServiceImplTest {
 
         assertThatThrownBy(() -> service.update(updated))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessage("L'email doit être renseigné");
+                .hasMessage("L'email doit être renseigné.");
 
         verify(personRepository, never()).update(any());
         verifyNoMoreInteractions(personRepository);

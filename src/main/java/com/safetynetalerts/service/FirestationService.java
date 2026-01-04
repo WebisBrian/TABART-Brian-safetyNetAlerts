@@ -8,12 +8,13 @@ import com.safetynetalerts.dto.firestation.FirestationCoverageDto;
  * pour l'endpoint /firestation.
  */
 public interface FirestationService {
+
     /**
      * Renvoie les informations de couverture pour une caserne donnée.
      *
      * @param stationNumber numéro de la caserne
      * @return un objet contenant la liste des personnes couvertes et les statistiques
-     *         (nombre d'adultes et d'enfants)
+     * (nombre d'adultes et d'enfants)
      */
     FirestationCoverageDto getCoverageByStation(Integer stationNumber);
 }

@@ -79,6 +79,7 @@ public class ChildAlertServiceImpl implements ChildAlertService {
         if (children.isEmpty()) {
             return new ChildAlertResponseDto(List.of(), List.of());
         }
+
         return new ChildAlertResponseDto(children, otherHouseholdMembers);
     }
 }

@@ -48,7 +48,7 @@ public class AgeService {
     /**
      * Renvoie l'âge d'une personne si son dossier médical existe, sinon OptionalInt.empty().
      *
-     * @param person personne dont on veut l'âge
+     * @param person         personne dont on veut l'âge
      * @param medicalRecords liste complète des dossiers médicaux
      * @return OptionalInt contenant l'âge ou vide si aucun dossier trouvé
      */
@@ -66,14 +66,14 @@ public class AgeService {
     }
 
     /**
-     * Détermine si une personne est un enfant selon la règle métier (ici: < 18 ans).
+     * Détermine si une personne est un enfant selon la règle métier (ici < 18 ans).
      *
-     * @param person personne à vérifier
+     * @param person         personne à vérifier
      * @param medicalRecords liste complète des dossiers médicaux
      * @return true si l'âge est < 18, sinon false
      */
     public boolean isChild(Person person, List<MedicalRecord> medicalRecords) {
-        // Si pas de dossier médical, on considère "pas enfant" (évite faux positifs)
+        // Si pas de dossier médical, on considère "pas enfant" (évite faux positifs).
         return getAge(person, medicalRecords).orElse(Integer.MAX_VALUE) < 18;
     }
 }
