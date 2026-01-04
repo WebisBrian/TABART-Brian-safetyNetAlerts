@@ -33,6 +33,7 @@ class FirestationCrudControllerTest {
 
         when(firestationService.create(any(Firestation.class))).thenReturn(fs);
 
+        // Act + Assert
         mockMvc.perform(post("/firestation")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(fs)))
@@ -47,6 +48,7 @@ class FirestationCrudControllerTest {
 
         when(firestationService.update(any(Firestation.class))).thenReturn(true);
 
+        // Act + Assert
         mockMvc.perform(put("/firestation")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(fs)))
@@ -59,6 +61,7 @@ class FirestationCrudControllerTest {
     void deleteFirestation_shouldDeleteByAddress() throws Exception {
         when(firestationService.delete("1509 Culver St")).thenReturn(true);
 
+        // Act + Assert
         mockMvc.perform(delete("/firestation")
                         .param("address", "1509 Culver St"))
                 .andExpect(status().isNoContent());

@@ -33,6 +33,7 @@ class PersonCrudControllerTest {
 
         when(personService.create(any(Person.class))).thenReturn(person);
 
+        // Act + Assert
         mockMvc.perform(post("/person")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(person)))
@@ -48,6 +49,7 @@ class PersonCrudControllerTest {
 
         when(personService.update(any(Person.class))).thenReturn(true);
 
+        // Act + Assert
         mockMvc.perform(put("/person")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(person)))
@@ -60,6 +62,7 @@ class PersonCrudControllerTest {
     void deletePerson_shouldDeletePerson() throws Exception {
         when(personService.delete("John", "Boyd")).thenReturn(true);
 
+        // Act + Assert
         mockMvc.perform(delete("/person")
                         .param("firstName", "John")
                         .param("lastName", "Boyd"))

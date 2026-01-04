@@ -29,7 +29,7 @@ class PhoneAlertControllerTest {
 
     @Test
     void getPhones_shouldReturnPhonesForStation() throws Exception {
-        // Arrange
+
         when(phoneAlertService.getPhonesByStation(1))
                 .thenReturn(List.of("841-874-6512", "841-874-9845"));
 
@@ -43,7 +43,7 @@ class PhoneAlertControllerTest {
 
     @Test
     void getPhones_shouldReturnEmptyListForUnknownStation() throws Exception {
-        // Arrange
+
         when(phoneAlertService.getPhonesByStation(3))
                 .thenReturn(List.of());
 

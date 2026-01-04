@@ -31,14 +31,14 @@ class ChildAlertControllerTest {
 
     @Test
     void getChildAlert_shouldReturnAlertResponseForAddress() throws Exception {
-        // ARRANGE
+
         ChildAlertChildDto tenley = new ChildAlertChildDto("Tenley", "Boyd", 18);
         ChildAlertHouseholdMemberDto john = new ChildAlertHouseholdMemberDto("John", "Boyd", 41, "841-874-6512");
         ChildAlertResponseDto alert = new ChildAlertResponseDto(List.of(tenley), List.of(john));
 
         when(childAlertService.getChildrenByAddress("1509 Culver St")).thenReturn(alert);
 
-        // ACT + ASSERT
+        // Act + Assert
         mockMvc.perform(get("/childAlert").param("address", "1509 Culver St"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -50,12 +50,12 @@ class ChildAlertControllerTest {
 
     @Test
     void getChildAlert_shouldReturnEmptyAlertResponseForAddressWithoutChildren() throws Exception {
-        // ARRANGE
+
         ChildAlertResponseDto alert = new ChildAlertResponseDto(List.of(), List.of());
 
         when(childAlertService.getChildrenByAddress("29 15th St")).thenReturn(alert);
 
-        // ACT + ASSERT
+        // Act + Assert
         mockMvc.perform(get("/childAlert").param("address", "29 15th St"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

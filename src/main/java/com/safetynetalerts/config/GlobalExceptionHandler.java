@@ -23,17 +23,22 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    private static final String MSG_BAD_REQUEST = "400 BAD_REQUEST path={} message={}";
+    private static final String MSG_NOT_FOUND = "404 NOT_FOUND path={} message={}";
+    private static final String MSG_CONFLICT = "409 CONFLICT path={} message={}";
+    private static final String MSG_INTERNAL_SERVER_ERROR = "500 INTERNAL_SERVER_ERROR path={} message={}";
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ProblemDetail> catchAny(Exception e, HttpServletRequest req) {
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        logger.error("500 INTERNAL_SERVER_ERROR path={} message={}", req.getRequestURI(), e.getMessage(), e);
+        logger.error(MSG_INTERNAL_SERVER_ERROR, req.getRequestURI(), e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(pd);
     }
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ProblemDetail> handleBadRequest(BadRequestException e, HttpServletRequest req) {
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        logger.warn("400 BAD_REQUEST path={} message={}", req.getRequestURI(), e.getMessage());
+        logger.warn(MSG_BAD_REQUEST, req.getRequestURI(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
     }
 
@@ -46,7 +51,7 @@ public class GlobalExceptionHandler {
             detail += ": " + e.getMessage();
         }
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detail);
-        logger.warn("400 BAD_REQUEST path={} message={}", req.getRequestURI(), detail);
+        logger.warn(MSG_BAD_REQUEST, req.getRequestURI(), detail);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
     }
 
@@ -57,7 +62,7 @@ public class GlobalExceptionHandler {
         String expected = e.getRequiredType() != null ? e.getRequiredType().getSimpleName() : "valeur attendue";
         String detail = "Paramètre invalide '" + param + "': valeur=" + (value == null ? "null" : ("\"" + value + "\"")) + ", attendu=" + expected;
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detail);
-        logger.warn("400 BAD_REQUEST path={} message={}", req.getRequestURI(), detail);
+        logger.warn(MSG_BAD_REQUEST, req.getRequestURI(), detail);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
     }
 
@@ -65,7 +70,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProblemDetail> handleMissingParam(MissingServletRequestParameterException e, HttpServletRequest req) {
         String detail = "Paramètre manquant: " + e.getParameterName();
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detail);
-        logger.warn("400 BAD_REQUEST path={} message={}", req.getRequestURI(), detail);
+        logger.warn(MSG_BAD_REQUEST, req.getRequestURI(), detail);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
     }
 
@@ -75,21 +80,21 @@ public class GlobalExceptionHandler {
                 .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
                 .collect(Collectors.joining("; "));
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detail);
-        logger.warn("400 BAD_REQUEST path={} message={}", req.getRequestURI(), detail);
+        logger.warn(MSG_BAD_REQUEST, req.getRequestURI(), detail);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ProblemDetail> handleNotFound(NotFoundException e, HttpServletRequest req) {
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-        logger.warn("404 NOT_FOUND path={} message={}", req.getRequestURI(), e.getMessage());
+        logger.warn(MSG_NOT_FOUND, req.getRequestURI(), e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(pd);
     }
 
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ProblemDetail> handleConflict(ConflictException e, HttpServletRequest req) {
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
-        logger.warn("409 CONFLICT path={} message={}", req.getRequestURI(), e.getMessage());
+        logger.warn(MSG_CONFLICT, req.getRequestURI(), e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(pd);
     }
 }

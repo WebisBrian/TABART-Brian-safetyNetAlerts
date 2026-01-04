@@ -38,6 +38,7 @@ class MedicalRecordCrudControllerTest {
         when(medicalRecordService.create(any(MedicalRecord.class)))
                 .thenReturn(record);
 
+        // Act + Assert
         mockMvc.perform(post("/medicalRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(record)))
@@ -56,6 +57,7 @@ class MedicalRecordCrudControllerTest {
         when(medicalRecordService.update(any(MedicalRecord.class)))
                 .thenReturn(true);
 
+        // Act + Assert
         mockMvc.perform(put("/medicalRecord")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(record)))
@@ -69,6 +71,7 @@ class MedicalRecordCrudControllerTest {
         when(medicalRecordService.delete("John", "Boyd"))
                 .thenReturn(true);
 
+        // Act + Assert
         mockMvc.perform(delete("/medicalRecord")
                         .param("firstName", "John")
                         .param("lastName", "Boyd"))

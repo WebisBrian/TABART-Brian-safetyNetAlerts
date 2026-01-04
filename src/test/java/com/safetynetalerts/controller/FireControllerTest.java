@@ -31,11 +31,11 @@ class FireControllerTest {
 
     @Test
     void getFireInfoByAddress_shouldReturnFireInfoForKnownAddress() throws Exception {
-        // Arrange
+
         FireResidentDto john = new FireResidentDto(
                 "John",
                 "Boyd",
-                "841-874-6512", // si ton champ DTO s'appelle phoneNumber c'est OK (constructeur String)
+                "841-874-6512",
                 41,
                 List.of("aznol:350mg"),
                 List.of("nillacilan")
@@ -61,7 +61,7 @@ class FireControllerTest {
 
     @Test
     void getFireInfoByAddress_shouldReturnEmptyObjectForUnknownAddress() throws Exception {
-        // Arrange
+
         FireResponseDto empty = new FireResponseDto(0, List.of());
 
         when(fireService.getFireInfoByAddress("UNKNOWN"))

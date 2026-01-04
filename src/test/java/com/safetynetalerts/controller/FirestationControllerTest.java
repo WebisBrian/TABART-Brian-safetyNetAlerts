@@ -34,13 +34,13 @@ class FirestationControllerTest {
 
     @Test
     void getCoverage_shouldReturnCoverageForStation() throws Exception {
-        // ARRANGE
+
         CoveredPersonDto john = new CoveredPersonDto("John", "Boyd", "1509 Culver St", "841-874-6512");
         FirestationCoverageDto coverage = new FirestationCoverageDto(List.of(john), 1, 0);
 
         when(firestationService.getCoverageByStation(1)).thenReturn(coverage);
 
-        // ACT + ASSERT
+        // Act + Assert
         mockMvc.perform(get("/firestation").param("stationNumber", "1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.numberOfAdults").value(1))
@@ -50,12 +50,12 @@ class FirestationControllerTest {
 
     @Test
     void getCoverage_shouldReturnEmptyForUnknowStation() throws Exception {
-        // ARRANGE
+
         FirestationCoverageDto emptyCoverage = new FirestationCoverageDto(List.of(), 0, 0);
 
         when(firestationService.getCoverageByStation(2)).thenReturn(emptyCoverage);
 
-        // ACT + ASSERT
+        // Act + Assert
         mockMvc.perform(get("/firestation").param("stationNumber", "2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.persons").isEmpty())

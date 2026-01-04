@@ -30,6 +30,7 @@ class CommunityEmailControllerTest {
         when(communityEmailService.getEmailsByCity("Culver"))
                 .thenReturn(new CommunityEmailResponseDto(List.of("a@email.com")));
 
+        // Act + Assert
         mockMvc.perform(get("/communityEmail").param("city", "Culver"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
