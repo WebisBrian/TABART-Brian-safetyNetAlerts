@@ -10,6 +10,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -40,50 +42,100 @@ public class FirestationRepositoryPersistenceTest {
     }
 
     @Test
-    void updateFirestation_shouldPersistAfterRestart() throws Exception {
-        // Arrange
+    void findByAddress_isCaseInsensitive_and_returnsFirst() throws Exception {
         Path dataFile = writeMinimalJson(tempDir.resolve("data.json"));
+        SafetyNetStore store = newStore(dataFile);
+        InMemoryFirestationRepository repo = new InMemoryFirestationRepository(store);
 
-        // "Démarrage 1"
-        SafetyNetStore store1 = newStore(dataFile);
-        InMemoryFirestationRepository repo1 = new InMemoryFirestationRepository(store1);
+        repo.add(new Firestation("1509 Culver St", 1));
+        repo.add(new Firestation("1509 culver st", 2)); // same address different case
 
-        // on ajoute un mapping adresse -> station
-        repo1.add(new Firestation("1509 Culver St", 1));
+        Optional<Firestation> opt = repo.findByAddress("1509 CULVER ST");
 
-        // Act : update station pour la même adresse
-        boolean updated = repo1.update(new Firestation("1509 Culver St", 3));
-
-        // "Redémarrage" : on recrée store + repo en relisant le fichier
-        SafetyNetStore store2 = newStore(dataFile);
-        InMemoryFirestationRepository repo2 = new InMemoryFirestationRepository(store2);
-
-        // Assert
-        assertThat(updated).isTrue();
-        assertThat(repo2.findByAddress("1509 Culver St")).isPresent();
-        assertThat(repo2.findByAddress("1509 Culver St").get().getStation()).isEqualTo(3);
+        assertThat(opt).isPresent();
+        assertThat(opt.get().getStation()).isEqualTo(1); // first inserted kept
     }
 
     @Test
-    void deleteFirestation_shouldPersistAfterRestart() throws Exception {
-        // Arrange
+    void findByAddressAndByStation_returnsCorrectEntry_when_multiple() throws Exception {
         Path dataFile = writeMinimalJson(tempDir.resolve("data.json"));
+        SafetyNetStore store = newStore(dataFile);
+        InMemoryFirestationRepository repo = new InMemoryFirestationRepository(store);
 
+        repo.add(new Firestation("A St", 1));
+        repo.add(new Firestation("A St", 3));
+        repo.add(new Firestation("B St", 2));
+
+        Optional<Firestation> opt1 = repo.findByAddressAndByStation("A St", 3);
+        Optional<Firestation> opt2 = repo.findByAddressAndByStation("A St", 99);
+
+        assertThat(opt1).isPresent();
+        assertThat(opt1.get().getStation()).isEqualTo(3);
+        assertThat(opt2).isEmpty();
+    }
+
+    @Test
+    void update_shouldModifyOnlyFirstMatching_and_persistAfterRestart() throws Exception {
+        Path dataFile = writeMinimalJson(tempDir.resolve("data.json"));
         SafetyNetStore store1 = newStore(dataFile);
         InMemoryFirestationRepository repo1 = new InMemoryFirestationRepository(store1);
 
-        repo1.add(new Firestation("1509 Culver St", 1));
+        repo1.add(new Firestation("Shared Addr", 1));
+        repo1.add(new Firestation("Shared Addr", 2));
 
-        // Act : delete mapping
-        boolean deleted = repo1.deleteByAddress("1509 Culver St");
+        boolean updated = repo1.update(new Firestation("Shared Addr", 9));
+        assertThat(updated).isTrue();
 
-        // Restart
         SafetyNetStore store2 = newStore(dataFile);
         InMemoryFirestationRepository repo2 = new InMemoryFirestationRepository(store2);
 
-        // Assert
+        List<Firestation> all = repo2.findAll();
+        assertThat(all).isNotEmpty();
+
+        List<Firestation> matches = all.stream()
+                .filter(fs -> fs.getAddress().equalsIgnoreCase("Shared Addr"))
+                .toList();
+
+        assertThat(matches).hasSizeGreaterThanOrEqualTo(1);
+
+        assertThat(matches.get(0).getStation()).isEqualTo(9);
+
+        if (matches.size() > 1) {
+            assertThat(matches.get(1).getStation()).isEqualTo(2);
+        }
+    }
+
+    @Test
+    void deleteByAddress_shouldRemoveAllMatching_and_persist() throws Exception {
+        Path dataFile = writeMinimalJson(tempDir.resolve("data.json"));
+        SafetyNetStore store1 = newStore(dataFile);
+        InMemoryFirestationRepository repo1 = new InMemoryFirestationRepository(store1);
+
+        repo1.add(new Firestation("ToRemove", 1));
+        repo1.add(new Firestation("ToRemove", 2));
+        repo1.add(new Firestation("Keep", 5));
+
+        boolean deleted = repo1.deleteByAddress("toremove");
         assertThat(deleted).isTrue();
-        assertThat(repo2.findByAddress("1509 Culver St")).isEmpty();
-        assertThat(repo2.findAll()).isEmpty();
+
+        SafetyNetStore store2 = newStore(dataFile);
+        InMemoryFirestationRepository repo2 = new InMemoryFirestationRepository(store2);
+
+        assertThat(repo2.findByAddress("ToRemove")).isEmpty();
+
+        assertThat(repo2.findByAddress("Keep")).isPresent();
+    }
+
+    @Test
+    void findAll_returnsAll_insertedEntries() throws Exception {
+        Path dataFile = writeMinimalJson(tempDir.resolve("data.json"));
+        SafetyNetStore store = newStore(dataFile);
+        InMemoryFirestationRepository repo = new InMemoryFirestationRepository(store);
+
+        repo.add(new Firestation("One", 1));
+        repo.add(new Firestation("Two", 2));
+
+        List<Firestation> all = repo.findAll();
+        assertThat(all).extracting(Firestation::getAddress).contains("One", "Two");
     }
 }
