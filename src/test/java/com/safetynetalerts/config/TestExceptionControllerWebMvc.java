@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/test-exception")
-class TestExceptionControllerWebMvc sta {
+class TestExceptionControllerWebMvc {
 
     record Payload(String name) {}
 
