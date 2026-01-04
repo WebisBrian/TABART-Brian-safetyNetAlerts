@@ -30,7 +30,7 @@ class PhoneAlertServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Initialize data for test
+
         Firestation station1 = new Firestation("1509 Culver St", 1);
         Firestation station2 = new Firestation("29 15th St", 2);
 
@@ -40,7 +40,7 @@ class PhoneAlertServiceImplTest {
 
     @Test
     void getPhonesByStation_shouldReturnDistinctPhonesForKnownStation() {
-        // Arrange
+
         Person john = new Person("John", "Boyd", "1509 Culver St", "Culver",
                 "97451", "841-874-6512", "john@email.com");
         Person tenley = new Person("Tenley", "Boyd", "1509 Culver St", "Culver",

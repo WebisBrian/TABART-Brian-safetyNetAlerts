@@ -43,7 +43,8 @@ class FloodServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Firestations: station 1 covers two addresses, station 2 covers another one
+
+        // Firestations
         when(firestationRepository.findAll()).thenReturn(List.of(
                 new Firestation("1509 Culver St", 1),
                 new Firestation("29 15th St", 1),
@@ -74,7 +75,7 @@ class FloodServiceImplTest {
 
     @Test
     void getFloodInfoByStations_shouldReturnAddressesWithResidentsForGivenStations() {
-        // Arrange: stable ages via AgeService mock
+
         when(ageService.getAge(argThat(p -> p != null && "John".equals(p.getFirstName())), anyList()))
                 .thenReturn(OptionalInt.of(41));
         when(ageService.getAge(argThat(p -> p != null && "Tenley".equals(p.getFirstName())), anyList()))

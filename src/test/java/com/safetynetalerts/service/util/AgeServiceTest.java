@@ -14,7 +14,7 @@ import java.util.OptionalInt;
 import static org.assertj.core.api.Assertions.*;
 
 /**
- * Tests unitaires du AgeService.
+ * Tests unitaires pour AgeService.
  * Clock figée pour garantir des tests stables dans le temps.
  */
 class AgeServiceTest {
@@ -33,16 +33,16 @@ class AgeServiceTest {
 
     @Test
     void calculateAge_shouldReturnCorrectAge() {
-        // ACT
+        // Act
         int age = ageService.calculateAge("01/01/2000");
 
-        // ASSERT
+        // Assert
         assertThat(age).isEqualTo(25);
     }
 
     @Test
     void getAge_shouldReturnAgeWhenMedicalRecordExists() {
-        // ARRANGE
+
         Person person = new Person("John", "Boyd", "", "", "", "", "");
         MedicalRecord record = new MedicalRecord(
                 "John",
@@ -52,17 +52,17 @@ class AgeServiceTest {
                 List.of()
         );
 
-        // ACT
+        // Act
         OptionalInt age = ageService.getAge(person, List.of(record));
 
-        // ASSERT
+        // Assert
         assertThat(age).isPresent();
         assertThat(age.getAsInt()).isEqualTo(40);
     }
 
     @Test
     void isChild_shouldReturnTrueForChildAndFalseOtherwise() {
-        // ARRANGE
+
         Person child = new Person("Tenley", "Boyd", "", "", "", "", "");
         Person adult = new Person("John", "Boyd", "", "", "", "", "");
 
@@ -84,20 +84,20 @@ class AgeServiceTest {
 
         List<MedicalRecord> records = List.of(childRecord, adultRecord);
 
-        // ACT + ASSERT
+        // Act + Assert
         assertThat(ageService.isChild(child, records)).isTrue();
         assertThat(ageService.isChild(adult, records)).isFalse();
     }
 
     @Test
     void isChild_shouldReturnFalseWhenNoMedicalRecord() {
-        // ARRANGE
+
         Person unknown = new Person("Ghost", "Person", "", "", "", "", "");
 
-        // ACT
+        // Act
         boolean isChild = ageService.isChild(unknown, List.of());
 
-        // ASSERT
+        // Assert
         assertThat(isChild).isFalse();
     }
 }

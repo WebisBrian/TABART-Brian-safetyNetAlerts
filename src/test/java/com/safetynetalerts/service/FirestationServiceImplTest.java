@@ -63,7 +63,6 @@ class FirestationServiceImplTest {
                 new MedicalRecord("Other", "Person", "01/01/1999", List.of(), List.of())
         ));
 
-        // Ici, tu ne testes pas AgeService, donc tu le pilotes :
         when(ageService.isChild(any(Person.class), anyList())).thenReturn(false);
         when(ageService.isChild(argThat(p -> p.getFirstName().equals("Tenley")), anyList())).thenReturn(true);
 

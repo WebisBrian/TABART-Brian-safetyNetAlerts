@@ -56,17 +56,16 @@ class ChildAlertServiceImplTest {
 
     @Test
     void getChildrenByAddress_shouldReturnChildrenAndHouseholdMembersForAddressWithChildren() {
-        // ARRANGE
         when(ageService.getAge(argThat(p -> p != null && "Tenley".equals(p.getFirstName())), anyList()))
                 .thenReturn(OptionalInt.of(12));
 
         when(ageService.getAge(argThat(p -> p != null && "John".equals(p.getFirstName())), anyList()))
                 .thenReturn(OptionalInt.of(41));
 
-        // ACT
+        // Act
         ChildAlertResponseDto response = childAlertService.getChildrenByAddress("1509 Culver St");
 
-        // ASSERT
+        // Assert
         assertNotNull(response);
         assertThat(response.getChildren()).hasSize(1);
         assertThat(response.getOtherHouseholdMembers()).hasSize(1);
@@ -81,10 +80,10 @@ class ChildAlertServiceImplTest {
 
     @Test
     void getChildrenByAddress_shouldReturnEmptyListsForAddressWithoutChildren() {
-        // ACT
+        // Act
         ChildAlertResponseDto response = childAlertService.getChildrenByAddress("29 15th St");
 
-        // ASSERT
+        // Assert
         assertNotNull(response);
         assertTrue(response.getChildren().isEmpty());
         assertTrue(response.getOtherHouseholdMembers().isEmpty());

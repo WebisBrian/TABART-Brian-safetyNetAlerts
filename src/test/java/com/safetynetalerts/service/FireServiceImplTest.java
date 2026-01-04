@@ -41,7 +41,6 @@ class FireServiceImplTest {
 
     @Test
     void getFireInfoByAddress_shouldReturnStationAndResidentsForKnownAddress() {
-        // Arrange
         when(firestationRepository.findAll()).thenReturn(List.of(
                 new Firestation("1509 Culver St", 3),
                 new Firestation("29 15th St", 2)

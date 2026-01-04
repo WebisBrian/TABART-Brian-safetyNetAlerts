@@ -35,6 +35,7 @@ class PersonInfoServiceImplTest {
 
     @BeforeEach
     void setUp() {
+
         when(personRepository.findAll()).thenReturn(List.of(
                 new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "john@email.com"),
                 new Person("John", "Boyd", "Other Address", "Culver", "97451", "842", "john2@email.com"),
@@ -49,7 +50,7 @@ class PersonInfoServiceImplTest {
 
     @Test
     void getPersonInfo_shouldReturnAllMatchingPersons() {
-        // Arrange
+
         when(ageService.getAge(argThat(p -> p != null && "John".equals(p.getFirstName()) && "Boyd".equals(p.getLastName())), anyList()))
                 .thenReturn(OptionalInt.of(41));
 
@@ -62,6 +63,7 @@ class PersonInfoServiceImplTest {
 
     @Test
     void getPersonInfo_shouldReturnEmptyWhenNoMatch() {
+
         var res = service.getPersonInfoByLastName("X");
         assertThat(res.getPersons()).isEmpty();
     }
