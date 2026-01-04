@@ -62,7 +62,10 @@ public class SafetyNetData {
     // overrides
     @Override
     public String toString() {
-        return "SafetyNetData [persons=" + persons + ", firestations=" + firestations + ", medicalrecords=" + medicalRecords + "]";
+        return "SafetyNetData [persons=" + persons
+                + ", firestations=" + firestations
+                + ", medicalrecords=" + medicalRecords
+                + "]";
     }
 
     @Override

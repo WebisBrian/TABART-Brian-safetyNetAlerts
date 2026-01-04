@@ -10,7 +10,6 @@ import java.util.Optional;
 
 /**
  * Implémentation en mémoire des opérations Person.
- * - Le lock + la persistance sont gérés par SafetyNetStore.
  */
 @Repository
 public class InMemoryPersonRepository implements PersonRepository {

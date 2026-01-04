@@ -41,7 +41,6 @@ public class SafetyNetStore {
      * Ce choix privilégie la prévisibilité au détriment d’un léger coût
      * en performance.
      */
-
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
 
     /**
@@ -70,7 +69,7 @@ public class SafetyNetStore {
     @PostConstruct
     public void init() {
         long start = System.currentTimeMillis();
-        logger.info("Initializing store");
+        logger.info("Initialisation du SafetyNetStore (stockage des données en mémoire)");
         lock.writeLock().lock();
         try {
             // Chargement initial depuis le stockage (fichier JSON)
@@ -79,9 +78,9 @@ public class SafetyNetStore {
             int persons = data != null && data.getPersons() != null ? data.getPersons().size() : 0;
             int firestations = data.getFirestations() != null ? data.getFirestations().size() : 0;
             int medicalrecords = data.getMedicalRecords() != null ? data.getMedicalRecords().size() : 0;
-            logger.info("Initialized store with persons={}, firestations={}, medicalrecords={} ({} ms)", persons, firestations, medicalrecords, duration);
+            logger.info("Initialisation du SafetyNetStore avec persons={}, firestations={}, medicalrecords={} ({} ms)", persons, firestations, medicalrecords, duration);
         } catch (RuntimeException e) {
-            logger.error("Failed to initialize store: {}", e.getMessage(), e);
+            logger.error("Échec d'initialisation du SafetyNetStore: {}", e.getMessage(), e);
             throw e;
         } finally {
             lock.writeLock().unlock();
@@ -106,7 +105,7 @@ public class SafetyNetStore {
         try {
             T result = reader.apply(data);
             long duration = System.currentTimeMillis() - start;
-            logger.debug("Read operation completed ({} ms)", duration);
+            logger.debug("Opération de lecture du SafetyNetStore complète: {} ms)", duration);
             return result;
         } finally {
             lock.readLock().unlock();
@@ -132,9 +131,9 @@ public class SafetyNetStore {
             // Après toute modification, on persiste (CRUD survit au restart).
             storage.save(data);
             long duration = System.currentTimeMillis() - start;
-            logger.debug("Write operation completed ({} ms)", duration);
+            logger.debug("Opération d'écriture du SafetyNetStore complète: ({} ms)", duration);
         } catch (RuntimeException e) {
-            logger.error("Write operation failed: {}", e.getMessage(), e);
+            logger.error("Échec de l'opération d'écriture: {}", e.getMessage(), e);
             throw e;
         } finally {
             lock.writeLock().unlock();

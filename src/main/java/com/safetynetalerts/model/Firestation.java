@@ -48,7 +48,10 @@ public class Firestation {
     // overrides
     @Override
     public String toString() {
-        return "Firestation{" + "address='" + address + '\'' + ", station=" + station + '}';
+        return "Firestation{"
+                + "address='" + address + '\''
+                + ", station=" + station
+                + '}';
     }
 
     @Override
