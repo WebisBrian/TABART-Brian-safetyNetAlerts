@@ -14,7 +14,8 @@ public class ChildAlertResponseDto {
     private List<ChildAlertHouseholdMemberDto> otherHouseholdMembers;
 
     // constructors
-    public ChildAlertResponseDto() {}
+    public ChildAlertResponseDto() {
+    }
 
     public ChildAlertResponseDto(List<ChildAlertChildDto> children, List<ChildAlertHouseholdMemberDto> otherHouseholdMembers) {
         this.children = children;
@@ -41,9 +42,9 @@ public class ChildAlertResponseDto {
     // overrides
     @Override
     public String toString() {
-        return "ChildAlertResponseDto{" +
-                "children=" + children +
-                ", otherHouseholdMembers=" + otherHouseholdMembers +
-                '}';
+        return "ChildAlertResponseDto{"
+                + "children=" + children
+                + ", otherHouseholdMembers=" + otherHouseholdMembers
+                + '}';
     }
 }

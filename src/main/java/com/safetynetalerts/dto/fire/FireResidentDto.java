@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Représente une personne pour l'endpoint /fire, avec son prénom,
  * son nom, son téléphoné, son age, ses antécédents médicaux et ses allergies.
- * */
+ */
 public class FireResidentDto {
 
     // fields
@@ -17,7 +17,8 @@ public class FireResidentDto {
     private List<String> allergies;
 
     // constructors
-    public FireResidentDto() {}
+    public FireResidentDto() {
+    }
 
     public FireResidentDto(String firstName, String lastName, String phone, int age, List<String> medications, List<String> allergies) {
         this.firstName = firstName;
@@ -80,14 +81,14 @@ public class FireResidentDto {
     // overrides
     @Override
     public String toString() {
-        return "FireResidentDto{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", age=" + age +
-                ", medications=" + medications +
-                ", allergies=" + allergies +
-                '}';
+        return "FireResidentDto{"
+                + "firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", phone='" + phone + '\''
+                + ", age=" + age
+                + ", medications=" + medications
+                + ", allergies=" + allergies
+                + '}';
     }
 }
 

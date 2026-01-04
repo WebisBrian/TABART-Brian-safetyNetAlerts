@@ -9,7 +9,8 @@ public class FloodAddressDto {
     private List<FloodResidentDto> residents;
 
     // constructors
-    public FloodAddressDto() {}
+    public FloodAddressDto() {
+    }
 
     public FloodAddressDto(String address, List<FloodResidentDto> residents) {
         this.address = address;
@@ -37,9 +38,9 @@ public class FloodAddressDto {
 
     @Override
     public String toString() {
-        return "FloodAddressDto{" +
-                "address='" + address + '\'' +
-                ", residents=" + residents +
-                '}';
+        return "FloodAddressDto{"
+                + "address='" + address + '\''
+                + ", residents=" + residents
+                + '}';
     }
 }

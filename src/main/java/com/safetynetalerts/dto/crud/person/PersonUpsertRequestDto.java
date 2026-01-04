@@ -5,6 +5,8 @@ package com.safetynetalerts.dto.crud.person;
  * Contient les champs attendus dans le body JSON.
  */
 public class PersonUpsertRequestDto {
+
+    // fields
     private String firstName;
     private String lastName;
     private String address;

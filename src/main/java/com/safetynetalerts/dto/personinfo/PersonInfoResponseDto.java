@@ -8,7 +8,8 @@ public class PersonInfoResponseDto {
     private List<PersonInfoDto> persons;
 
     // constructors
-    public PersonInfoResponseDto() {}
+    public PersonInfoResponseDto() {
+    }
 
     public PersonInfoResponseDto(List<PersonInfoDto> persons) {
         this.persons = persons;
@@ -26,8 +27,8 @@ public class PersonInfoResponseDto {
     // overrides
     @Override
     public String toString() {
-        return "PersonInfoResponseDto{" +
-                "persons=" + persons +
-                '}';
+        return "PersonInfoResponseDto{"
+                + "persons=" + persons
+                + '}';
     }
 }

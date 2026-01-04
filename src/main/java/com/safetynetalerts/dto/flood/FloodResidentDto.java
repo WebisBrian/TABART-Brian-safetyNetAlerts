@@ -13,7 +13,8 @@ public class FloodResidentDto {
     private List<String> allergies;
 
     // constructors
-    public FloodResidentDto() {}
+    public FloodResidentDto() {
+    }
 
     public FloodResidentDto(String firstName, String lastName, String phone,
                             int age, List<String> medications, List<String> allergies) {
@@ -78,13 +79,13 @@ public class FloodResidentDto {
     // overrides
     @Override
     public String toString() {
-        return "FloodResidentDto{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", age=" + age +
-                ", medications=" + medications +
-                ", allergies=" + allergies +
-                '}';
+        return "FloodResidentDto{"
+                + "firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", phone='" + phone + '\''
+                + ", age=" + age
+                + ", medications=" + medications
+                + ", allergies=" + allergies
+                + '}';
     }
 }

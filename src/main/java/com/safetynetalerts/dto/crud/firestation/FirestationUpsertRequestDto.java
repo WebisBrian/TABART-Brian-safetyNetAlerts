@@ -6,6 +6,7 @@ package com.safetynetalerts.dto.crud.firestation;
  */
 public class FirestationUpsertRequestDto {
 
+    // fields
     private String address;
     private Integer station;
 

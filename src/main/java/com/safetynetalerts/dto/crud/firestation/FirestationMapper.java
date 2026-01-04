@@ -11,12 +11,12 @@ public final class FirestationMapper {
     }
 
     public static Firestation toModel(FirestationUpsertRequestDto dto) {
-        // DTO -> modèle interne (utilisé par service/repo)
+        // DTO → modèle interne (utilisé par service/repo)
         return new Firestation(dto.getAddress(), dto.getStation());
     }
 
     public static FirestationResponseDto toDto(Firestation model) {
-        // modèle interne -> DTO de réponse API
+        // modèle interne → DTO de réponse API
         return new FirestationResponseDto(model.getAddress(), model.getStation());
     }
 }

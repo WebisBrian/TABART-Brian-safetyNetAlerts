@@ -10,7 +10,8 @@ import java.util.List;
  */
 public final class MedicalRecordMapper {
 
-    private MedicalRecordMapper() {}
+    private MedicalRecordMapper() {
+    }
 
     public static MedicalRecord toModel(MedicalRecordUpsertRequestDto dto) {
         // DTO → modèle interne (utilisé par service/repo)

@@ -58,11 +58,11 @@ public class CoveredPersonDto {
 
     @Override
     public String toString() {
-        return "CoveredPersonDto{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+        return "CoveredPersonDto{"
+                + "firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", address='" + address + '\''
+                + ", phone='" + phone + '\''
+                + '}';
     }
 }

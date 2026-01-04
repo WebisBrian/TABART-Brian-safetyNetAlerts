@@ -6,17 +6,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * Réponse de l'API pour une Person.
  * Permet de découpler l'API du modèle interne.
  */
-@JsonPropertyOrder({
-        "firstName",
-        "lastName",
-        "address",
-        "city",
-        "zip",
-        "phone",
-        "email"
-})
+@JsonPropertyOrder({"firstName","lastName","address","city","zip","phone","email"})
 public class PersonResponseDto {
 
+    // fields
     private String firstName;
     private String lastName;
     private String address;

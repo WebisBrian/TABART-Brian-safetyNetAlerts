@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({"address", "station"})
 public class FirestationResponseDto {
 
+    // fields
     private String address;
     private Integer station;
 

@@ -89,14 +89,14 @@ public class PersonInfoDto {
 
     @Override
     public String toString() {
-        return "PersonInfoDto{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                ", medications=" + medications +
-                ", allergies=" + allergies +
-                '}';
+        return "PersonInfoDto{"
+                + "firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", address='" + address + '\''
+                + ", age=" + age
+                + ", email='" + email + '\''
+                + ", medications=" + medications
+                + ", allergies=" + allergies
+                + '}';
     }
 }

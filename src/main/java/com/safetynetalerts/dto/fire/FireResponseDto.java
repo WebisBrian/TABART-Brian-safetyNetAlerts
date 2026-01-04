@@ -4,8 +4,9 @@ import java.util.List;
 
 /**
  * Représente une liste des résidents pour l'endpoint /fire, dont les champs sont ceux de FireResidentDto.
- * Prend en compte le numéro de caserne.
- * */
+ *Prend en compte le numéro de caserne.
+ *
+ */
 public class FireResponseDto {
 
     // fields
@@ -13,7 +14,8 @@ public class FireResponseDto {
     private List<FireResidentDto> residents;
 
     // constructors
-    public FireResponseDto() {}
+    public FireResponseDto() {
+    }
 
     public FireResponseDto(int stationNumber, List<FireResidentDto> residents) {
         this.stationNumber = stationNumber;
@@ -40,9 +42,9 @@ public class FireResponseDto {
     // overrides
     @Override
     public String toString() {
-        return "FireResponseDto{" +
-                "stationNumber=" + stationNumber +
-                ", residents=" + residents +
-                '}';
+        return "FireResponseDto{"
+                + "stationNumber=" + stationNumber
+                + ", residents=" + residents
+                + '}';
     }
 }

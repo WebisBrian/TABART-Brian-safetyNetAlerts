@@ -8,7 +8,8 @@ public class CommunityEmailResponseDto {
     private List<String> emails;
 
     // constructors
-    public CommunityEmailResponseDto() {}
+    public CommunityEmailResponseDto() {
+    }
 
     public CommunityEmailResponseDto(List<String> emails) {
         this.emails = emails;
@@ -27,8 +28,8 @@ public class CommunityEmailResponseDto {
 
     @Override
     public String toString() {
-        return "CommunityEmailResponseDto{" +
-                "emails=" + emails +
-                '}';
+        return "CommunityEmailResponseDto{"
+                + "emails=" + emails
+                + '}';
     }
 }

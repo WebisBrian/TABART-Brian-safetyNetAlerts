@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class MedicalRecordUpsertRequestDto {
 
+    // fields
     private String firstName;
     private String lastName;
     private String birthdate;          // format attendu : MM/dd/yyyy
@@ -15,7 +16,8 @@ public class MedicalRecordUpsertRequestDto {
     private List<String> allergies;
 
     // constructors
-    public MedicalRecordUpsertRequestDto() {}
+    public MedicalRecordUpsertRequestDto() {
+    }
 
     public MedicalRecordUpsertRequestDto(String firstName, String lastName, String birthdate,
                                          List<String> medications, List<String> allergies) {
@@ -27,18 +29,43 @@ public class MedicalRecordUpsertRequestDto {
     }
 
     // getters and setters
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public String getFirstName() {
+        return firstName;
+    }
 
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-    public String getBirthdate() { return birthdate; }
-    public void setBirthdate(String birthdate) { this.birthdate = birthdate; }
+    public String getLastName() {
+        return lastName;
+    }
 
-    public List<String> getMedications() { return medications; }
-    public void setMedications(List<String> medications) { this.medications = medications; }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-    public List<String> getAllergies() { return allergies; }
-    public void setAllergies(List<String> allergies) { this.allergies = allergies; }
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public List<String> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(List<String> medications) {
+        this.medications = medications;
+    }
+
+    public List<String> getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(List<String> allergies) {
+        this.allergies = allergies;
+    }
 }

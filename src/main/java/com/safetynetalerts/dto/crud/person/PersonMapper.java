@@ -3,7 +3,7 @@ package com.safetynetalerts.dto.crud.person;
 import com.safetynetalerts.model.Person;
 
 /**
- * Mapper manuel : DTO <-> Model.
+ * Mapper manuel : DTO ↔ Model.
  * Évite d'ajouter une dépendance externe (MapStruct).
  */
 public final class PersonMapper {
@@ -12,7 +12,7 @@ public final class PersonMapper {
     }
 
     public static Person toModel(PersonUpsertRequestDto dto) {
-        // On construit le modèle interne utilisé par le service/repo
+        // DTO → modèle interne (utilisé par service/repo)
         return new Person(
                 dto.getFirstName(),
                 dto.getLastName(),
@@ -25,7 +25,7 @@ public final class PersonMapper {
     }
 
     public static PersonResponseDto toDto(Person person) {
-        // On construit la réponse API à partir du modèle interne
+        // modèle interne → DTO de réponse API
         PersonResponseDto dto = new PersonResponseDto();
         dto.setFirstName(person.getFirstName());
         dto.setLastName(person.getLastName());

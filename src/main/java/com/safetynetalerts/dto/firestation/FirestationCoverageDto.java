@@ -15,7 +15,8 @@ public class FirestationCoverageDto {
     private int numberOfChildren;
 
     // constructors
-    public FirestationCoverageDto() {}
+    public FirestationCoverageDto() {
+    }
 
     public FirestationCoverageDto(List<CoveredPersonDto> persons, int numberOfAdults, int numberOfChildren) {
         this.persons = persons;
@@ -50,10 +51,10 @@ public class FirestationCoverageDto {
 
     @Override
     public String toString() {
-        return "FirestationCoverageDto{" +
-                "persons=" + persons +
-                ", numberOfAdults=" + numberOfAdults +
-                ", numberOfChildren=" + numberOfChildren +
-                '}';
+        return "FirestationCoverageDto{"
+                + "persons=" + persons
+                + ", numberOfAdults=" + numberOfAdults
+                + ", numberOfChildren=" + numberOfChildren
+                + '}';
     }
 }

@@ -12,7 +12,8 @@ public class ChildAlertChildDto {
     private int age;
 
     // constructors
-    public ChildAlertChildDto() {}
+    public ChildAlertChildDto() {
+    }
 
     public ChildAlertChildDto(String firstName, String lastName, int age) {
         this.firstName = firstName;
@@ -48,10 +49,10 @@ public class ChildAlertChildDto {
     // overrides
     @Override
     public String toString() {
-        return "ChildAlertChildDto{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                '}';
+        return "ChildAlertChildDto{"
+                + "firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", age=" + age
+                + '}';
     }
 }
