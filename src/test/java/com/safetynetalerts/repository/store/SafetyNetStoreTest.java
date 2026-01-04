@@ -28,13 +28,11 @@ class SafetyNetStoreTest {
 
     @BeforeEach
     void setUp() {
-        // Prépare des listes non-nulles (SafetyNetStore suppose des listes initialisées)
         initialData = new SafetyNetData();
         initialData.setPersons(new ArrayList<>());
         initialData.setFirestations(new ArrayList<>());
         initialData.setMedicalRecords(new ArrayList<>());
 
-        // ajoute une entrée initiale pour vérifier les modifications
         initialData.getFirestations().add(new Firestation("1509 Culver St", 3));
     }
 
@@ -78,7 +76,7 @@ class SafetyNetStoreTest {
     @Test
     void write_shouldPropagateRuntimeException_whenSaveFails() {
         when(storage.load()).thenReturn(initialData);
-        // configure storage.save to throw
+
         doThrow(new RuntimeException("disk failure")).when(storage).save(any());
         store = new SafetyNetStore(storage);
         store.init();

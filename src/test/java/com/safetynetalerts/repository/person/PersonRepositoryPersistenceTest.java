@@ -1,6 +1,5 @@
 package com.safetynetalerts.repository.person;
 
-import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.repository.storage.JsonSafetyNetStorage;
 import com.safetynetalerts.repository.store.SafetyNetStore;
@@ -39,9 +38,7 @@ public class PersonRepositoryPersistenceTest {
     }
 
     @Test
-    // Arrange
     void updatePerson_shouldPersistAfterRestart() throws Exception {
-        // Arrange
         Path dataFile = writeMinimalJson(tempDir.resolve("data.json"));
 
         SafetyNetStore store = newStore(dataFile);
@@ -78,7 +75,6 @@ public class PersonRepositoryPersistenceTest {
 
     @Test
     void deletePerson_shouldPersistAfterRestart() throws Exception {
-        // Arrange
         Path dataFile = writeMinimalJson(tempDir.resolve("data.json"));
 
         SafetyNetStore store1 = newStore(dataFile);
