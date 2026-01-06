@@ -7,8 +7,11 @@ import com.safetynetalerts.repository.firestation.FirestationRepository;
 import com.safetynetalerts.repository.person.PersonRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PhoneAlertServiceImpl implements PhoneAlertService {
@@ -28,16 +31,25 @@ public class PhoneAlertServiceImpl implements PhoneAlertService {
             throw new BadRequestException("Le numéro de caserne doit être un entier positif.");
         }
 
-        List<String> coveredAddresses = firestationRepository.findAll().stream()
-                .filter(fs -> Objects.equals(fs.getStation(), stationNumber))
-                .map(Firestation::getAddress)
-                .distinct()
-                .toList();
-
+        List<String> coveredAddresses = findCoveredAddressesByStation(stationNumber);
         if (coveredAddresses.isEmpty()) {
             return List.of();
         }
 
+        Set<String> coveredAddressesSet = new HashSet<>(coveredAddresses);
+
+        return findPhonesByCoveredAddresses(coveredAddressesSet);
+    }
+
+    private List<String> findCoveredAddressesByStation(Integer stationNumber) {
+        return firestationRepository.findAll().stream()
+                .filter(fs -> Objects.equals(fs.getStation(), stationNumber))
+                .map(Firestation::getAddress)
+                .distinct()
+                .toList();
+    }
+
+    private List<String> findPhonesByCoveredAddresses(Set<String> coveredAddresses) {
         return personRepository.findAll().stream()
                 .filter(p -> coveredAddresses.contains(p.getAddress()))
                 .map(Person::getPhone)
