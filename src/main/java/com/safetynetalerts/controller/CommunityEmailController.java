@@ -25,7 +25,7 @@ public class CommunityEmailController {
 
         CommunityEmailResponseDto response = communityEmailService.getEmailsByCity(city);
 
-        logger.info("Réponse envoyée /communityEmail city={} emails={}", city, response.getEmails().size());
+        logger.info("Réponse envoyée /communityEmail city={} emails={}", city, response.emails().size());
 
         return response;
     }

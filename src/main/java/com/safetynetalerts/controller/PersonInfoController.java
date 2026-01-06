@@ -25,7 +25,7 @@ public class PersonInfoController {
 
         PersonInfoResponseDto response = personInfoService.getPersonInfoByLastName(lastName);
 
-        logger.info("Réponse envoyée /personInfo persons={}", response.getPersons().size());
+        logger.info("Réponse envoyée /personInfo persons={}", response.persons().size());
 
         return response;
     }

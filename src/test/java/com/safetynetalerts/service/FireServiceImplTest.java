@@ -74,18 +74,18 @@ class FireServiceImplTest {
 
         // Assert
         assertThat(response).isNotNull();
-        assertThat(response.getStationNumber()).isEqualTo(3);
-        assertThat(response.getResidents()).hasSize(2);
+        assertThat(response.stationNumber()).isEqualTo(3);
+        assertThat(response.residents()).hasSize(2);
 
-        FireResidentDto john = response.getResidents().stream()
-                .filter(r -> "John".equals(r.getFirstName()))
+        FireResidentDto john = response.residents().stream()
+                .filter(r -> "John".equals(r.firstName()))
                 .findFirst()
                 .orElseThrow();
 
-        assertThat(john.getPhone()).isEqualTo("841-874-6512");
-        assertThat(john.getAge()).isEqualTo(41);
-        assertThat(john.getMedications()).contains("aznol:350mg");
-        assertThat(john.getAllergies()).contains("nillacilan");
+        assertThat(john.phone()).isEqualTo("841-874-6512");
+        assertThat(john.age()).isEqualTo(41);
+        assertThat(john.medications()).contains("aznol:350mg");
+        assertThat(john.allergies()).contains("nillacilan");
     }
 
     @Test
@@ -95,7 +95,7 @@ class FireServiceImplTest {
 
         // Assert
         assertThat(response).isNotNull();
-        assertThat(response.getResidents()).isEmpty();
-        assertThat(response.getStationNumber()).isZero();
+        assertThat(response.residents()).isEmpty();
+        assertThat(response.stationNumber()).isZero();
     }
 }

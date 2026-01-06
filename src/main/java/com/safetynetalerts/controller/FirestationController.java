@@ -37,9 +37,9 @@ public class FirestationController {
 
         logger.info("Réponse envoyée pour stationNumber={}: {} personnes (adultes={}, enfants={})",
                 stationNumber,
-                coverage.getPersons().size(),
-                coverage.getNumberOfAdults(),
-                coverage.getNumberOfChildren()
+                coverage.persons().size(),
+                coverage.numberOfAdults(),
+                coverage.numberOfChildren()
         );
 
         return coverage;

@@ -37,13 +37,13 @@ class CommunityEmailServiceImplTest {
     void getEmailsByCity_shouldReturnDistinctSortedEmails() {
         // Act + Assert
         var res = service.getEmailsByCity("Culver");
-        assertThat(res.getEmails()).containsExactly("a@email.com", "b@email.com");
+        assertThat(res.emails()).containsExactly("a@email.com", "b@email.com");
     }
 
     @Test
     void getEmailsByCity_shouldReturnEmptyForUnknownCity() {
         // Act + Assert
         var res = service.getEmailsByCity("Unknown");
-        assertThat(res.getEmails()).isEmpty();
+        assertThat(res.emails()).isEmpty();
     }
 }

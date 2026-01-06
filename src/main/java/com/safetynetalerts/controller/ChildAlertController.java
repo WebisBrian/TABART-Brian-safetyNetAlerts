@@ -38,8 +38,8 @@ public class ChildAlertController {
 
         logger.info("Réponse envoyée pour address={}: {} enfants et {} autres personnes",
                 address,
-                response.getChildren().size(),
-                response.getOtherHouseholdMembers().size()
+                response.children().size(),
+                response.otherHouseholdMembers().size()
         );
 
         return response;

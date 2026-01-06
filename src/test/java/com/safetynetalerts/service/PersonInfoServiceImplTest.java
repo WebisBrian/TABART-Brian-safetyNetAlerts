@@ -56,16 +56,16 @@ class PersonInfoServiceImplTest {
 
         // Act + Assert
         var res = service.getPersonInfoByLastName("Boyd");
-        assertThat(res.getPersons()).hasSize(2);
-        assertThat(res.getPersons().getFirst().getAge()).isEqualTo(41);
-        assertThat(res.getPersons().getFirst().getMedications()).contains("aznol:350mg");
+        assertThat(res.persons()).hasSize(2);
+        assertThat(res.persons().getFirst().age()).isEqualTo(41);
+        assertThat(res.persons().getFirst().medications()).contains("aznol:350mg");
     }
 
     @Test
     void getPersonInfo_shouldReturnEmptyWhenNoMatch() {
 
         var res = service.getPersonInfoByLastName("X");
-        assertThat(res.getPersons()).isEmpty();
+        assertThat(res.persons()).isEmpty();
     }
 
 }

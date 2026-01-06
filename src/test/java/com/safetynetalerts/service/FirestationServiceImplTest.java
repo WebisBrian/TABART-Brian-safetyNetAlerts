@@ -70,9 +70,9 @@ class FirestationServiceImplTest {
         FirestationCoverageDto coverage = firestationService.getCoverageByStation(1);
 
         // Assert
-        assertThat(coverage.getPersons()).hasSize(2);
-        assertThat(coverage.getNumberOfAdults()).isEqualTo(1);
-        assertThat(coverage.getNumberOfChildren()).isEqualTo(1);
+        assertThat(coverage.persons()).hasSize(2);
+        assertThat(coverage.numberOfAdults()).isEqualTo(1);
+        assertThat(coverage.numberOfChildren()).isEqualTo(1);
     }
 
     @Test
@@ -81,8 +81,8 @@ class FirestationServiceImplTest {
         FirestationCoverageDto coverage = firestationService.getCoverageByStation(3);
 
         // Assert
-        assertThat(coverage.getPersons()).isEmpty();
-        assertThat(coverage.getNumberOfAdults()).isZero();
-        assertThat(coverage.getNumberOfChildren()).isZero();
+        assertThat(coverage.persons()).isEmpty();
+        assertThat(coverage.numberOfAdults()).isZero();
+        assertThat(coverage.numberOfChildren()).isZero();
     }
 }

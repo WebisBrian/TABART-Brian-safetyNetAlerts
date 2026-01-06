@@ -90,28 +90,28 @@ class FloodServiceImplTest {
         assertThat(result).hasSize(2);
 
         FloodAddressDto culver = result.stream()
-                .filter(a -> "1509 Culver St".equals(a.getAddress()))
+                .filter(a -> "1509 Culver St".equals(a.address()))
                 .findFirst()
                 .orElseThrow();
 
-        assertThat(culver.getResidents()).hasSize(2);
+        assertThat(culver.residents()).hasSize(2);
 
-        FloodResidentDto john = culver.getResidents().stream()
-                .filter(r -> "John".equals(r.getFirstName()))
+        FloodResidentDto john = culver.residents().stream()
+                .filter(r -> "John".equals(r.firstName()))
                 .findFirst()
                 .orElseThrow();
 
-        assertThat(john.getAge()).isEqualTo(41);
-        assertThat(john.getMedications()).contains("aznol:350mg");
-        assertThat(john.getAllergies()).contains("nillacilan");
+        assertThat(john.age()).isEqualTo(41);
+        assertThat(john.medications()).contains("aznol:350mg");
+        assertThat(john.allergies()).contains("nillacilan");
 
         FloodAddressDto street29 = result.stream()
-                .filter(a -> "29 15th St".equals(a.getAddress()))
+                .filter(a -> "29 15th St".equals(a.address()))
                 .findFirst()
                 .orElseThrow();
 
-        assertThat(street29.getResidents()).hasSize(1);
-        assertThat(street29.getResidents().get(0).getFirstName()).isEqualTo("Other");
+        assertThat(street29.residents()).hasSize(1);
+        assertThat(street29.residents().get(0).firstName()).isEqualTo("Other");
     }
 
     @Test

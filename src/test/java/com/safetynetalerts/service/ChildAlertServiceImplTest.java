@@ -67,14 +67,14 @@ class ChildAlertServiceImplTest {
 
         // Assert
         assertNotNull(response);
-        assertThat(response.getChildren()).hasSize(1);
-        assertThat(response.getOtherHouseholdMembers()).hasSize(1);
-        assertThat(response.getChildren().get(0).getAge()).isLessThan(18);
-        assertThat(response.getOtherHouseholdMembers().get(0).getAge()).isGreaterThanOrEqualTo(18);
-        assertThat(response.getChildren().get(0).getFirstName()).isEqualTo("Tenley");
-        assertThat(response.getChildren().get(0).getLastName()).isEqualTo("Boyd");
-        assertThat(response.getOtherHouseholdMembers().get(0).getFirstName()).isEqualTo("John");
-        assertThat(response.getOtherHouseholdMembers().get(0).getLastName()).isEqualTo("Boyd");
+        assertThat(response.children()).hasSize(1);
+        assertThat(response.otherHouseholdMembers()).hasSize(1);
+        assertThat(response.children().get(0).age()).isLessThan(18);
+        assertThat(response.otherHouseholdMembers().get(0).age()).isGreaterThanOrEqualTo(18);
+        assertThat(response.children().get(0).firstName()).isEqualTo("Tenley");
+        assertThat(response.children().get(0).lastName()).isEqualTo("Boyd");
+        assertThat(response.otherHouseholdMembers().get(0).firstName()).isEqualTo("John");
+        assertThat(response.otherHouseholdMembers().get(0).lastName()).isEqualTo("Boyd");
         verify(personRepository, times(1)).findAll();
     }
 
@@ -85,8 +85,8 @@ class ChildAlertServiceImplTest {
 
         // Assert
         assertNotNull(response);
-        assertTrue(response.getChildren().isEmpty());
-        assertTrue(response.getOtherHouseholdMembers().isEmpty());
+        assertTrue(response.children().isEmpty());
+        assertTrue(response.otherHouseholdMembers().isEmpty());
         verify(personRepository, times(1)).findAll();
     }
 }
