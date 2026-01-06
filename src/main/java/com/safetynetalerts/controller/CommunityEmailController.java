@@ -1,10 +1,11 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.communityemail.CommunityEmailResponseDto;
 import com.safetynetalerts.service.CommunityEmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/communityEmail")
@@ -19,13 +20,13 @@ public class CommunityEmailController {
     }
 
     @GetMapping
-    public CommunityEmailResponseDto getEmails(@RequestParam String city) {
+    public List<String> getEmails(@RequestParam String city) {
 
         logger.info("Requête reçue GET /communityEmail city={}", city);
 
-        CommunityEmailResponseDto response = communityEmailService.getEmailsByCity(city);
+        List<String> response = communityEmailService.getEmailsByCity(city);
 
-        logger.info("Réponse envoyée /communityEmail city={} emails={}", city, response.emails().size());
+        logger.info("Réponse envoyée /communityEmail city={} emails={}", city, response.size());
 
         return response;
     }

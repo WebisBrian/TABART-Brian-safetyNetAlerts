@@ -1,6 +1,5 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.communityemail.CommunityEmailResponseDto;
 import com.safetynetalerts.service.CommunityEmailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +27,12 @@ class CommunityEmailControllerTest {
     @Test
     void getEmails_shouldReturnEmails() throws Exception {
         when(communityEmailService.getEmailsByCity("Culver"))
-                .thenReturn(new CommunityEmailResponseDto(List.of("a@email.com")));
+                .thenReturn(List.of("a@email.com"));
 
         // Act + Assert
         mockMvc.perform(get("/communityEmail").param("city", "Culver"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.emails[0]").value("a@email.com"));
+                .andExpect(jsonPath("$[0]").value("a@email.com"));
     }
 }

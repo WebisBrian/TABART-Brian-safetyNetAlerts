@@ -1,6 +1,6 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.communityemail.CommunityEmailResponseDto;
+import java.util.List;
 
 /**
  * Service métier pour l'endpoint /communityEmail.
@@ -15,5 +15,5 @@ public interface CommunityEmailService {
      * @param city ville concernée
      * @return un objet contenant les emails des habitants d'une ville donnée
      */
-    CommunityEmailResponseDto getEmailsByCity(String city);
+    List<String> getEmailsByCity(String city);
 }

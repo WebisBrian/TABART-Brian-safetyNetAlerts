@@ -29,21 +29,21 @@ class CommunityEmailServiceImplTest {
                 new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "a@email.com"),
                 new Person("Jane", "Doe", "X", "Culver", "97451", "842", "b@email.com"),
                 new Person("Bob", "Foo", "Y", "OtherCity", "97451", "843", "c@email.com"),
-                new Person("Dup", "Mail", "Z", "Culver", "97451", "844", "a@email.com") // duplicate
+                new Person("Dup", "Mail", "Z", "Culver", "97451", "844", "a@email.com")
         ));
     }
 
     @Test
     void getEmailsByCity_shouldReturnDistinctSortedEmails() {
         // Act + Assert
-        var res = service.getEmailsByCity("Culver");
-        assertThat(res.emails()).containsExactly("a@email.com", "b@email.com");
+        List<String> res = service.getEmailsByCity("Culver");
+        assertThat(res).containsExactly("a@email.com", "b@email.com");
     }
 
     @Test
     void getEmailsByCity_shouldReturnEmptyForUnknownCity() {
         // Act + Assert
-        var res = service.getEmailsByCity("Unknown");
-        assertThat(res.emails()).isEmpty();
+        List<String> res = service.getEmailsByCity("Unknown");
+        assertThat(res.isEmpty());
     }
 }

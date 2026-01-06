@@ -1,6 +1,5 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.communityemail.CommunityEmailResponseDto;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.repository.person.PersonRepository;
@@ -18,20 +17,18 @@ public class CommunityEmailServiceImpl implements CommunityEmailService {
     }
 
     @Override
-    public CommunityEmailResponseDto getEmailsByCity(String city) {
+    public List<String> getEmailsByCity(String city) {
 
         if (city == null || city.isBlank()) {
             throw new BadRequestException("Le nom de la ville doit être renseigné.");
         }
 
-        List<String> emails = personRepository.findAll().stream()
+        return personRepository.findAll().stream()
                 .filter(p -> p.getCity() != null && p.getCity().equalsIgnoreCase(city))
                 .map(Person::getEmail)
                 .filter(e -> e != null && !e.isBlank())
                 .distinct()
                 .sorted()
                 .toList();
-
-        return new CommunityEmailResponseDto(emails);
     }
 }
