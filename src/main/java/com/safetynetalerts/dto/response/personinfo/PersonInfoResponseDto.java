@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto.personinfo;
+package com.safetynetalerts.dto.response.personinfo;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto.crud.medicalrecord;
+package com.safetynetalerts.dto.response.crud;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 

@@ -1,5 +1,7 @@
-package com.safetynetalerts.dto.crud.medicalrecord;
+package com.safetynetalerts.dto.mapper;
 
+import com.safetynetalerts.dto.response.crud.MedicalRecordResponseDto;
+import com.safetynetalerts.dto.request.MedicalRecordUpsertRequestDto;
 import com.safetynetalerts.model.MedicalRecord;
 
 import java.util.List;

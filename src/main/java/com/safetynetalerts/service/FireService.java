@@ -1,6 +1,6 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.fire.FireResponseDto;
+import com.safetynetalerts.dto.response.fire.FireResponseDto;
 
 /**
  * Service métier pour l'endpoint /fire.

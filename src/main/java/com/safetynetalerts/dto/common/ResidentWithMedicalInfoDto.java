@@ -1,8 +1,8 @@
-package com.safetynetalerts.dto.flood;
+package com.safetynetalerts.dto.common;
 
 import java.util.List;
 
-public record FloodResidentDto(
+public record ResidentWithMedicalInfoDto(
         String firstName,
         String lastName,
         String phone,

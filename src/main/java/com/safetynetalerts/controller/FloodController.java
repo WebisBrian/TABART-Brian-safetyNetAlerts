@@ -1,6 +1,6 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.flood.FloodAddressDto;
+import com.safetynetalerts.dto.response.flood.FloodAddressDto;
 import com.safetynetalerts.service.FloodService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

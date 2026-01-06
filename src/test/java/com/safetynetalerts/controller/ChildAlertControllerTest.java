@@ -1,8 +1,8 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.childalert.ChildAlertChildDto;
-import com.safetynetalerts.dto.childalert.ChildAlertHouseholdMemberDto;
-import com.safetynetalerts.dto.childalert.ChildAlertResponseDto;
+import com.safetynetalerts.dto.response.childalert.ChildAlertChildDto;
+import com.safetynetalerts.dto.response.childalert.ChildAlertHouseholdMemberDto;
+import com.safetynetalerts.dto.response.childalert.ChildAlertResponseDto;
 import com.safetynetalerts.service.ChildAlertService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

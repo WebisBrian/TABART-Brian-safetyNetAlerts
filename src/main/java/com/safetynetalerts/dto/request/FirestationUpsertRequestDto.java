@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto.crud.firestation;
+package com.safetynetalerts.dto.request;
 
 /**
  * Requête d'ajout/mise à jour d'une Firestation.

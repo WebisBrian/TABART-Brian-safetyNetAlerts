@@ -1,7 +1,7 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.fire.FireResidentDto;
-import com.safetynetalerts.dto.fire.FireResponseDto;
+import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
+import com.safetynetalerts.dto.response.fire.FireResponseDto;
 import com.safetynetalerts.service.FireService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +32,7 @@ class FireControllerTest {
     @Test
     void getFireInfoByAddress_shouldReturnFireInfoForKnownAddress() throws Exception {
 
-        FireResidentDto john = new FireResidentDto(
+        ResidentWithMedicalInfoDto john = new ResidentWithMedicalInfoDto(
                 "John",
                 "Boyd",
                 "841-874-6512",

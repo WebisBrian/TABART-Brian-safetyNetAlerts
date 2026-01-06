@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto.childalert;
+package com.safetynetalerts.dto.response.childalert;
 
 /**
  * Représente un autre membre du foyer pour l'endpoint /childAlert

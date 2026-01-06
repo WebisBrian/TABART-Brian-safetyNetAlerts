@@ -1,8 +1,8 @@
 package com.safetynetalerts.controller.crud;
 
-import com.safetynetalerts.dto.crud.firestation.FirestationMapper;
-import com.safetynetalerts.dto.crud.firestation.FirestationResponseDto;
-import com.safetynetalerts.dto.crud.firestation.FirestationUpsertRequestDto;
+import com.safetynetalerts.dto.mapper.FirestationMapper;
+import com.safetynetalerts.dto.response.crud.FirestationResponseDto;
+import com.safetynetalerts.dto.request.FirestationUpsertRequestDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.service.crud.FirestationCrudService;
 import org.slf4j.Logger;

@@ -1,7 +1,7 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.personinfo.PersonInfoDto;
-import com.safetynetalerts.dto.personinfo.PersonInfoResponseDto;
+import com.safetynetalerts.dto.response.personinfo.PersonInfoDto;
+import com.safetynetalerts.dto.response.personinfo.PersonInfoResponseDto;
 import com.safetynetalerts.service.PersonInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

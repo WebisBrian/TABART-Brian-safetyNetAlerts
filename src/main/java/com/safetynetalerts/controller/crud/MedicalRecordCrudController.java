@@ -1,8 +1,8 @@
 package com.safetynetalerts.controller.crud;
 
-import com.safetynetalerts.dto.crud.medicalrecord.MedicalRecordMapper;
-import com.safetynetalerts.dto.crud.medicalrecord.MedicalRecordResponseDto;
-import com.safetynetalerts.dto.crud.medicalrecord.MedicalRecordUpsertRequestDto;
+import com.safetynetalerts.dto.mapper.MedicalRecordMapper;
+import com.safetynetalerts.dto.response.crud.MedicalRecordResponseDto;
+import com.safetynetalerts.dto.request.MedicalRecordUpsertRequestDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.service.crud.MedicalRecordCrudService;
 import org.slf4j.Logger;

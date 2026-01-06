@@ -1,7 +1,7 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.personinfo.PersonInfoDto;
-import com.safetynetalerts.dto.personinfo.PersonInfoResponseDto;
+import com.safetynetalerts.dto.response.personinfo.PersonInfoDto;
+import com.safetynetalerts.dto.response.personinfo.PersonInfoResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;

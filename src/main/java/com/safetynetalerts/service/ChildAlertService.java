@@ -1,6 +1,6 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.childalert.ChildAlertResponseDto;
+import com.safetynetalerts.dto.response.childalert.ChildAlertResponseDto;
 
 /**
  * Service métier pour l'endpoint /childAlert.

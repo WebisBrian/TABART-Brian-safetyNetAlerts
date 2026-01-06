@@ -1,6 +1,6 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.personinfo.PersonInfoResponseDto;
+import com.safetynetalerts.dto.response.personinfo.PersonInfoResponseDto;
 
 /**
  * Service métier pour la recherche par le nom de famille, des habitants.

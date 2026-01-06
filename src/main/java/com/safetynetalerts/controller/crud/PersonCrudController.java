@@ -1,8 +1,8 @@
 package com.safetynetalerts.controller.crud;
 
-import com.safetynetalerts.dto.crud.person.PersonMapper;
-import com.safetynetalerts.dto.crud.person.PersonResponseDto;
-import com.safetynetalerts.dto.crud.person.PersonUpsertRequestDto;
+import com.safetynetalerts.dto.mapper.PersonMapper;
+import com.safetynetalerts.dto.response.crud.PersonResponseDto;
+import com.safetynetalerts.dto.request.PersonUpsertRequestDto;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.service.crud.PersonCrudService;
 import org.slf4j.Logger;

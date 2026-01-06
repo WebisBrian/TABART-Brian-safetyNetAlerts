@@ -1,6 +1,6 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.childalert.ChildAlertResponseDto;
+import com.safetynetalerts.dto.response.childalert.ChildAlertResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;

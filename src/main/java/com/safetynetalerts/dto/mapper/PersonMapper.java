@@ -1,5 +1,7 @@
-package com.safetynetalerts.dto.crud.person;
+package com.safetynetalerts.dto.mapper;
 
+import com.safetynetalerts.dto.response.crud.PersonResponseDto;
+import com.safetynetalerts.dto.request.PersonUpsertRequestDto;
 import com.safetynetalerts.model.Person;
 
 /**

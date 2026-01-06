@@ -1,7 +1,7 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.flood.FloodAddressDto;
-import com.safetynetalerts.dto.flood.FloodResidentDto;
+import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
+import com.safetynetalerts.dto.response.flood.FloodAddressDto;
 import com.safetynetalerts.service.FloodService;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -32,7 +32,7 @@ class FloodControllerTest {
     @Test
     void getFloodInfo_shouldReturnAddressesAndResidents() throws Exception {
 
-        FloodResidentDto resident = new FloodResidentDto(
+        ResidentWithMedicalInfoDto resident = new ResidentWithMedicalInfoDto(
                 "John", "Boyd", "841-874-6512", 41,
                 List.of("aznol:350mg"), List.of("nillacilan")
         );

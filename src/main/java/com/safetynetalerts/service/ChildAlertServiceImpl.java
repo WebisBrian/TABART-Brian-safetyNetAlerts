@@ -1,8 +1,8 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.childalert.ChildAlertChildDto;
-import com.safetynetalerts.dto.childalert.ChildAlertHouseholdMemberDto;
-import com.safetynetalerts.dto.childalert.ChildAlertResponseDto;
+import com.safetynetalerts.dto.response.childalert.ChildAlertChildDto;
+import com.safetynetalerts.dto.response.childalert.ChildAlertHouseholdMemberDto;
+import com.safetynetalerts.dto.response.childalert.ChildAlertResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.model.exception.BadRequestException;

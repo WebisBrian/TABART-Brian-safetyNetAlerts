@@ -1,6 +1,6 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.fire.FireResponseDto;
+import com.safetynetalerts.dto.response.fire.FireResponseDto;
 import com.safetynetalerts.service.FireService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.flood.FloodAddressDto;
-import com.safetynetalerts.dto.flood.FloodResidentDto;
+import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
+import com.safetynetalerts.dto.response.flood.FloodAddressDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
@@ -96,7 +96,7 @@ class FloodServiceImplTest {
 
         assertThat(culver.residents()).hasSize(2);
 
-        FloodResidentDto john = culver.residents().stream()
+        ResidentWithMedicalInfoDto john = culver.residents().stream()
                 .filter(r -> "John".equals(r.firstName()))
                 .findFirst()
                 .orElseThrow();

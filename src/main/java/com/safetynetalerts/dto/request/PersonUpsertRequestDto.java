@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto.crud.person;
+package com.safetynetalerts.dto.request;
 
 /**
  * Requête d'ajout/mise à jour d'une Person.

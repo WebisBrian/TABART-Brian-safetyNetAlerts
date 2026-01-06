@@ -1,7 +1,7 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.fire.FireResidentDto;
-import com.safetynetalerts.dto.fire.FireResponseDto;
+import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
+import com.safetynetalerts.dto.response.fire.FireResponseDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
@@ -55,7 +55,7 @@ public class FireServiceImpl implements FireService {
 
         List<MedicalRecord> allMedicalRecords = medicalRecordRepository.findAll();
 
-        List<FireResidentDto> residents = residentsAtAddress.stream()
+        List<ResidentWithMedicalInfoDto> residents = residentsAtAddress.stream()
                 .map(p -> {
                     Optional<MedicalRecord> recordOpt = allMedicalRecords.stream()
                             .filter(mr -> mr.getFirstName().equalsIgnoreCase(p.getFirstName())
@@ -64,7 +64,7 @@ public class FireServiceImpl implements FireService {
 
                     int age = ageService.getAge(p, allMedicalRecords).orElse(999);
 
-                    return new FireResidentDto(
+                    return new ResidentWithMedicalInfoDto(
                             p.getFirstName(),
                             p.getLastName(),
                             p.getPhone(),

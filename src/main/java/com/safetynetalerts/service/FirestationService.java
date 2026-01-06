@@ -1,6 +1,6 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.firestation.FirestationCoverageDto;
+import com.safetynetalerts.dto.response.firestation.FirestationCoverageDto;
 
 /**
  * Service métier pour la gestion des informations liées aux casernes de pompiers.

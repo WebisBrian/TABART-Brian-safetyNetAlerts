@@ -1,8 +1,8 @@
 package com.safetynetalerts.controller;
 
 import tools.jackson.databind.ObjectMapper;
-import com.safetynetalerts.dto.firestation.CoveredPersonDto;
-import com.safetynetalerts.dto.firestation.FirestationCoverageDto;
+import com.safetynetalerts.dto.response.firestation.CoveredPersonDto;
+import com.safetynetalerts.dto.response.firestation.FirestationCoverageDto;
 import com.safetynetalerts.service.FirestationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

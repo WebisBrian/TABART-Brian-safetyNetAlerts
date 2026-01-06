@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto.firestation;
+package com.safetynetalerts.dto.response.firestation;
 
 import java.util.List;
 

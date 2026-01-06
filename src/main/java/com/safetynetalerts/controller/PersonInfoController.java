@@ -1,6 +1,6 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.personinfo.PersonInfoResponseDto;
+import com.safetynetalerts.dto.response.personinfo.PersonInfoResponseDto;
 import com.safetynetalerts.service.PersonInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.childalert.ChildAlertResponseDto;
+import com.safetynetalerts.dto.response.childalert.ChildAlertResponseDto;
 import com.safetynetalerts.service.ChildAlertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

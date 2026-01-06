@@ -1,5 +1,7 @@
-package com.safetynetalerts.dto.crud.firestation;
+package com.safetynetalerts.dto.mapper;
 
+import com.safetynetalerts.dto.response.crud.FirestationResponseDto;
+import com.safetynetalerts.dto.request.FirestationUpsertRequestDto;
 import com.safetynetalerts.model.Firestation;
 
 /**

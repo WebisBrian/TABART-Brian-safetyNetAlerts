@@ -1,7 +1,7 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.fire.FireResidentDto;
-import com.safetynetalerts.dto.fire.FireResponseDto;
+import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
+import com.safetynetalerts.dto.response.fire.FireResponseDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
@@ -77,7 +77,7 @@ class FireServiceImplTest {
         assertThat(response.stationNumber()).isEqualTo(3);
         assertThat(response.residents()).hasSize(2);
 
-        FireResidentDto john = response.residents().stream()
+        ResidentWithMedicalInfoDto john = response.residents().stream()
                 .filter(r -> "John".equals(r.firstName()))
                 .findFirst()
                 .orElseThrow();

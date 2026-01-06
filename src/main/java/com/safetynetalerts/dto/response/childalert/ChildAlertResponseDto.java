@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto.childalert;
+package com.safetynetalerts.dto.response.childalert;
 
 import java.util.List;
 

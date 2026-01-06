@@ -1,7 +1,7 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.flood.FloodAddressDto;
-import com.safetynetalerts.dto.flood.FloodResidentDto;
+import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
+import com.safetynetalerts.dto.response.flood.FloodAddressDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
@@ -53,7 +53,7 @@ public class FloodServiceImpl implements FloodService {
                             .filter(p -> p.getAddress().equalsIgnoreCase(address))
                             .toList();
 
-                    List<FloodResidentDto> residentDtos = residents.stream()
+                    List<ResidentWithMedicalInfoDto> residentDtos = residents.stream()
                             .map(p -> {
                                 MedicalRecord record = medicalRecords.stream()
                                         .filter(mr -> mr.getFirstName().equalsIgnoreCase(p.getFirstName())
@@ -63,7 +63,7 @@ public class FloodServiceImpl implements FloodService {
 
                                 int age = ageService.getAge(p, medicalRecords).orElse(0);
 
-                                return new FloodResidentDto(
+                                return new ResidentWithMedicalInfoDto(
                                         p.getFirstName(),
                                         p.getLastName(),
                                         p.getPhone(),

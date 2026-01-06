@@ -1,4 +1,6 @@
-package com.safetynetalerts.dto.fire;
+package com.safetynetalerts.dto.response.fire;
+
+import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
 
 import java.util.List;
 
@@ -9,6 +11,6 @@ import java.util.List;
  */
 public record FireResponseDto(
         int stationNumber,
-        List<FireResidentDto> residents
+        List<ResidentWithMedicalInfoDto> residents
 ) {
 }
