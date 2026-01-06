@@ -25,7 +25,7 @@ public class PersonCrudController {
 
     @PostMapping
     public ResponseEntity<PersonResponseDto> create(@RequestBody PersonUpsertRequestDto body) {
-        logger.info("POST /person body={} {}", body.getFirstName(), body.getLastName());
+        logger.info("POST /person body={} {}", body.firstName(), body.lastName());
         Person toCreate = PersonMapper.toModel(body);
         Person created = service.create(toCreate);
 
@@ -36,7 +36,7 @@ public class PersonCrudController {
 
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody PersonUpsertRequestDto body) {
-        logger.info("PUT /person body={} {}", body.getFirstName(), body.getLastName());
+        logger.info("PUT /person body={} {}", body.firstName(), body.lastName());
         Person toUpdate = PersonMapper.toModel(body);
         boolean updated = service.update(toUpdate);
 

@@ -13,27 +13,23 @@ public final class PersonMapper {
 
     public static Person toModel(PersonUpsertRequestDto dto) {
         // DTO → modèle interne (utilisé par service/repo)
-        return new Person(
-                dto.getFirstName(),
-                dto.getLastName(),
-                dto.getAddress(),
-                dto.getCity(),
-                dto.getZip(),
-                dto.getPhone(),
-                dto.getEmail()
-        );
+        return new Person(dto.firstName(),
+                dto.lastName(),
+                dto.address(),
+                dto.city(),
+                dto.zip(),
+                dto.phone(),
+                dto.email());
     }
 
     public static PersonResponseDto toDto(Person person) {
         // modèle interne → DTO de réponse API
-        PersonResponseDto dto = new PersonResponseDto();
-        dto.setFirstName(person.getFirstName());
-        dto.setLastName(person.getLastName());
-        dto.setAddress(person.getAddress());
-        dto.setCity(person.getCity());
-        dto.setZip(person.getZip());
-        dto.setPhone(person.getPhone());
-        dto.setEmail(person.getEmail());
-        return dto;
+        return new PersonResponseDto(person.getFirstName(),
+                person.getLastName(),
+                person.getAddress(),
+                person.getCity(),
+                person.getZip(),
+                person.getPhone(),
+                person.getEmail());
     }
 }
