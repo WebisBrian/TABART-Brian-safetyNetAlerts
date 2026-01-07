@@ -15,7 +15,7 @@ public interface FirestationRepository {
 
     Optional<Firestation> findByAddress(String address);
 
-    Optional<Firestation> findByAddressAndByStation(String address, int stationNumber);
+    Optional<Firestation> findByAddressAndByStation(String address, Integer stationNumber);
 
     Firestation add(Firestation firestation);
 

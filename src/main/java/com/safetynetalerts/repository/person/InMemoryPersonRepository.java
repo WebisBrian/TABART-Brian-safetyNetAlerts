@@ -17,8 +17,7 @@ import java.util.Optional;
 @Repository
 public class InMemoryPersonRepository implements PersonRepository {
 
-    Logger logger = LoggerFactory.getLogger(InMemoryPersonRepository.class);
-
+    private final Logger logger = LoggerFactory.getLogger(InMemoryPersonRepository.class);
     private final SafetyNetStore store;
 
     public InMemoryPersonRepository(SafetyNetStore store) {
@@ -34,11 +33,17 @@ public class InMemoryPersonRepository implements PersonRepository {
 
     @Override
     public List<Person> findAllByLastName(String lastName) {
-        List<Person> persons = store.read(data -> data.getPersons().stream()
-                .filter(p -> p.getLastName().equalsIgnoreCase(lastName))
-                .toList());
+        if (lastName == null) {
+            logger.warn("findAllByLastName appelé avec lastName=null");
+            return Collections.emptyList();
+        }
 
-        return persons != null ? persons : Collections.emptyList();
+        List<Person> persons = personsExemptOfNull();
+
+        return persons.stream()
+                .filter(p -> p != null
+                        && lastName.equalsIgnoreCase(p.getLastName()))
+                .toList();
     }
 
     @Override
@@ -48,20 +53,22 @@ public class InMemoryPersonRepository implements PersonRepository {
             return Optional.empty();
         }
 
-        return store.read(data -> {
-            List<Person> persons = data.getPersons();
+        List<Person> persons = personsExemptOfNull();
 
-            if (persons == null) {
-                logger.error("Liste persons est null dans SafetyNetData");
-                return Optional.empty();
-            }
+        return persons.stream()
+                .filter(p -> p != null
+                        && firstName.equalsIgnoreCase(p.getFirstName())
+                        && lastName.equalsIgnoreCase(p.getLastName()))
+                .findFirst();
+    }
 
-            return persons.stream()
-                    .filter(p -> p != null
-                            && firstName.equalsIgnoreCase(p.getFirstName())
-                            && lastName.equalsIgnoreCase(p.getLastName()))
-                    .findFirst();
-        });
+    private List<Person> personsExemptOfNull() {
+        List<Person> persons = store.read(SafetyNetData::getPersons);
+        if (persons == null) {
+            logger.error("Liste persons est null dans SafetyNetData");
+            return Collections.emptyList();
+        }
+        return persons;
     }
 
     //    CRUD

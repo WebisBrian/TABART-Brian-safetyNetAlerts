@@ -46,7 +46,7 @@ class FirestationCrudServiceImplTest {
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage("L'adresse doit être renseignée.");
 
-        verify(firestationRepository, never()).findByAddressAndByStation(any(), anyInt());
+        verify(firestationRepository, never()).findByAddressAndByStation(any(), any(Integer.class));
         verifyNoMoreInteractions(firestationRepository);
     }
 
@@ -58,7 +58,7 @@ class FirestationCrudServiceImplTest {
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage("Le numéro de la station doit être renseigné.");
 
-        verify(firestationRepository, never()).findByAddressAndByStation(any(), anyInt());
+        verify(firestationRepository, never()).findByAddressAndByStation(any(), any(Integer.class));
         verifyNoMoreInteractions(firestationRepository);
     }
 
@@ -70,7 +70,7 @@ class FirestationCrudServiceImplTest {
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage("Le numéro de la station doit être un entier strictement supérieur à zéro.");
 
-        verify(firestationRepository, never()).findByAddressAndByStation(any(), anyInt());
+        verify(firestationRepository, never()).findByAddressAndByStation(any(), any(Integer.class));
         verifyNoMoreInteractions(firestationRepository);
     }
 

@@ -3,6 +3,8 @@ package com.safetynetalerts.repository.firestation;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.SafetyNetData;
 import com.safetynetalerts.repository.store.SafetyNetStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @Repository
 public class InMemoryFirestationRepository implements FirestationRepository {
 
+    private final Logger logger = LoggerFactory.getLogger(InMemoryFirestationRepository.class);
     private final SafetyNetStore store;
 
     public InMemoryFirestationRepository(SafetyNetStore store) {
@@ -30,16 +33,42 @@ public class InMemoryFirestationRepository implements FirestationRepository {
 
     @Override
     public Optional<Firestation> findByAddress(String address) {
-        return store.read(data -> data.getFirestations().stream()
-                .filter(fs -> fs.getAddress().equalsIgnoreCase(address))
-                .findFirst());
+        if (address == null) {
+            logger.warn("findByAddress appelé avec address=null");
+            return Optional.empty();
+        }
+
+        List<Firestation> firestations = firestationsExemptOfNull();
+
+        return firestations.stream()
+                .filter(f -> f != null
+                && address.equalsIgnoreCase(f.getAddress()))
+                .findFirst();
     }
 
     @Override
-    public Optional<Firestation> findByAddressAndByStation(String address, int station) {
-        return store.read(data -> data.getFirestations().stream())
-                .filter(fs -> fs.getAddress().equalsIgnoreCase(address) && fs.getStation() == station)
+    public Optional<Firestation> findByAddressAndByStation(String address, Integer station) {
+        if (address == null || station == null) {
+            logger.warn("findByAddressAndByStation appelé avec address={} ou station=null", address);
+            return Optional.empty();
+        }
+
+        List<Firestation> firestations = firestationsExemptOfNull();
+
+        return firestations.stream()
+                .filter(f -> f != null
+                && address.equalsIgnoreCase(f.getAddress())
+                && station.equals(f.getStation()))
                 .findFirst();
+    }
+
+    private List<Firestation> firestationsExemptOfNull() {
+        List<Firestation> firestations = store.read(SafetyNetData::getFirestations);
+        if (firestations == null) {
+            logger.error("Liste firestations est null dans SafetyNetData");
+            return Collections.emptyList();
+        }
+        return firestations;
     }
 
     //    CRUD

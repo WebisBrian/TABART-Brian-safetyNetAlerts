@@ -3,6 +3,8 @@ package com.safetynetalerts.repository.medicalrecord;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.SafetyNetData;
 import com.safetynetalerts.repository.store.SafetyNetStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @Repository
 public class InMemoryMedicalRecordRepository implements MedicalRecordRepository {
 
+    private final Logger logger = LoggerFactory.getLogger(InMemoryMedicalRecordRepository.class);
     private final SafetyNetStore store;
 
     public InMemoryMedicalRecordRepository(SafetyNetStore store) {
@@ -30,10 +33,22 @@ public class InMemoryMedicalRecordRepository implements MedicalRecordRepository 
 
     @Override
     public Optional<MedicalRecord> findByName(String firstName, String lastName) {
-        return store.read(data -> data.getMedicalRecords().stream()
-                .filter(mr -> mr.getFirstName().equalsIgnoreCase(firstName)
-                        && mr.getLastName().equalsIgnoreCase(lastName))
-                .findFirst());
+        if (firstName == null || lastName == null) {
+            logger.warn("findByName appelé avec firstName={} ou lastName=null", firstName);
+            return Optional.empty();
+        }
+
+        List<MedicalRecord> medicalRecords = store.read(SafetyNetData::getMedicalRecords);
+        if (medicalRecords == null) {
+            logger.error("Liste medicalRecords est null dans SafetyNetData");
+            return Optional.empty();
+        }
+
+        return medicalRecords.stream()
+                .filter(mr -> mr != null
+                        && firstName.equalsIgnoreCase(mr.getFirstName())
+                        && lastName.equalsIgnoreCase(mr.getLastName()))
+                .findFirst();
     }
 
     // CRUD
@@ -48,10 +63,7 @@ public class InMemoryMedicalRecordRepository implements MedicalRecordRepository 
         final boolean[] updated = {false};
 
         store.write(data -> {
-            Optional<MedicalRecord> opt = data.getMedicalRecords().stream()
-                    .filter(mr -> mr.getFirstName().equalsIgnoreCase(record.getFirstName())
-                            && mr.getLastName().equalsIgnoreCase(record.getLastName()))
-                    .findFirst();
+            Optional<MedicalRecord> opt = data.getMedicalRecords().stream().filter(mr -> mr.getFirstName().equalsIgnoreCase(record.getFirstName()) && mr.getLastName().equalsIgnoreCase(record.getLastName())).findFirst();
 
             if (opt.isEmpty()) {
                 updated[0] = false;
@@ -73,9 +85,7 @@ public class InMemoryMedicalRecordRepository implements MedicalRecordRepository 
     public boolean delete(String firstName, String lastName) {
         final boolean[] removed = {false};
 
-        store.write(data -> removed[0] = data.getMedicalRecords().removeIf(mr ->
-                mr.getFirstName().equalsIgnoreCase(firstName)
-                        && mr.getLastName().equalsIgnoreCase(lastName)));
+        store.write(data -> removed[0] = data.getMedicalRecords().removeIf(mr -> mr.getFirstName().equalsIgnoreCase(firstName) && mr.getLastName().equalsIgnoreCase(lastName)));
 
         return removed[0];
     }
