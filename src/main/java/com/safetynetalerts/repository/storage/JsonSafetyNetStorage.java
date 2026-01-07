@@ -1,5 +1,8 @@
 package com.safetynetalerts.repository.storage;
 
+import com.safetynetalerts.model.Person;
+import com.safetynetalerts.model.MedicalRecord;
+import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.SafetyNetData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +14,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
+import java.util.List;
+
 
 /**
  * Stockage basé sur un fichier JSON.
@@ -47,22 +52,10 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
         long start = System.currentTimeMillis();
         try {
             logger.info("Chargement des données depuis {}", dataPath);
-
             ensureWritableFileExists();
-
             // (Désérialisation) Lecture du JSON du disque → conversion en SafetyNetData
             SafetyNetData data = objectMapper.readValue(dataPath.toFile(), SafetyNetData.class);
-
-            long duration = System.currentTimeMillis() - start;
-            if (data != null) {
-                int persons = data.getPersons() != null ? data.getPersons().size() : 0;
-                int firestations = data.getFirestations() != null ? data.getFirestations().size() : 0;
-                int medicalrecords = data.getMedicalRecords() != null ? data.getMedicalRecords().size() : 0;
-                logger.info("Chargement des données (après désérialisation): persons={}, firestations={}, medicalrecords={} ({} ms)", persons, firestations, medicalrecords, duration);
-            } else {
-                logger.warn("Chargement des données (après désérialisation) est null ({} ms)", duration);
-            }
-            logger.debug("Chargement complété en {} ms", duration);
+            validateAndSanitize(data, start);
             return data;
         } catch (IOException e) {
             logger.error("Échec de lecture des données JSON depuis {}: {}", dataPath, e.getMessage(), e);
@@ -146,5 +139,50 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
             Files.copy(in, dataPath, StandardCopyOption.REPLACE_EXISTING);
             logger.debug("Classpath data.json copié vers {}", dataPath);
         }
+    }
+
+    private void validateAndSanitize(SafetyNetData data, long start) {
+        long duration = System.currentTimeMillis() - start;
+        if (data != null) {
+            int persons = validateAndSanitizePersons(data.getPersons());
+            int medicalRecords = validateAndSanitizeMedicalRecords(data.getMedicalRecords());
+            int firestations = validateAndSanitizeFirestations(data.getFirestations());
+            logger.info("Chargement des données (après désérialisation): persons={}, firestations={}, medicalrecords={} ({} ms)", persons, firestations, medicalRecords, duration);
+        } else {
+            logger.warn("Chargement des données (après désérialisation) est null ({} ms)", duration);
+        }
+        logger.debug("Chargement complété en {} ms", duration);
+
+    }
+
+    private int validateAndSanitizePersons(List<Person> persons) {
+        int count = persons.size();
+        persons.removeIf(p -> p == null
+                || p.getFirstName() == null
+                || p.getLastName() == null
+                || p.getAddress() == null
+                || p.getCity() == null
+                || p.getZip() == null
+                || p.getPhone() == null
+                || p.getEmail() == null
+        );
+        return count - persons.size();
+    }
+
+    private int validateAndSanitizeFirestations(List<Firestation> firestations) {
+        int count = firestations.size();
+        firestations.removeIf(f -> f == null
+                || f.getAddress() == null
+                || f.getStation() == null);
+        return count - firestations.size();
+    }
+
+    private int validateAndSanitizeMedicalRecords(List<MedicalRecord> medicalRecords) {
+        int count = medicalRecords.size();
+        medicalRecords.removeIf(mr -> mr == null
+                || mr.getFirstName() == null
+                || mr.getLastName() == null
+                || mr.getBirthdate() == null);
+        return count - medicalRecords.size();
     }
 }
