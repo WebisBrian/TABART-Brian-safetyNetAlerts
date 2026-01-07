@@ -5,6 +5,7 @@ import com.safetynetalerts.model.SafetyNetData;
 import com.safetynetalerts.repository.store.SafetyNetStore;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,9 @@ public class InMemoryFirestationRepository implements FirestationRepository {
 
     @Override
     public List<Firestation> findAll() {
-        return store.read(SafetyNetData::getFirestations);
+        List<Firestation> firestations = store.read(SafetyNetData::getFirestations);
+
+        return firestations != null ? firestations : Collections.emptyList();
     }
 
     @Override

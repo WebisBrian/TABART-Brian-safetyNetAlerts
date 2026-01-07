@@ -3,8 +3,11 @@ package com.safetynetalerts.repository.person;
 import com.safetynetalerts.model.Person;
 import com.safetynetalerts.model.SafetyNetData;
 import com.safetynetalerts.repository.store.SafetyNetStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +17,8 @@ import java.util.Optional;
 @Repository
 public class InMemoryPersonRepository implements PersonRepository {
 
+    Logger logger = LoggerFactory.getLogger(InMemoryPersonRepository.class);
+
     private final SafetyNetStore store;
 
     public InMemoryPersonRepository(SafetyNetStore store) {
@@ -22,15 +27,41 @@ public class InMemoryPersonRepository implements PersonRepository {
 
     @Override
     public List<Person> findAll() {
-        return store.read(SafetyNetData::getPersons);
+        List<Person> persons = store.read(SafetyNetData::getPersons);
+
+        return persons != null ? persons : Collections.emptyList();
+    }
+
+    @Override
+    public List<Person> findAllByLastName(String lastName) {
+        List<Person> persons = store.read(data -> data.getPersons().stream()
+                .filter(p -> p.getLastName().equalsIgnoreCase(lastName))
+                .toList());
+
+        return persons != null ? persons : Collections.emptyList();
     }
 
     @Override
     public Optional<Person> findByName(String firstName, String lastName) {
-        return store.read(data -> data.getPersons().stream()
-                .filter(p -> p.getFirstName().equalsIgnoreCase(firstName)
-                        && p.getLastName().equalsIgnoreCase(lastName))
-                .findFirst());
+        if (firstName == null || lastName == null) {
+            logger.warn("findByName appelé avec firstName={} ou lastName=null", firstName);
+            return Optional.empty();
+        }
+
+        return store.read(data -> {
+            List<Person> persons = data.getPersons();
+
+            if (persons == null) {
+                logger.error("Liste persons est null dans SafetyNetData");
+                return Optional.empty();
+            }
+
+            return persons.stream()
+                    .filter(p -> p != null
+                            && firstName.equalsIgnoreCase(p.getFirstName())
+                            && lastName.equalsIgnoreCase(p.getLastName()))
+                    .findFirst();
+        });
     }
 
     //    CRUD

@@ -13,6 +13,8 @@ public interface PersonRepository {
 
     List<Person> findAll();
 
+    List<Person> findAllByLastName(String lastName);
+
     Optional<Person> findByName(String firstName, String lastName);
 
     Person add(Person person);

@@ -5,6 +5,7 @@ import com.safetynetalerts.model.SafetyNetData;
 import com.safetynetalerts.repository.store.SafetyNetStore;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,9 @@ public class InMemoryMedicalRecordRepository implements MedicalRecordRepository 
 
     @Override
     public List<MedicalRecord> findAll() {
-        return store.read(SafetyNetData::getMedicalRecords);
+        List<MedicalRecord> medicalRecords = store.read(SafetyNetData::getMedicalRecords);
+
+        return medicalRecords != null ? medicalRecords : Collections.emptyList();
     }
 
     @Override

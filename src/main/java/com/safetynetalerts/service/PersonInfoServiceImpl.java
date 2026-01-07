@@ -3,6 +3,7 @@ package com.safetynetalerts.service;
 import com.safetynetalerts.dto.response.personinfo.PersonInfoDto;
 import com.safetynetalerts.dto.response.personinfo.PersonInfoResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
+import com.safetynetalerts.model.Person;
 import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
 import com.safetynetalerts.repository.person.PersonRepository;
@@ -27,13 +28,20 @@ public class PersonInfoServiceImpl implements PersonInfoService {
 
     @Override
     public PersonInfoResponseDto getPersonInfoByLastName(String lastName) {
+
         if (lastName == null || lastName.isBlank()) {
             throw new BadRequestException("Le nom de famille doit être renseigné.");
         }
 
+        List<PersonInfoDto> persons = findPersonInfoByLastName(lastName);
+
+        return new PersonInfoResponseDto(persons);
+    }
+
+    private List<PersonInfoDto> findPersonInfoByLastName(String lastName) {
         List<MedicalRecord> medicalRecords = medicalRecordRepository.findAll();
 
-        List<PersonInfoDto> persons = personRepository.findAll().stream()
+        return personRepository.findAll().stream()
                 .filter(p -> p.getFirstName() != null && p.getLastName() != null)
                 .filter(p -> p.getLastName().equalsIgnoreCase(lastName))
                 .map(p -> {
@@ -44,18 +52,20 @@ public class PersonInfoServiceImpl implements PersonInfoService {
 
                     int age = ageService.getAge(p, medicalRecords).orElse(0);
 
-                    return new PersonInfoDto(
-                            p.getFirstName(),
-                            p.getLastName(),
-                            p.getAddress(),
-                            age,
-                            p.getEmail(),
-                            recordOpt.map(MedicalRecord::getMedications).orElse(List.of()),
-                            recordOpt.map(MedicalRecord::getAllergies).orElse(List.of())
-                    );
+                    return personInfoToDto(p, recordOpt, age);
+
                 })
                 .toList();
+    }
 
-        return new PersonInfoResponseDto(persons);
+    private PersonInfoDto personInfoToDto(Person person, Optional<MedicalRecord> recordOpt, int age) {
+        return new PersonInfoDto(
+                person.getFirstName(),
+                person.getLastName(),
+                person.getAddress(),
+                age,
+                person.getEmail(),
+                recordOpt.map(MedicalRecord::getMedications).orElse(List.of()),
+                recordOpt.map(MedicalRecord::getAllergies).orElse(List.of()));
     }
 }
