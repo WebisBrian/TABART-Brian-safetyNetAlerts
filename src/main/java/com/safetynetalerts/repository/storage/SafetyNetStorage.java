@@ -9,13 +9,12 @@ import com.safetynetalerts.model.SafetyNetData;
 public interface SafetyNetStorage {
 
     /**
-     * Charge SafetyNetData depuis le fichier JSON configuré.
-     * Si le fichier est manquant (ou vide), il doit être initialisé depuis data.json présent dans le classpath.
+     * Charge les données depuis le stockage configuré.
      */
     SafetyNetData load();
 
     /**
-     * Enregistre SafetyNetData dans le fichier JSON configuré (écriture atomique si possible).
+     * Enregistre les données vers le stockage configuré.
      */
     void save(SafetyNetData data);
 }

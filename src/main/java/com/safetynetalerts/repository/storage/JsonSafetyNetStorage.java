@@ -47,6 +47,10 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
         logger.info("JsonSafetyNetStorage configuré avec dataPath={}", this.dataPath);
     }
 
+    /**
+     * Charge SafetyNetData depuis le fichier JSON configuré.
+     * Si le fichier est manquant (ou vide), il doit être initialisé depuis data.json présent dans le classpath.
+     */
     @Override
     public SafetyNetData load() {
         long start = System.currentTimeMillis();
@@ -64,6 +68,9 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
         }
     }
 
+    /**
+     * Enregistre SafetyNetData dans le fichier JSON configuré (écriture atomique si possible).
+     */
     @Override
     public void save(SafetyNetData data) {
         long start = System.currentTimeMillis();
