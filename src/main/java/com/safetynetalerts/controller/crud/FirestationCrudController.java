@@ -1,6 +1,6 @@
 package com.safetynetalerts.controller.crud;
 
-import com.safetynetalerts.dto.mapper.FirestationMapper;
+import com.safetynetalerts.mapper.FirestationMapper;
 import com.safetynetalerts.dto.response.crud.FirestationResponseDto;
 import com.safetynetalerts.dto.request.FirestationUpsertRequestDto;
 import com.safetynetalerts.model.Firestation;
@@ -25,7 +25,7 @@ public class FirestationCrudController {
 
     @PostMapping
     public ResponseEntity<FirestationResponseDto> create(@RequestBody FirestationUpsertRequestDto body) {
-        logger.info("POST /firestation address={} station={}", body.getAddress(), body.getStation());
+        logger.info("POST /firestation address={} station={}", body.address(), body.station());
         Firestation toCreate = FirestationMapper.toModel(body);
         Firestation created = service.create(toCreate);
 
@@ -36,7 +36,7 @@ public class FirestationCrudController {
 
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody FirestationUpsertRequestDto body) {
-        logger.info("PUT /firestation address={} station={}", body.getAddress(), body.getStation());
+        logger.info("PUT /firestation address={} station={}", body.address(), body.station());
         Firestation toUpdate = FirestationMapper.toModel(body);
 
         boolean updated = service.update(toUpdate);

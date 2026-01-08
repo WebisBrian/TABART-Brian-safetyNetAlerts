@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto.mapper;
+package com.safetynetalerts.mapper;
 
 import com.safetynetalerts.dto.response.crud.FirestationResponseDto;
 import com.safetynetalerts.dto.request.FirestationUpsertRequestDto;
@@ -14,7 +14,7 @@ public final class FirestationMapper {
 
     public static Firestation toModel(FirestationUpsertRequestDto dto) {
         // DTO → modèle interne (utilisé par service/repo)
-        return new Firestation(dto.getAddress(), dto.getStation());
+        return new Firestation(dto.address(), dto.station());
     }
 
     public static FirestationResponseDto toDto(Firestation model) {

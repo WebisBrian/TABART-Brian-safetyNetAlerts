@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto.mapper;
+package com.safetynetalerts.mapper;
 
 import com.safetynetalerts.dto.response.crud.PersonResponseDto;
 import com.safetynetalerts.dto.request.PersonUpsertRequestDto;

@@ -1,6 +1,6 @@
 package com.safetynetalerts.controller.crud;
 
-import com.safetynetalerts.dto.mapper.MedicalRecordMapper;
+import com.safetynetalerts.mapper.MedicalRecordMapper;
 import com.safetynetalerts.dto.response.crud.MedicalRecordResponseDto;
 import com.safetynetalerts.dto.request.MedicalRecordUpsertRequestDto;
 import com.safetynetalerts.model.MedicalRecord;
@@ -25,7 +25,7 @@ public class MedicalRecordCrudController {
 
     @PostMapping
     public ResponseEntity<MedicalRecordResponseDto> create(@RequestBody MedicalRecordUpsertRequestDto body) {
-        logger.info("POST /medicalRecord {} {}", body.getFirstName(), body.getLastName());
+        logger.info("POST /medicalRecord {} {}", body.firstName(), body.lastName());
         MedicalRecord toCreate = MedicalRecordMapper.toModel(body);
         MedicalRecord created = service.create(toCreate);
 
@@ -36,7 +36,7 @@ public class MedicalRecordCrudController {
 
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody MedicalRecordUpsertRequestDto body) {
-        logger.info("PUT /medicalRecord {} {}", body.getFirstName(), body.getLastName());
+        logger.info("PUT /medicalRecord {} {}", body.firstName(), body.lastName());
         MedicalRecord toUpdate = MedicalRecordMapper.toModel(body);
 
         boolean updated = service.update(toUpdate);

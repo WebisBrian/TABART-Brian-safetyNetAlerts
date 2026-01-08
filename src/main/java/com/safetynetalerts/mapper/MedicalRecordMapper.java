@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto.mapper;
+package com.safetynetalerts.mapper;
 
 import com.safetynetalerts.dto.response.crud.MedicalRecordResponseDto;
 import com.safetynetalerts.dto.request.MedicalRecordUpsertRequestDto;
@@ -17,13 +17,13 @@ public final class MedicalRecordMapper {
 
     public static MedicalRecord toModel(MedicalRecordUpsertRequestDto dto) {
         // DTO → modèle interne (utilisé par service/repo)
-        List<String> medications = dto.getMedications() != null ? dto.getMedications() : List.of();
-        List<String> allergies = dto.getAllergies() != null ? dto.getAllergies() : List.of();
+        List<String> medications = dto.medications() != null ? dto.medications() : List.of();
+        List<String> allergies = dto.allergies() != null ? dto.allergies() : List.of();
 
         return new MedicalRecord(
-                dto.getFirstName(),
-                dto.getLastName(),
-                dto.getBirthdate(),
+                dto.firstName(),
+                dto.lastName(),
+                dto.birthdate(),
                 medications,
                 allergies
         );
