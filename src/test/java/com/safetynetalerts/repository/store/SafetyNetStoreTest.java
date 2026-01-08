@@ -29,9 +29,11 @@ class SafetyNetStoreTest {
     @BeforeEach
     void setUp() {
         initialData = new SafetyNetData();
-        initialData.setPersons(new ArrayList<>());
-        initialData.setFirestations(new ArrayList<>());
-        initialData.setMedicalRecords(new ArrayList<>());
+        initialData.updateSafetyNetData(
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>());
+
 
         initialData.getFirestations().add(Firestation.create("1509 Culver St", 3));
     }

@@ -1,7 +1,9 @@
 package com.safetynetalerts.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,61 +15,57 @@ import java.util.Objects;
  * Cette classe sert de conteneur principal pour la désérialisation du fichier JSON
  * et fournit les données brutes à la couche repository.
  */
+@JsonPropertyOrder({"persons", "firestations", "medicalrecords"})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SafetyNetData {
 
-    // fields
-    @JsonProperty("persons")
     private List<Person> persons;
-    @JsonProperty("firestations")
     private List<Firestation> firestations;
-    @JsonProperty("medicalrecords")
     private List<MedicalRecord> medicalRecords;
 
-    // constructors
+    // Constructeur par défaut
     public SafetyNetData() {
     }
 
-    public SafetyNetData(List<Person> persons, List<Firestation> firestations, List<MedicalRecord> medicalRecords) {
+    @JsonCreator
+    // Constructeur privé
+    private SafetyNetData(
+            @JsonProperty("persons") List<Person> persons,
+            @JsonProperty("firestations") List<Firestation> firestations,
+            @JsonProperty("medicalrecords") List<MedicalRecord> medicalRecords) {
         this.persons = persons;
         this.firestations = firestations;
         this.medicalRecords = medicalRecords;
     }
 
-    // getters and setters
-    public List<Person> getPersons() {
-        return persons;
+    // Factory method (remplace le constructeur public)
+    public static SafetyNetData create(List<Person> persons, List<Firestation> firestations,
+                                       List<MedicalRecord> medicalRecords) {
+        return new SafetyNetData(persons, firestations, medicalRecords);
     }
 
-    public void setPersons(List<Person> persons) {
+    // Méthodes métier
+    public void updateSafetyNetData(List<Person> persons, List<Firestation> firestations,
+                                    List<MedicalRecord> medicalRecords) {
         this.persons = persons;
+        this.firestations = firestations;
+        this.medicalRecords = medicalRecords;
+    }
+
+    // getters
+    public List<Person> getPersons() {
+        return persons;
     }
 
     public List<Firestation> getFirestations() {
         return firestations;
     }
 
-    public void setFirestations(List<Firestation> firestations) {
-        this.firestations = firestations;
-    }
-
     public List<MedicalRecord> getMedicalRecords() {
         return medicalRecords;
     }
 
-    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
-        this.medicalRecords = medicalRecords;
-    }
-
     // overrides
-    @Override
-    public String toString() {
-        return "SafetyNetData [persons=" + persons
-                + ", firestations=" + firestations
-                + ", medicalrecords=" + medicalRecords
-                + "]";
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -78,5 +76,13 @@ public class SafetyNetData {
     @Override
     public int hashCode() {
         return Objects.hash(persons, firestations, medicalRecords);
+    }
+
+    @Override
+    public String toString() {
+        return "SafetyNetData [persons=" + persons
+                + ", firestations=" + firestations
+                + ", medicalrecords=" + medicalRecords
+                + "]";
     }
 }
