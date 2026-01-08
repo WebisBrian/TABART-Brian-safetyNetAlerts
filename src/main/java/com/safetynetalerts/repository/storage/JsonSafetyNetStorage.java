@@ -156,14 +156,13 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
             int firestations = validateAndSanitizeFirestations(data.getFirestations());
             logger.info("Chargement des données (après désérialisation): persons={}, firestations={}, medicalrecords={} ({} ms)", persons, firestations, medicalRecords, duration);
         } else {
-            logger.warn("Chargement des données (après désérialisation) est null ({} ms)", duration);
+            logger.warn("Chargement des données depuis JsonSafetyNetStorage est null ({} ms)", duration);
         }
         logger.debug("Chargement complété en {} ms", duration);
 
     }
 
     private int validateAndSanitizePersons(List<Person> persons) {
-        int count = persons.size();
         persons.removeIf(p -> p == null
                 || p.getFirstName() == null
                 || p.getLastName() == null
@@ -173,23 +172,21 @@ public class JsonSafetyNetStorage implements SafetyNetStorage {
                 || p.getPhone() == null
                 || p.getEmail() == null
         );
-        return count - persons.size();
+        return persons.size();
     }
 
     private int validateAndSanitizeFirestations(List<Firestation> firestations) {
-        int count = firestations.size();
         firestations.removeIf(f -> f == null
                 || f.getAddress() == null
                 || f.getStation() == null);
-        return count - firestations.size();
+        return firestations.size();
     }
 
     private int validateAndSanitizeMedicalRecords(List<MedicalRecord> medicalRecords) {
-        int count = medicalRecords.size();
         medicalRecords.removeIf(mr -> mr == null
                 || mr.getFirstName() == null
                 || mr.getLastName() == null
                 || mr.getBirthdate() == null);
-        return count - medicalRecords.size();
+        return medicalRecords.size();
     }
 }
