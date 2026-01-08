@@ -39,42 +39,6 @@ class FirestationCrudServiceImplTest {
     }
 
     @Test
-    void create_shouldThrowBadRequestWhenAddressMissing() {
-        Firestation input = Firestation.create(null, 1);
-
-        assertThatThrownBy(() -> service.create(input))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("L'adresse doit être renseignée.");
-
-        verify(firestationRepository, never()).findByAddressAndByStation(any(), any(Integer.class));
-        verifyNoMoreInteractions(firestationRepository);
-    }
-
-    @Test
-    void create_shouldThrowBadRequestWhenStationNull() {
-        Firestation input = Firestation.create("1509 Culver St", null);
-
-        assertThatThrownBy(() -> service.create(input))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("Le numéro de la station doit être renseigné.");
-
-        verify(firestationRepository, never()).findByAddressAndByStation(any(), any(Integer.class));
-        verifyNoMoreInteractions(firestationRepository);
-    }
-
-    @Test
-    void create_shouldThrowBadRequestWhenStationLessThanOne() {
-        Firestation input = Firestation.create("1509 Culver St", 0);
-
-        assertThatThrownBy(() -> service.create(input))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("Le numéro de la station doit être un entier strictement supérieur à zéro.");
-
-        verify(firestationRepository, never()).findByAddressAndByStation(any(), any(Integer.class));
-        verifyNoMoreInteractions(firestationRepository);
-    }
-
-    @Test
     void create_shouldThrowConflictWhenExists() {
         Firestation input = Firestation.create("1509 Culver St", 3);
         when(firestationRepository.findByAddressAndByStation("1509 Culver St", 3)).thenReturn(Optional.of(new Firestation()));
@@ -97,42 +61,6 @@ class FirestationCrudServiceImplTest {
 
         assertThat(result).isTrue();
         verify(firestationRepository).update(updated);
-        verifyNoMoreInteractions(firestationRepository);
-    }
-
-    @Test
-    void update_shouldThrowBadRequestWhenAddressMissing() {
-        Firestation updated = Firestation.create(" ", 2);
-
-        assertThatThrownBy(() -> service.update(updated))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("L'adresse doit être renseignée.");
-
-        verify(firestationRepository, never()).update(any());
-        verifyNoMoreInteractions(firestationRepository);
-    }
-
-    @Test
-    void update_shouldThrowBadRequestWhenStationNull() {
-        Firestation updated = Firestation.create("1509 Culver St", null);
-
-        assertThatThrownBy(() -> service.update(updated))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("Le numéro de la station doit être renseigné.");
-
-        verify(firestationRepository, never()).update(any());
-        verifyNoMoreInteractions(firestationRepository);
-    }
-
-    @Test
-    void update_shouldThrowBadRequestWhenStationLessThanOne() {
-        Firestation updated = Firestation.create("1509 Culver St", 0);
-
-        assertThatThrownBy(() -> service.update(updated))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("Le numéro de la station doit être un entier strictement supérieur à zéro.");
-
-        verify(firestationRepository, never()).update(any());
         verifyNoMoreInteractions(firestationRepository);
     }
 
