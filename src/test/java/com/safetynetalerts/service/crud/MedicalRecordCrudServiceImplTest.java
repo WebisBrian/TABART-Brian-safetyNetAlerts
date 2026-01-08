@@ -27,7 +27,7 @@ class MedicalRecordCrudServiceImplTest {
 
     @Test
     void create_shouldDelegateToRepository() {
-        MedicalRecord input = new MedicalRecord("John", "Boyd", "03/06/1984",
+        MedicalRecord input = MedicalRecord.create("John", "Boyd", "03/06/1984",
                 List.of("aznol:350mg"), List.of("nillacilan"));
 
         when(medicalRecordRepository.findByName("John", "Boyd")).thenReturn(Optional.empty());
@@ -43,7 +43,7 @@ class MedicalRecordCrudServiceImplTest {
 
     @Test
     void create_shouldThrowConflictWhenRecordExists() {
-        MedicalRecord input = new MedicalRecord("John", "Boyd", "03/06/1984",
+        MedicalRecord input = MedicalRecord.create("John", "Boyd", "03/06/1984",
                 List.of(), List.of());
 
         when(medicalRecordRepository.findByName("John", "Boyd")).thenReturn(Optional.of(input));
@@ -59,7 +59,7 @@ class MedicalRecordCrudServiceImplTest {
 
     @Test
     void create_shouldThrowBadRequestWhenNameMissing() {
-        MedicalRecord input = new MedicalRecord(null, " ", "03/06/1984",
+        MedicalRecord input = MedicalRecord.create(null, " ", "03/06/1984",
                 List.of(), List.of());
 
         when(medicalRecordRepository.findByName(any(), any())).thenReturn(Optional.empty());
@@ -75,7 +75,7 @@ class MedicalRecordCrudServiceImplTest {
 
     @Test
     void create_shouldThrowBadRequestWhenBirthdateMissing() {
-        MedicalRecord input = new MedicalRecord("A", "B", " ",
+        MedicalRecord input = MedicalRecord.create("A", "B", " ",
                 List.of(), List.of());
 
         when(medicalRecordRepository.findByName(any(), any())).thenReturn(Optional.empty());
@@ -91,7 +91,7 @@ class MedicalRecordCrudServiceImplTest {
 
     @Test
     void update_shouldReturnTrueWhenRepositoryUpdates() {
-        MedicalRecord updated = new MedicalRecord("John", "Boyd", "03/06/1984",
+        MedicalRecord updated = MedicalRecord.create("John", "Boyd", "03/06/1984",
                 List.of("new:10mg"), List.of());
 
         when(medicalRecordRepository.update(updated)).thenReturn(true);
@@ -105,7 +105,7 @@ class MedicalRecordCrudServiceImplTest {
 
     @Test
     void update_shouldReturnFalseWhenRecordNotFound() {
-        MedicalRecord updated = new MedicalRecord("X", "Y", "01/01/2000",
+        MedicalRecord updated = MedicalRecord.create("X", "Y", "01/01/2000",
                 List.of(), List.of());
 
         when(medicalRecordRepository.update(updated)).thenReturn(false);
@@ -119,7 +119,7 @@ class MedicalRecordCrudServiceImplTest {
 
     @Test
     void update_shouldThrowBadRequestWhenBirthdateMissing() {
-        MedicalRecord updated = new MedicalRecord("A", "B", null,
+        MedicalRecord updated = MedicalRecord.create("A", "B", null,
                 List.of(), List.of());
 
         assertThatThrownBy(() -> service.update(updated))

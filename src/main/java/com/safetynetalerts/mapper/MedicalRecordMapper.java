@@ -20,7 +20,7 @@ public final class MedicalRecordMapper {
         List<String> medications = dto.medications() != null ? dto.medications() : List.of();
         List<String> allergies = dto.allergies() != null ? dto.allergies() : List.of();
 
-        return new MedicalRecord(
+        return MedicalRecord.create(
                 dto.firstName(),
                 dto.lastName(),
                 dto.birthdate(),

@@ -44,7 +44,7 @@ class AgeServiceTest {
     void getAge_shouldReturnAgeWhenMedicalRecordExists() {
 
         Person person = Person.create("John", "Boyd", "", "", "", "", "");
-        MedicalRecord record = new MedicalRecord(
+        MedicalRecord record = MedicalRecord.create(
                 "John",
                 "Boyd",
                 "03/06/1984",
@@ -66,7 +66,7 @@ class AgeServiceTest {
         Person child = Person.create("Tenley", "Boyd", "", "", "", "", "");
         Person adult = Person.create("John", "Boyd", "", "", "", "", "");
 
-        MedicalRecord childRecord = new MedicalRecord(
+        MedicalRecord childRecord = MedicalRecord.create(
                 "Tenley",
                 "Boyd",
                 "02/18/2012",
@@ -74,7 +74,7 @@ class AgeServiceTest {
                 List.of()
         );
 
-        MedicalRecord adultRecord = new MedicalRecord(
+        MedicalRecord adultRecord = MedicalRecord.create(
                 "John",
                 "Boyd",
                 "03/06/1984",

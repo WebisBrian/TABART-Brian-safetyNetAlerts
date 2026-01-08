@@ -71,9 +71,12 @@ public class InMemoryMedicalRecordRepository implements MedicalRecordRepository 
             }
 
             MedicalRecord existing = opt.get();
-            existing.setBirthdate(record.getBirthdate());
-            existing.setMedications(record.getMedications());
-            existing.setAllergies(record.getAllergies());
+            existing.updateMedicalRecord(
+                    record.getBirthdate(),
+                    record.getMedications(),
+                    record.getAllergies()
+            );
+
 
             updated[0] = true;
         });

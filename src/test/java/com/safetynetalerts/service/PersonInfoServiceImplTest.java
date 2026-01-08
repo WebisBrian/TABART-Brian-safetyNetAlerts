@@ -43,8 +43,8 @@ class PersonInfoServiceImplTest {
         ));
 
         when(medicalRecordRepository.findAll()).thenReturn(List.of(
-                new MedicalRecord("John", "Boyd", "03/06/1984", List.of("aznol:350mg"), List.of("nillacilan")),
-                new MedicalRecord("Jane", "Doe", "01/01/1990", List.of(), List.of())
+                MedicalRecord.create("John", "Boyd", "03/06/1984", List.of("aznol:350mg"), List.of("nillacilan")),
+                MedicalRecord.create("Jane", "Doe", "01/01/1990", List.of(), List.of())
         ));
     }
 

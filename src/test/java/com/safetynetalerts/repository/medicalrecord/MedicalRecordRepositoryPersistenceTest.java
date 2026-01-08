@@ -45,7 +45,7 @@ public class MedicalRecordRepositoryPersistenceTest {
         SafetyNetStore store1 = newStore(dataFile);
         InMemoryMedicalRecordRepository repo1 = new InMemoryMedicalRecordRepository(store1);
 
-        repo1.add(new MedicalRecord(
+        repo1.add(MedicalRecord.create(
                 "John", "Boyd",
                 "03/06/1984",
                 List.of("aznol:350mg"),
@@ -53,7 +53,7 @@ public class MedicalRecordRepositoryPersistenceTest {
         ));
 
         // Act : mise à jour (médicaments + allergies)
-        boolean updated = repo1.update(new MedicalRecord(
+        boolean updated = repo1.update(MedicalRecord.create(
                 "John", "Boyd",
                 "03/06/1984",
                 List.of("newmed:10mg"),
@@ -79,7 +79,7 @@ public class MedicalRecordRepositoryPersistenceTest {
         SafetyNetStore store1 = newStore(dataFile);
         InMemoryMedicalRecordRepository repo1 = new InMemoryMedicalRecordRepository(store1);
 
-        repo1.add(new MedicalRecord(
+        repo1.add(MedicalRecord.create(
                 "John", "Boyd",
                 "03/06/1984",
                 List.of("aznol:350mg"),

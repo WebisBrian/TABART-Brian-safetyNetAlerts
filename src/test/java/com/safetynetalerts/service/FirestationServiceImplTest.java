@@ -58,9 +58,9 @@ class FirestationServiceImplTest {
 
         when(personRepository.findAll()).thenReturn(List.of(johnBoyd, tenleyBoyd, other));
         when(medicalRecordRepository.findAll()).thenReturn(List.of(
-                new MedicalRecord("John", "Boyd", "03/06/1984", List.of(), List.of()),
-                new MedicalRecord("Tenley", "Boyd", "02/18/2012", List.of(), List.of()),
-                new MedicalRecord("Other", "Person", "01/01/1999", List.of(), List.of())
+                MedicalRecord.create("John", "Boyd", "03/06/1984", List.of(), List.of()),
+                MedicalRecord.create("Tenley", "Boyd", "02/18/2012", List.of(), List.of()),
+                MedicalRecord.create("Other", "Person", "01/01/1999", List.of(), List.of())
         ));
 
         when(ageService.isChild(any(Person.class), anyList())).thenReturn(false);

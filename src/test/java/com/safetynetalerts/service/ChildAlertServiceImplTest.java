@@ -46,10 +46,10 @@ class ChildAlertServiceImplTest {
         when(personRepository.findAll())
                 .thenReturn(List.of(johnBoyd, tenleyBoyd, other));
 
-        MedicalRecord medicalRecordJohn = new MedicalRecord("John", "Boyd", "03/06/1984", List.of("aznol:350mg",
+        MedicalRecord medicalRecordJohn = MedicalRecord.create("John", "Boyd", "03/06/1984", List.of("aznol:350mg",
                 "hydrapermazol:100mg"), List.of("nillacilan"));
-        MedicalRecord medicalRecordTenley = new MedicalRecord("Tenley", "Boyd", "02/18/2012", List.of(), List.of("peanut"));
-        MedicalRecord medicalRecordOther = new MedicalRecord("Other", "Person", "01/01/1999", List.of("aznol:350mg"), List.of());
+        MedicalRecord medicalRecordTenley = MedicalRecord.create("Tenley", "Boyd", "02/18/2012", List.of(), List.of("peanut"));
+        MedicalRecord medicalRecordOther = MedicalRecord.create("Other", "Person", "01/01/1999", List.of("aznol:350mg"), List.of());
 
         when(medicalRecordRepository.findAll()).thenReturn(List.of(medicalRecordJohn, medicalRecordTenley, medicalRecordOther));
     }

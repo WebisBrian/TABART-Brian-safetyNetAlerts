@@ -26,13 +26,13 @@ public class Person {
     @JsonCreator
     // Constructeur privé
     private Person(
-            @JsonProperty("firstName")String firstName,
-            @JsonProperty("lastName")String lastName,
-            @JsonProperty("address")String address,
-            @JsonProperty("city")String city,
+            @JsonProperty("firstName") String firstName,
+            @JsonProperty("lastName") String lastName,
+            @JsonProperty("address") String address,
+            @JsonProperty("city") String city,
             @JsonProperty("zip") String zip,
-            @JsonProperty("phone")String phone,
-            @JsonProperty("email")String email
+            @JsonProperty("phone") String phone,
+            @JsonProperty("email") String email
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -51,12 +51,12 @@ public class Person {
 
     // Méthodes métier
     public void updateContactInfo(String address, String city, String zip,
-                                    String phone, String email) {
-                this.address = address;
-                this.city = city;
-                this.zip = zip;
-                this.phone = phone;
-                this.email = email;
+                                  String phone, String email) {
+        this.address = address;
+        this.city = city;
+        this.zip = zip;
+        this.phone = phone;
+        this.email = email;
     }
 
     // getters

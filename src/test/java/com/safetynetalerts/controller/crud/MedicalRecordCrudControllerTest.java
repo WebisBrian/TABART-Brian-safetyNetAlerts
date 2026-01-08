@@ -30,7 +30,7 @@ class MedicalRecordCrudControllerTest {
 
     @Test
     void postMedicalRecord_shouldCreateRecord() throws Exception {
-        MedicalRecord record = new MedicalRecord(
+        MedicalRecord record = MedicalRecord.create(
                 "John", "Boyd", "03/06/1984",
                 List.of("aznol:350mg"), List.of("nillacilan")
         );
@@ -49,7 +49,7 @@ class MedicalRecordCrudControllerTest {
 
     @Test
     void putMedicalRecord_shouldUpdateRecord() throws Exception {
-        MedicalRecord record = new MedicalRecord(
+        MedicalRecord record = MedicalRecord.create(
                 "John", "Boyd", "03/06/1984",
                 List.of("new:10mg"), List.of()
         );

@@ -53,13 +53,13 @@ class FireServiceImplTest {
         ));
 
         when(medicalRecordRepository.findAll()).thenReturn(List.of(
-                new MedicalRecord("John", "Boyd", "03/06/1984",
+                MedicalRecord.create("John", "Boyd", "03/06/1984",
                         List.of("aznol:350mg", "hydrapermazol:100mg"),
                         List.of("nillacilan")),
-                new MedicalRecord("Tenley", "Boyd", "02/18/2012",
+                MedicalRecord.create("Tenley", "Boyd", "02/18/2012",
                         List.of(),
                         List.of("peanut")),
-                new MedicalRecord("Other", "Person", "01/01/1999",
+                MedicalRecord.create("Other", "Person", "01/01/1999",
                         List.of("aznol:350mg"),
                         List.of())
         ));

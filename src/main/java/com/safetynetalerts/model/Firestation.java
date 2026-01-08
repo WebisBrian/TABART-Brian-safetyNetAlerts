@@ -48,14 +48,6 @@ public class Firestation {
 
     // overrides
     @Override
-    public String toString() {
-        return "Firestation{"
-                + "address='" + address + '\''
-                + ", station=" + station
-                + '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Firestation that)) return false;
@@ -65,5 +57,13 @@ public class Firestation {
     @Override
     public int hashCode() {
         return Objects.hash(address);
+    }
+
+    @Override
+    public String toString() {
+        return "Firestation{"
+                + "address='" + address + '\''
+                + ", station=" + station
+                + '}';
     }
 }
