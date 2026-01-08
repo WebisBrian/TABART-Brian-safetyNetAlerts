@@ -47,9 +47,9 @@ class FireServiceImplTest {
         ));
 
         when(personRepository.findAll()).thenReturn(List.of(
-                new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "john@email.com"),
-                new Person("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6513", "tenley@email.com"),
-                new Person("Other", "Person", "29 15th St", "Culver", "97451", "333-333-3333", "other@email.com")
+                Person.create("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "john@email.com"),
+                Person.create("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6513", "tenley@email.com"),
+                Person.create("Other", "Person", "29 15th St", "Culver", "97451", "333-333-3333", "other@email.com")
         ));
 
         when(medicalRecordRepository.findAll()).thenReturn(List.of(

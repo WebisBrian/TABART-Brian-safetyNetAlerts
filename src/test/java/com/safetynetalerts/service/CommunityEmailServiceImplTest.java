@@ -26,10 +26,10 @@ class CommunityEmailServiceImplTest {
     @BeforeEach
     void setUp() {
         when(personRepository.findAll()).thenReturn(List.of(
-                new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "a@email.com"),
-                new Person("Jane", "Doe", "X", "Culver", "97451", "842", "b@email.com"),
-                new Person("Bob", "Foo", "Y", "OtherCity", "97451", "843", "c@email.com"),
-                new Person("Dup", "Mail", "Z", "Culver", "97451", "844", "a@email.com")
+                Person.create("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "a@email.com"),
+                Person.create("Jane", "Doe", "X", "Culver", "97451", "842", "b@email.com"),
+                Person.create("Bob", "Foo", "Y", "OtherCity", "97451", "843", "c@email.com"),
+                Person.create("Dup", "Mail", "Z", "Culver", "97451", "844", "a@email.com")
         ));
     }
 

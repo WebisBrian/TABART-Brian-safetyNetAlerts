@@ -28,7 +28,7 @@ class PersonCrudControllerTest {
 
     @Test
     void postPerson_shouldCreatePerson() throws Exception {
-        Person person = new Person("John", "Boyd", "1509 Culver St",
+        Person person = Person.create("John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841", "john@email.com");
 
         when(personService.create(any(Person.class))).thenReturn(person);
@@ -44,7 +44,7 @@ class PersonCrudControllerTest {
 
     @Test
     void putPerson_shouldUpdatePerson() throws Exception {
-        Person person = new Person("John", "Boyd", "NEW",
+        Person person = Person.create("John", "Boyd", "NEW",
                 "Culver", "97451", "999", "new@email.com");
 
         when(personService.update(any(Person.class))).thenReturn(true);

@@ -15,13 +15,13 @@ public final class PersonMapper {
 
     public static Person toModel(PersonUpsertRequestDto dto) {
         // DTO → modèle interne (utilisé par service/repo)
-        return new Person(dto.firstName(),
-                dto.lastName(),
-                dto.address(),
-                dto.city(),
-                dto.zip(),
-                dto.phone(),
-                dto.email());
+        return  Person.create(dto.firstName(),
+                              dto.lastName(),
+                              dto.address(),
+                              dto.city(),
+                              dto.zip(),
+                              dto.phone(),
+                              dto.email());
     }
 
     public static PersonResponseDto toDto(Person person) {

@@ -44,7 +44,7 @@ public class PersonRepositoryPersistenceTest {
         SafetyNetStore store = newStore(dataFile);
         InMemoryPersonRepository repo1 = new InMemoryPersonRepository(store);
 
-        repo1.add(new Person(
+        Person person = repo1.add(Person.create(
                 "José",
                 "Beauvais",
                 "1509 Culver St",
@@ -54,14 +54,14 @@ public class PersonRepositoryPersistenceTest {
                 ""));
 
         // Act : mise à jour (email)
-        boolean updated = repo1.update(new Person(
-                "José",
-                "Beauvais",
+        person.updateContactInfo(
                 "1509 Culver St",
                 "Culver",
                 "97451",
                 "841",
-                "josé@email.com"));
+                "josé@email.com"
+        );
+        boolean updated = repo1.update(person);
 
         // Restart
         SafetyNetStore store2 = newStore(dataFile);
@@ -80,7 +80,7 @@ public class PersonRepositoryPersistenceTest {
         SafetyNetStore store1 = newStore(dataFile);
         InMemoryPersonRepository repo1 = new InMemoryPersonRepository(store1);
 
-        repo1.add(new Person(
+        repo1.add(Person.create(
                 "José",
                 "Beauvais",
                 "1509 Culver St",

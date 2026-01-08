@@ -39,9 +39,9 @@ class ChildAlertServiceImplTest {
     @BeforeEach
     void setUp() {
         // Initialize data for test
-        Person johnBoyd = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com");
-        Person tenleyBoyd = new Person("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "tenz@email.com");
-        Person other = new Person("Other", "Person", "29 15th St", "Culver", "97451", "333-333-3333", "other@email.com");
+        Person johnBoyd = Person.create("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com");
+        Person tenleyBoyd = Person.create("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "tenz@email.com");
+        Person other = Person.create("Other", "Person", "29 15th St", "Culver", "97451", "333-333-3333", "other@email.com");
 
         when(personRepository.findAll())
                 .thenReturn(List.of(johnBoyd, tenleyBoyd, other));

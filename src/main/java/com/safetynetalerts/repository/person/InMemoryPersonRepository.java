@@ -94,11 +94,11 @@ public class InMemoryPersonRepository implements PersonRepository {
             }
 
             Person existing = opt.get();
-            existing.setAddress(person.getAddress());
-            existing.setCity(person.getCity());
-            existing.setZip(person.getZip());
-            existing.setPhone(person.getPhone());
-            existing.setEmail(person.getEmail());
+            existing.updateContactInfo(person.getAddress(),
+                                       person.getCity(),
+                                       person.getZip(),
+                                       person.getPhone(),
+                                       person.getEmail());
 
             updated[0] = true;
         });

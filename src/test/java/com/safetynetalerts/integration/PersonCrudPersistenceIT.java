@@ -48,7 +48,7 @@ class PersonCrudPersistenceIT {
     @Test
     void postPerson_shouldPersistIntoJsonFile() throws Exception {
         // ARRANGE : personne unique
-        Person person = new Person(
+        Person person = Person.create(
                 "Integration",
                 "TestUser",
                 "1 Test Street",

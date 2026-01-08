@@ -41,11 +41,11 @@ class PhoneAlertServiceImplTest {
     @Test
     void getPhonesByStation_shouldReturnDistinctPhonesForKnownStation() {
 
-        Person john = new Person("John", "Boyd", "1509 Culver St", "Culver",
+        Person john = Person.create("John", "Boyd", "1509 Culver St", "Culver",
                 "97451", "841-874-6512", "john@email.com");
-        Person tenley = new Person("Tenley", "Boyd", "1509 Culver St", "Culver",
+        Person tenley = Person.create("Tenley", "Boyd", "1509 Culver St", "Culver",
                 "97451", "841-874-6512", "tenley@email.com"); // même téléphone
-        Person other = new Person("Other", "Person", "29 15th St", "Culver",
+        Person other = Person.create("Other", "Person", "29 15th St", "Culver",
                 "97451", "333-333-3333", "other@email.com");
 
         when(personRepository.findAll())

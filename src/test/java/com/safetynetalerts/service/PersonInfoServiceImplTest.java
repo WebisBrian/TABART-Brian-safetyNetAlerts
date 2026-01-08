@@ -37,9 +37,9 @@ class PersonInfoServiceImplTest {
     void setUp() {
 
         when(personRepository.findAll()).thenReturn(List.of(
-                new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "john@email.com"),
-                new Person("John", "Boyd", "Other Address", "Culver", "97451", "842", "john2@email.com"),
-                new Person("Jane", "Doe", "X", "Culver", "97451", "843", "jane@email.com")
+                Person.create("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "john@email.com"),
+                Person.create("John", "Boyd", "Other Address", "Culver", "97451", "842", "john2@email.com"),
+                Person.create("Jane", "Doe", "X", "Culver", "97451", "843", "jane@email.com")
         ));
 
         when(medicalRecordRepository.findAll()).thenReturn(List.of(

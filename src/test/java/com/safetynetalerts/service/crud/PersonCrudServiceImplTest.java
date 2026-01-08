@@ -26,7 +26,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void create_shouldDelegateToRepository() {
-        Person input = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "john@email.com");
+        Person input = Person.create("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "john@email.com");
 
         when(personRepository.findByName("John", "Boyd")).thenReturn(Optional.empty());
         when(personRepository.add(input)).thenReturn(input);
@@ -41,7 +41,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void create_shouldThrowConflictWhenPersonExists() {
-        Person input = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "john@email.com");
+        Person input = Person.create("John", "Boyd", "1509 Culver St", "Culver", "97451", "841", "john@email.com");
         when(personRepository.findByName("John", "Boyd")).thenReturn(Optional.of(new Person()));
 
         assertThatThrownBy(() -> service.create(input))
@@ -55,7 +55,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void create_shouldThrowBadRequestWhenNameMissing() {
-        Person input = new Person(null, "", "1509 Culver St", "Culver", "97451", "841", "a@b.com");
+        Person input = Person.create(null, "", "1509 Culver St", "Culver", "97451", "841", "a@b.com");
         when(personRepository.findByName(any(), any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.create(input))
@@ -69,7 +69,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void create_shouldThrowBadRequestWhenAddressMissing() {
-        Person input = new Person("A", "B", null, "Culver", "97451", "841", "a@b.com");
+        Person input = Person.create("A", "B", null, "Culver", "97451", "841", "a@b.com");
         when(personRepository.findByName(any(), any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.create(input))
@@ -83,7 +83,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void create_shouldThrowBadRequestWhenCityOrZipMissing() {
-        Person input = new Person("A", "B", "addr", null, "", "841", "a@b.com");
+        Person input = Person.create("A", "B", "addr", null, "", "841", "a@b.com");
         when(personRepository.findByName(any(), any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.create(input))
@@ -97,7 +97,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void create_shouldThrowBadRequestWhenPhoneMissing() {
-        Person input = new Person("A", "B", "addr", "Culver", "97451", "", "a@b.com");
+        Person input = Person.create("A", "B", "addr", "Culver", "97451", "", "a@b.com");
         when(personRepository.findByName(any(), any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.create(input))
@@ -111,7 +111,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void create_shouldThrowBadRequestWhenEmailMissing() {
-        Person input = new Person("A", "B", "addr", "Culver", "97451", "841", " ");
+        Person input = Person.create("A", "B", "addr", "Culver", "97451", "841", " ");
         when(personRepository.findByName(any(), any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.create(input))
@@ -125,7 +125,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void update_shouldReturnTrueWhenRepositoryUpdates() {
-        Person updated = new Person("John", "Boyd", "NEW", "Culver", "97451", "999", "new@email.com");
+        Person updated = Person.create("John", "Boyd", "NEW", "Culver", "97451", "999", "new@email.com");
         when(personRepository.update(updated)).thenReturn(true);
 
         boolean result = service.update(updated);
@@ -137,7 +137,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void update_shouldThrowBadRequestWhenAddressMissing() {
-        Person updated = new Person("A", "B", "", "Culver", "97451", "999", "a@b.com");
+        Person updated = Person.create("A", "B", "", "Culver", "97451", "999", "a@b.com");
 
         assertThatThrownBy(() -> service.update(updated))
                 .isInstanceOf(BadRequestException.class)
@@ -149,7 +149,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void update_shouldThrowBadRequestWhenCityOrZipMissing() {
-        Person updated = new Person("A", "B", "addr", null, "", "999", "a@b.com");
+        Person updated = Person.create("A", "B", "addr", null, "", "999", "a@b.com");
 
         assertThatThrownBy(() -> service.update(updated))
                 .isInstanceOf(BadRequestException.class)
@@ -161,7 +161,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void update_shouldThrowBadRequestWhenPhoneMissing() {
-        Person updated = new Person("A", "B", "addr", "Culver", "97451", " ", "a@b.com");
+        Person updated = Person.create("A", "B", "addr", "Culver", "97451", " ", "a@b.com");
 
         assertThatThrownBy(() -> service.update(updated))
                 .isInstanceOf(BadRequestException.class)
@@ -173,7 +173,7 @@ class PersonCrudServiceImplTest {
 
     @Test
     void update_shouldThrowBadRequestWhenEmailMissing() {
-        Person updated = new Person("A", "B", "addr", "Culver", "97451", "999", null);
+        Person updated = Person.create("A", "B", "addr", "Culver", "97451", "999", null);
 
         assertThatThrownBy(() -> service.update(updated))
                 .isInstanceOf(BadRequestException.class)

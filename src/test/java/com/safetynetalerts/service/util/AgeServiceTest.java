@@ -43,7 +43,7 @@ class AgeServiceTest {
     @Test
     void getAge_shouldReturnAgeWhenMedicalRecordExists() {
 
-        Person person = new Person("John", "Boyd", "", "", "", "", "");
+        Person person = Person.create("John", "Boyd", "", "", "", "", "");
         MedicalRecord record = new MedicalRecord(
                 "John",
                 "Boyd",
@@ -63,8 +63,8 @@ class AgeServiceTest {
     @Test
     void isChild_shouldReturnTrueForChildAndFalseOtherwise() {
 
-        Person child = new Person("Tenley", "Boyd", "", "", "", "", "");
-        Person adult = new Person("John", "Boyd", "", "", "", "", "");
+        Person child = Person.create("Tenley", "Boyd", "", "", "", "", "");
+        Person adult = Person.create("John", "Boyd", "", "", "", "", "");
 
         MedicalRecord childRecord = new MedicalRecord(
                 "Tenley",
@@ -92,7 +92,7 @@ class AgeServiceTest {
     @Test
     void isChild_shouldReturnFalseWhenNoMedicalRecord() {
 
-        Person unknown = new Person("Ghost", "Person", "", "", "", "", "");
+        Person unknown = Person.create("Ghost", "Person", "", "", "", "", "");
 
         // Act
         boolean isChild = ageService.isChild(unknown, List.of());
