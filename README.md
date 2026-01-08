@@ -10,7 +10,7 @@ Ce projet a été réalisé dans le cadre d’un **projet de formation Bac+3 �
 
 * Exposer une **API REST** conforme aux spécifications
 * Charger les données depuis un fichier JSON et **retourner des réponses JSON**
-* Fournir des **endpoints CRUD** (POST / PUT / DELETE)
+* Fournir des **endpoints CRUD** (POST / PUT / DELETE) et autres **endpoints fonctionnels**.
 * Implémenter une **persistance JSON réelle** (écriture sur disque) afin que les données survivent au redémarrage 🔄
 * Produire des **tests automatisés** (unitaires + web MVC)
 * Générer les rapports **Surefire** et **JaCoCo** 📊
@@ -74,7 +74,7 @@ Les données initiales sont chargées depuis :
 
 ### ✍️ Fichier persistant (écriture)
 
-Pour permettre la modification des données via les endpoints CRUD **et conserver les changements après redémarrage**, l’application utilise un fichier **écrivable** défini par :
+Pour permettre la modification des données via les endpoints CRUD **et conserver les changements après redémarrage**, l’application utilise un fichier **modifiable** défini par :
 
 ```properties
 safetynet.data.path=./data/data.json
