@@ -33,7 +33,7 @@ class SafetyNetStoreTest {
         initialData.setFirestations(new ArrayList<>());
         initialData.setMedicalRecords(new ArrayList<>());
 
-        initialData.getFirestations().add(new Firestation("1509 Culver St", 3));
+        initialData.getFirestations().add(Firestation.create("1509 Culver St", 3));
     }
 
     @Test
@@ -64,7 +64,7 @@ class SafetyNetStoreTest {
         store = new SafetyNetStore(storage);
         store.init();
 
-        store.write(d -> d.getFirestations().add(new Firestation("New Addr", 7)));
+        store.write(d -> d.getFirestations().add(Firestation.create("New Addr", 7)));
 
         ArgumentCaptor<SafetyNetData> captor = ArgumentCaptor.forClass(SafetyNetData.class);
         verify(storage).save(captor.capture());
@@ -81,7 +81,7 @@ class SafetyNetStoreTest {
         store = new SafetyNetStore(storage);
         store.init();
 
-        assertThrows(RuntimeException.class, () -> store.write(d -> d.getFirestations().add(new Firestation("X", 1))));
+        assertThrows(RuntimeException.class, () -> store.write(d -> d.getFirestations().add(Firestation.create("X", 1))));
         verify(storage).save(any());
     }
 

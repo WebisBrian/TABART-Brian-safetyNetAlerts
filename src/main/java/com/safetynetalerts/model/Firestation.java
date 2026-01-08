@@ -1,48 +1,49 @@
 package com.safetynetalerts.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.Objects;
 
-/**
- * Représente l'association entre une adresse et un numéro de caserne de pompiers.
- * Cette classe est utilisée par les endpoints liés aux interventions des casernes,
- * notamment pour déterminer les habitants desservis par une station donnée.
- */
+@JsonPropertyOrder({"address", "station"})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Firestation {
 
-    // fields
-    @JsonProperty("address")
     private String address;
-    @JsonProperty("station")
     private Integer station;
 
-    // constructors
+    // Constructeur par défaut
     public Firestation() {
     }
 
-    public Firestation(String address, Integer station) {
+   @JsonCreator
+   // Constructeur privé
+    private Firestation(
+            @JsonProperty("address") String address,
+            @JsonProperty("station") Integer station) {
         this.address = address;
         this.station = station;
     }
 
-    // getters and setters
+    // Factory method (remplace le constructeur public)
+    public static Firestation create(String address, Integer station) {
+        return new Firestation(address, station);
+    }
+
+    // Méthodes métier
+    public void updateFirestation(Integer station) {
+        this.station = station;
+    }
+
+    // getters
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public Integer getStation() {
         return station;
-    }
-
-    public void setStation(Integer station) {
-        this.station = station;
     }
 
     // overrides

@@ -31,8 +31,8 @@ class PhoneAlertServiceImplTest {
     @BeforeEach
     void setUp() {
 
-        Firestation station1 = new Firestation("1509 Culver St", 1);
-        Firestation station2 = new Firestation("29 15th St", 2);
+        Firestation station1 = Firestation.create("1509 Culver St", 1);
+        Firestation station2 = Firestation.create("29 15th St", 2);
 
         when(firestationRepository.findAll())
                 .thenReturn(List.of(station1, station2));

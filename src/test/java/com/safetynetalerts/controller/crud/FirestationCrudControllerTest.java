@@ -29,7 +29,7 @@ class FirestationCrudControllerTest {
 
     @Test
     void postFirestation_shouldCreateMapping() throws Exception {
-        Firestation fs = new Firestation("1509 Culver St", 3);
+        Firestation fs = Firestation.create("1509 Culver St", 3);
 
         when(firestationService.create(any(Firestation.class))).thenReturn(fs);
 
@@ -44,7 +44,7 @@ class FirestationCrudControllerTest {
 
     @Test
     void putFirestation_shouldUpdateMapping() throws Exception {
-        Firestation fs = new Firestation("1509 Culver St", 2);
+        Firestation fs = Firestation.create("1509 Culver St", 2);
 
         when(firestationService.update(any(Firestation.class))).thenReturn(true);
 

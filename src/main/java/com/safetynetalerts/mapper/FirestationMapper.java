@@ -14,7 +14,7 @@ public final class FirestationMapper {
 
     public static Firestation toModel(FirestationUpsertRequestDto dto) {
         // DTO → modèle interne (utilisé par service/repo)
-        return new Firestation(dto.address(), dto.station());
+        return Firestation.create(dto.address(), dto.station());
     }
 
     public static FirestationResponseDto toDto(Firestation model) {

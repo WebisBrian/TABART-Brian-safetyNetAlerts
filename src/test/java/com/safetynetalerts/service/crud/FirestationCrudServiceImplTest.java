@@ -26,7 +26,7 @@ class FirestationCrudServiceImplTest {
 
     @Test
     void create_shouldDelegateToRepository() {
-        Firestation input = new Firestation("1509 Culver St", 3);
+        Firestation input = Firestation.create("1509 Culver St", 3);
         when(firestationRepository.findByAddressAndByStation("1509 Culver St", 3)).thenReturn(Optional.empty());
         when(firestationRepository.add(input)).thenReturn(input);
 
@@ -40,7 +40,7 @@ class FirestationCrudServiceImplTest {
 
     @Test
     void create_shouldThrowBadRequestWhenAddressMissing() {
-        Firestation input = new Firestation(null, 1);
+        Firestation input = Firestation.create(null, 1);
 
         assertThatThrownBy(() -> service.create(input))
                 .isInstanceOf(BadRequestException.class)
@@ -52,7 +52,7 @@ class FirestationCrudServiceImplTest {
 
     @Test
     void create_shouldThrowBadRequestWhenStationNull() {
-        Firestation input = new Firestation("1509 Culver St", null);
+        Firestation input = Firestation.create("1509 Culver St", null);
 
         assertThatThrownBy(() -> service.create(input))
                 .isInstanceOf(BadRequestException.class)
@@ -64,7 +64,7 @@ class FirestationCrudServiceImplTest {
 
     @Test
     void create_shouldThrowBadRequestWhenStationLessThanOne() {
-        Firestation input = new Firestation("1509 Culver St", 0);
+        Firestation input = Firestation.create("1509 Culver St", 0);
 
         assertThatThrownBy(() -> service.create(input))
                 .isInstanceOf(BadRequestException.class)
@@ -76,7 +76,7 @@ class FirestationCrudServiceImplTest {
 
     @Test
     void create_shouldThrowConflictWhenExists() {
-        Firestation input = new Firestation("1509 Culver St", 3);
+        Firestation input = Firestation.create("1509 Culver St", 3);
         when(firestationRepository.findByAddressAndByStation("1509 Culver St", 3)).thenReturn(Optional.of(new Firestation()));
 
         assertThatThrownBy(() -> service.create(input))
@@ -90,7 +90,7 @@ class FirestationCrudServiceImplTest {
 
     @Test
     void update_shouldReturnTrueWhenRepositoryUpdates() {
-        Firestation updated = new Firestation("1509 Culver St", 2);
+        Firestation updated = Firestation.create("1509 Culver St", 2);
         when(firestationRepository.update(updated)).thenReturn(true);
 
         boolean result = service.update(updated);
@@ -102,7 +102,7 @@ class FirestationCrudServiceImplTest {
 
     @Test
     void update_shouldThrowBadRequestWhenAddressMissing() {
-        Firestation updated = new Firestation(" ", 2);
+        Firestation updated = Firestation.create(" ", 2);
 
         assertThatThrownBy(() -> service.update(updated))
                 .isInstanceOf(BadRequestException.class)
@@ -114,7 +114,7 @@ class FirestationCrudServiceImplTest {
 
     @Test
     void update_shouldThrowBadRequestWhenStationNull() {
-        Firestation updated = new Firestation("1509 Culver St", null);
+        Firestation updated = Firestation.create("1509 Culver St", null);
 
         assertThatThrownBy(() -> service.update(updated))
                 .isInstanceOf(BadRequestException.class)
@@ -126,7 +126,7 @@ class FirestationCrudServiceImplTest {
 
     @Test
     void update_shouldThrowBadRequestWhenStationLessThanOne() {
-        Firestation updated = new Firestation("1509 Culver St", 0);
+        Firestation updated = Firestation.create("1509 Culver St", 0);
 
         assertThatThrownBy(() -> service.update(updated))
                 .isInstanceOf(BadRequestException.class)

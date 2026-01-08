@@ -92,7 +92,7 @@ public class InMemoryFirestationRepository implements FirestationRepository {
                 return;
             }
 
-            opt.get().setStation(firestation.getStation());
+            opt.get().updateFirestation(firestation.getStation());
             updated[0] = true;
         });
 

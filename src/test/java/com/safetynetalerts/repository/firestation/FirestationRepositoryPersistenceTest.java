@@ -45,8 +45,8 @@ public class FirestationRepositoryPersistenceTest {
         SafetyNetStore store = newStore(dataFile);
         InMemoryFirestationRepository repo = new InMemoryFirestationRepository(store);
 
-        repo.add(new Firestation("1509 Culver St", 1));
-        repo.add(new Firestation("1509 culver st", 2));
+        repo.add(Firestation.create("1509 Culver St", 1));
+        repo.add(Firestation.create("1509 culver st", 2));
 
         // Act
         Optional<Firestation> opt = repo.findByAddress("1509 CULVER ST");
@@ -62,9 +62,9 @@ public class FirestationRepositoryPersistenceTest {
         SafetyNetStore store = newStore(dataFile);
         InMemoryFirestationRepository repo = new InMemoryFirestationRepository(store);
 
-        repo.add(new Firestation("A St", 1));
-        repo.add(new Firestation("A St", 3));
-        repo.add(new Firestation("B St", 2));
+        repo.add(Firestation.create("A St", 1));
+        repo.add(Firestation.create("A St", 3));
+        repo.add(Firestation.create("B St", 2));
 
         // Act
         Optional<Firestation> opt1 = repo.findByAddressAndByStation("A St", 3);
@@ -82,11 +82,11 @@ public class FirestationRepositoryPersistenceTest {
         SafetyNetStore store1 = newStore(dataFile);
         InMemoryFirestationRepository repo1 = new InMemoryFirestationRepository(store1);
 
-        repo1.add(new Firestation("Shared Addr", 1));
-        repo1.add(new Firestation("Shared Addr", 2));
+        repo1.add(Firestation.create("Shared Addr", 1));
+        repo1.add(Firestation.create("Shared Addr", 2));
 
         // Act
-        boolean updated = repo1.update(new Firestation("Shared Addr", 9));
+        boolean updated = repo1.update(Firestation.create("Shared Addr", 9));
         assertThat(updated).isTrue();
 
         SafetyNetStore store2 = newStore(dataFile);
@@ -115,9 +115,9 @@ public class FirestationRepositoryPersistenceTest {
         SafetyNetStore store1 = newStore(dataFile);
         InMemoryFirestationRepository repo1 = new InMemoryFirestationRepository(store1);
 
-        repo1.add(new Firestation("ToRemove", 1));
-        repo1.add(new Firestation("ToRemove", 2));
-        repo1.add(new Firestation("Keep", 5));
+        repo1.add(Firestation.create("ToRemove", 1));
+        repo1.add(Firestation.create("ToRemove", 2));
+        repo1.add(Firestation.create("Keep", 5));
 
         // Act
         boolean deleted = repo1.deleteByAddress("toremove");
@@ -138,8 +138,8 @@ public class FirestationRepositoryPersistenceTest {
         SafetyNetStore store = newStore(dataFile);
         InMemoryFirestationRepository repo = new InMemoryFirestationRepository(store);
 
-        repo.add(new Firestation("One", 1));
-        repo.add(new Firestation("Two", 2));
+        repo.add(Firestation.create("One", 1));
+        repo.add(Firestation.create("Two", 2));
 
         // Act
         List<Firestation> all = repo.findAll();

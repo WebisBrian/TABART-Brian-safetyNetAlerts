@@ -46,9 +46,9 @@ class FloodServiceImplTest {
 
         // Firestations
         when(firestationRepository.findAll()).thenReturn(List.of(
-                new Firestation("1509 Culver St", 1),
-                new Firestation("29 15th St", 1),
-                new Firestation("834 Binoc Ave", 2)
+                Firestation.create("1509 Culver St", 1),
+                Firestation.create("29 15th St", 1),
+                Firestation.create("834 Binoc Ave", 2)
         ));
 
         // Persons
