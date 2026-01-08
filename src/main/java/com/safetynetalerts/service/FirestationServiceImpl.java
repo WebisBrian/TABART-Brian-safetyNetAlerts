@@ -37,10 +37,6 @@ public class FirestationServiceImpl implements FirestationService {
     @Override
     public FirestationCoverageDto getCoverageByStation(Integer stationNumber) {
 
-        if (stationNumber == null || stationNumber < 0) {
-            throw new BadRequestException("Le numéro de caserne doit être un entier positif.");
-        }
-
         List<Firestation> firestations = firestationRepository.findAll();
 
         List<String> coveredAddresses = firestations.stream()

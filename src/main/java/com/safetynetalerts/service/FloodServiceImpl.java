@@ -1,6 +1,6 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
+import com.safetynetalerts.dto.response.common.ResidentWithMedicalInfoDto;
 import com.safetynetalerts.dto.response.flood.FloodAddressDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
@@ -31,10 +31,6 @@ public class FloodServiceImpl implements FloodService {
 
     @Override
     public List<FloodAddressDto> getFloodInfoByStations(List<Integer> stations) {
-
-        if (stations.isEmpty()) {
-            throw new BadRequestException("La liste des numéros de casernes doit être renseignée.");
-        }
 
         List<Firestation> firestations = firestationRepository.findAll();
         List<Person> persons = personRepository.findAll();

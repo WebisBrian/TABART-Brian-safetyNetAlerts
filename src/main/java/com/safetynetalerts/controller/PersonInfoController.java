@@ -1,6 +1,7 @@
 package com.safetynetalerts.controller;
 
 import com.safetynetalerts.dto.response.personinfo.PersonInfoResponseDto;
+import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.service.PersonInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,10 @@ public class PersonInfoController {
 
     @GetMapping
     public PersonInfoResponseDto getPersonInfoLastName(@RequestParam String lastName) {
+
+        if (lastName == null || lastName.isBlank()) {
+            throw new BadRequestException("Le nom de famille doit être renseigné.");
+        }
 
         logger.info("Requête reçue GET /personInfo lastName={}",lastName);
 

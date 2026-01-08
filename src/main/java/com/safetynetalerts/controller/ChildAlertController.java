@@ -1,6 +1,7 @@
 package com.safetynetalerts.controller;
 
 import com.safetynetalerts.dto.response.childalert.ChildAlertResponseDto;
+import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.service.ChildAlertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,11 @@ public class ChildAlertController {
      */
     @GetMapping
     public ChildAlertResponseDto getChildAlert(@RequestParam String address) {
+
+        if (address == null || address.isBlank()) {
+            throw new BadRequestException("L'adresse doit être renseignée.");
+        }
+
         logger.info("Requête reçue GET /childAlert avec address={}", address);
 
         ChildAlertResponseDto response = childAlertService.getChildrenByAddress(address);

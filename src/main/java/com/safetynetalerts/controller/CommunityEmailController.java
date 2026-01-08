@@ -1,5 +1,6 @@
 package com.safetynetalerts.controller;
 
+import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.service.CommunityEmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,10 @@ public class CommunityEmailController {
 
     @GetMapping
     public List<String> getEmails(@RequestParam String city) {
+
+        if (city == null || city.isBlank()) {
+            throw new BadRequestException("Le nom de la ville doit être renseigné.");
+        }
 
         logger.info("Requête reçue GET /communityEmail city={}", city);
 

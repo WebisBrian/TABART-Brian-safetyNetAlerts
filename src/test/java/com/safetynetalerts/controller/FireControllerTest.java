@@ -1,6 +1,6 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
+import com.safetynetalerts.dto.response.common.ResidentWithMedicalInfoDto;
 import com.safetynetalerts.dto.response.fire.FireResponseDto;
 import com.safetynetalerts.service.FireService;
 import org.junit.jupiter.api.Test;

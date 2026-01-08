@@ -1,6 +1,6 @@
 package com.safetynetalerts.service;
 
-import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
+import com.safetynetalerts.dto.response.common.ResidentWithMedicalInfoDto;
 import com.safetynetalerts.dto.response.fire.FireResponseDto;
 import com.safetynetalerts.model.Firestation;
 import com.safetynetalerts.model.MedicalRecord;
@@ -33,10 +33,6 @@ public class FireServiceImpl implements FireService {
 
     @Override
     public FireResponseDto getFireInfoByAddress(String address) {
-
-        if (address == null || address.isBlank()) {
-            throw new BadRequestException("L'adresse doit être renseignée.");
-        }
 
         int stationNumber = firestationRepository.findAll().stream()
                 .filter(fs -> fs.getAddress().equalsIgnoreCase(address))

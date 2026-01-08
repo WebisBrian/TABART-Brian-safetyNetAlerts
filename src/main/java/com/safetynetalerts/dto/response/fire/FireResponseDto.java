@@ -1,6 +1,6 @@
 package com.safetynetalerts.dto.response.fire;
 
-import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
+import com.safetynetalerts.dto.response.common.ResidentWithMedicalInfoDto;
 
 import java.util.List;
 

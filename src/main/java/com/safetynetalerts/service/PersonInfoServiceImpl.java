@@ -29,10 +29,6 @@ public class PersonInfoServiceImpl implements PersonInfoService {
     @Override
     public PersonInfoResponseDto getPersonInfoByLastName(String lastName) {
 
-        if (lastName == null || lastName.isBlank()) {
-            throw new BadRequestException("Le nom de famille doit être renseigné.");
-        }
-
         List<PersonInfoDto> persons = findPersonInfoByLastName(lastName);
 
         return new PersonInfoResponseDto(persons);

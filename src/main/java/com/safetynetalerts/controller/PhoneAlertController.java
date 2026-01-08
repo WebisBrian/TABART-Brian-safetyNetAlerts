@@ -1,5 +1,6 @@
 package com.safetynetalerts.controller;
 
+import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.service.PhoneAlertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,12 @@ public class PhoneAlertController {
      * Renvoie la liste de téléphones des personnes couvertes par la station.
      */
     @GetMapping
-    public List<String> getPhonesByStation(@RequestParam int firestation) {
+    public List<String> getPhonesByStation(@RequestParam Integer firestation) {
+
+        if (firestation == null || firestation < 0) {
+            throw new BadRequestException("Le numéro de caserne doit être un entier positif.");
+        }
+
         logger.info("Requête reçue GET /phoneAlert avec firestation={}", firestation);
 
         List<String> phones = phoneAlertService.getPhonesByStation(firestation);

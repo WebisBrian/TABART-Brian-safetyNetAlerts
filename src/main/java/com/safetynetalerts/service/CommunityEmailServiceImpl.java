@@ -19,10 +19,6 @@ public class CommunityEmailServiceImpl implements CommunityEmailService {
     @Override
     public List<String> getEmailsByCity(String city) {
 
-        if (city == null || city.isBlank()) {
-            throw new BadRequestException("Le nom de la ville doit être renseigné.");
-        }
-
         return personRepository.findAll().stream()
                 .filter(p -> p.getCity() != null && p.getCity().equalsIgnoreCase(city))
                 .map(Person::getEmail)

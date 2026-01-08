@@ -1,6 +1,6 @@
 package com.safetynetalerts.controller;
 
-import com.safetynetalerts.dto.common.ResidentWithMedicalInfoDto;
+import com.safetynetalerts.dto.response.common.ResidentWithMedicalInfoDto;
 import com.safetynetalerts.dto.response.flood.FloodAddressDto;
 import com.safetynetalerts.service.FloodService;
 import org.junit.jupiter.api.extension.ExtendWith;

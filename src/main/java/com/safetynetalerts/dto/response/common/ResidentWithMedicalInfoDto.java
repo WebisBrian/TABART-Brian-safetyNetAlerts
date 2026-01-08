@@ -1,4 +1,4 @@
-package com.safetynetalerts.dto.common;
+package com.safetynetalerts.dto.response.common;
 
 import java.util.List;
 

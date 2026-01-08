@@ -1,6 +1,7 @@
 package com.safetynetalerts.controller;
 
 import com.safetynetalerts.dto.response.fire.FireResponseDto;
+import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.service.FireService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,11 @@ public class FireController {
      */
     @GetMapping
     public FireResponseDto getFireInfoByAddress(@RequestParam String address) {
+
+        if (address == null || address.isBlank()) {
+            throw new BadRequestException("L'adresse doit être renseignée.");
+        }
+
         logger.info("Requête reçue GET /fire avec address={}", address);
 
         FireResponseDto response = fireService.getFireInfoByAddress(address);

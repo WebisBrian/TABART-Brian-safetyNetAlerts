@@ -26,10 +26,6 @@ public class PhoneAlertServiceImpl implements PhoneAlertService {
     @Override
     public List<String> getPhonesByStation(Integer stationNumber) {
 
-        if (stationNumber == null || stationNumber < 0) {
-            throw new BadRequestException("Le numéro de caserne doit être un entier positif.");
-        }
-
         List<String> coveredAddresses = findCoveredAddressesByStation(stationNumber);
         if (coveredAddresses.isEmpty()) {
             return List.of();

@@ -1,6 +1,7 @@
 package com.safetynetalerts.controller;
 
 import com.safetynetalerts.dto.response.firestation.FirestationCoverageDto;
+import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.service.FirestationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,12 @@ public class FirestationController {
      * Renvoie la couverture de la caserne demandée (personnes, nb adultes/enfants).
      */
     @GetMapping
-    public FirestationCoverageDto getCoverage(@RequestParam int stationNumber) {
+    public FirestationCoverageDto getCoverage(@RequestParam Integer stationNumber) {
+
+        if (stationNumber == null || stationNumber < 0) {
+            throw new BadRequestException("Le numéro de caserne doit être un entier positif.");
+        }
+
         logger.info("Requête reçue GET /firestation avec stationNumber={}", stationNumber);
 
         FirestationCoverageDto coverage = firestationService.getCoverageByStation(stationNumber);
