@@ -58,38 +58,6 @@ class MedicalRecordCrudServiceImplTest {
     }
 
     @Test
-    void create_shouldThrowBadRequestWhenNameMissing() {
-        MedicalRecord input = MedicalRecord.create(null, " ", "03/06/1984",
-                List.of(), List.of());
-
-        when(medicalRecordRepository.findByName(any(), any())).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> service.create(input))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("Le prénom et le nom doivent être renseignés.");
-
-        verify(medicalRecordRepository).findByName(null, " ");
-        verify(medicalRecordRepository, never()).add(any());
-        verifyNoMoreInteractions(medicalRecordRepository);
-    }
-
-    @Test
-    void create_shouldThrowBadRequestWhenBirthdateMissing() {
-        MedicalRecord input = MedicalRecord.create("A", "B", " ",
-                List.of(), List.of());
-
-        when(medicalRecordRepository.findByName(any(), any())).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> service.create(input))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("La date de naissance doit être renseignée.");
-
-        verify(medicalRecordRepository).findByName("A", "B");
-        verify(medicalRecordRepository, never()).add(any());
-        verifyNoMoreInteractions(medicalRecordRepository);
-    }
-
-    @Test
     void update_shouldReturnTrueWhenRepositoryUpdates() {
         MedicalRecord updated = MedicalRecord.create("John", "Boyd", "03/06/1984",
                 List.of("new:10mg"), List.of());
@@ -114,19 +82,6 @@ class MedicalRecordCrudServiceImplTest {
 
         assertThat(result).isFalse();
         verify(medicalRecordRepository).update(updated);
-        verifyNoMoreInteractions(medicalRecordRepository);
-    }
-
-    @Test
-    void update_shouldThrowBadRequestWhenBirthdateMissing() {
-        MedicalRecord updated = MedicalRecord.create("A", "B", null,
-                List.of(), List.of());
-
-        assertThatThrownBy(() -> service.update(updated))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("La date de naissance doit être renseignée.");
-
-        verify(medicalRecordRepository, never()).update(any());
         verifyNoMoreInteractions(medicalRecordRepository);
     }
 

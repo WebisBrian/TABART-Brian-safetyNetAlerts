@@ -19,7 +19,7 @@ import java.util.OptionalInt;
 @Service
 public class AgeService {
 
-    // Format imposé par le fichier data.json (ex: "03/06/1984")
+    // Format imposé par le fichier data.json (ex: "03/15/1984")
     private static final DateTimeFormatter BIRTHDATE_FORMAT = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     // Clock injectée pour rendre le calcul testable (on peut figer la date en test)
@@ -36,7 +36,7 @@ public class AgeService {
     /**
      * Calcule l'âge à partir d'une date de naissance au format MM/dd/yyyy.
      *
-     * @param birthdate date de naissance (ex: "03/06/1984")
+     * @param birthdate date de naissance (ex: "03/15/1984")
      * @return âge en années
      */
     public int calculateAge(String birthdate) {
