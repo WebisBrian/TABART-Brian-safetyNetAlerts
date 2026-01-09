@@ -4,7 +4,6 @@ import com.safetynetalerts.dto.response.personinfo.PersonInfoDto;
 import com.safetynetalerts.dto.response.personinfo.PersonInfoResponseDto;
 import com.safetynetalerts.model.MedicalRecord;
 import com.safetynetalerts.model.Person;
-import com.safetynetalerts.model.exception.BadRequestException;
 import com.safetynetalerts.repository.medicalrecord.MedicalRecordRepository;
 import com.safetynetalerts.repository.person.PersonRepository;
 import com.safetynetalerts.service.util.AgeService;
